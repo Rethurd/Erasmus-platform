@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import CalendarDay from './CalendarDay';
 class CalendarPage extends React.Component {
     constructor(props){
         super(props);
@@ -16,13 +17,13 @@ class CalendarPage extends React.Component {
 
     //get rid of or check the parameters
     goThroughDays = (datesArray,startDate,endDate) =>{
-        const fromDate = moment('2018-11-01');
         let firstMonthIndex = parseInt(this.getFirstMonthDay().format('D'));
         const lastMonthIndex = parseInt(this.getLastMonthDay().format('D'));
+        let dayData;
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
-            datesArray.push(<td key={firstMonthIndex}>{firstMonthIndex}</td>);
+            dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
+            datesArray.push(<CalendarDay key={firstMonthIndex} day={dayData}/>);
         }
-        console.log(datesArray);
         return datesArray;
     };
     previousMonth = () =>{
@@ -52,24 +53,26 @@ class CalendarPage extends React.Component {
         const emptyDaysToReverse= []
         for (let index = 0; index < emptyDaysAtStartOfMonth; index++) {
             previousDay.subtract(1,'days');
-            console.log(previousDay.format('D'));
             emptyDaysToReverse.push(<td className='grayed-out-date'>{previousDay.format('D')}</td>)
         }
         emptyDaysToReverse.reverse();
         thisMonth =thisMonth.concat(emptyDaysToReverse);
         this.state.contextDate.add(emptyDaysAtStartOfMonth,'days');
-        //fill in with the actual days in month
+        
         const startDate = this.getFirstMonthDay();
         const endDate = this.getLastMonthDay();
+        //fill in with the actual days in month
         thisMonth = this.goThroughDays(thisMonth,startDate,endDate);
-        
         const thisModifiedMonth = [];
         let week = [];
+
+        //Divide the days in the month into weeks so I can later add them to different rows
         for (let index = 1; index < thisMonth.length+1; index++) {
             
             week.push(thisMonth[index-1]);
             if(index%7==0 || index==thisMonth.length){
                 if(index==thisMonth.length){
+                    //add the days from the next month
                     for (let emptySpacesCount = 0; emptySpacesCount < emptyDaysAtEndOfMonth; emptySpacesCount++) {
                         week.push(<td className="grayed-out-date">{emptySpacesCount+1}</td>);
                     }
