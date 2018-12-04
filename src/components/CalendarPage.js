@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
 import eventsSelector from '../selectors/events';
 import AddEventForm from './AddEventForm';
-import uuid from 'uuid';
+
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -76,7 +76,7 @@ class CalendarPage extends React.Component {
         const emptyDaysToReverse= []
         for (let index = 0; index < emptyDaysAtStartOfMonth; index++) {
             previousDay.subtract(1,'days');
-            emptyDaysToReverse.push(<td  key={uuid()} className='grayed-out-date'>{previousDay.format('D')}</td>)
+            emptyDaysToReverse.push(<td  className='grayed-out-date'>{previousDay.format('D')}</td>)
         }
         emptyDaysToReverse.reverse();
         thisMonth =thisMonth.concat(emptyDaysToReverse);
@@ -96,7 +96,7 @@ class CalendarPage extends React.Component {
                 if(index==thisMonth.length){
                     //add the days from the next month
                     for (let emptySpacesCount = 0; emptySpacesCount < emptyDaysAtEndOfMonth; emptySpacesCount++) {
-                        week.push(<td key={uuid()} className="grayed-out-date">{emptySpacesCount+1}</td>);
+                        week.push(<td className="grayed-out-date">{emptySpacesCount+1}</td>);
                     }
                 }
                 thisModifiedMonth.push(week);

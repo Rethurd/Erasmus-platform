@@ -12,6 +12,15 @@ class CalendarDay extends React.Component {
         }
     }
 
+    //check if object is empty - to render Modal only if there is a selected event
+     isEmpty = (obj) =>{
+        for(let key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
+    }
+
     toggleModal = () =>{
         this.setState((state)=>{
             return{
@@ -29,26 +38,28 @@ class CalendarDay extends React.Component {
         }}
         key={singleEvent.name+singleEvent.description}>
         {singleEvent.name}
-     </p>);  
+     </p>);    
     
 
     render() { 
         return ( 
             <td onClick={()=>{
                     console.log(this.props.day);
-                    this.props.getEventsOfDay(this.props.day)
-                
+                    this.props.getEventsOfDay(this.props.day);
                 }}>
                  {this.props.day.format('D')}
                  {
                      this.props.events.length==0 ? null : this.printEvents()
                  }
-                 <EventModal 
-                    eventData = {this.state.selectedEvent}
-                    isOpen={this.state.isModalOpen}
-                    onRequestClose={this.toggleModal}
-                   
-                />
+                 {
+                    this.isEmpty(this.state.selectedEvent) ? null :  
+                    <EventModal 
+                        eventData = {this.state.selectedEvent}
+                        isOpen={this.state.isModalOpen}
+                        onRequestClose={this.toggleModal}
+                    />
+                 }
+                
             </td>
             
          );
