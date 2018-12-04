@@ -3,7 +3,8 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
 import eventsSelector from '../selectors/events';
-import Button from '@material-ui/core/Button';
+import AddEventForm from './AddEventForm';
+import uuid from 'uuid';
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -75,7 +76,7 @@ class CalendarPage extends React.Component {
         const emptyDaysToReverse= []
         for (let index = 0; index < emptyDaysAtStartOfMonth; index++) {
             previousDay.subtract(1,'days');
-            emptyDaysToReverse.push(<td className='grayed-out-date'>{previousDay.format('D')}</td>)
+            emptyDaysToReverse.push(<td  key={uuid()} className='grayed-out-date'>{previousDay.format('D')}</td>)
         }
         emptyDaysToReverse.reverse();
         thisMonth =thisMonth.concat(emptyDaysToReverse);
@@ -95,7 +96,7 @@ class CalendarPage extends React.Component {
                 if(index==thisMonth.length){
                     //add the days from the next month
                     for (let emptySpacesCount = 0; emptySpacesCount < emptyDaysAtEndOfMonth; emptySpacesCount++) {
-                        week.push(<td className="grayed-out-date">{emptySpacesCount+1}</td>);
+                        week.push(<td key={uuid()} className="grayed-out-date">{emptySpacesCount+1}</td>);
                     }
                 }
                 thisModifiedMonth.push(week);
@@ -131,20 +132,8 @@ class CalendarPage extends React.Component {
                     {this.getEventsOfDay()}
                 </div>
                 <h2>Create an event!</h2>
-                <form>
-                <Button variant="contained" color="primary">
-                    Hello World
-                    </Button>
-                    <input type="text" placeholder="event name"></input>
-                    <input type="text" placeholder="starting location"></input>
-                    <input type="date"></input>
-                    <input type="time"></input>
-                    <textarea placeholder="description"></textarea>
-                    <button onSubmit={(e)=>{
-                        e.preventDefault(); // so the page doesnt refresh
-                        console.log('form submitted')
-                        }}>Submit</button>
-                </form>
+                <AddEventForm/>
+                
             </div>
          );
     }

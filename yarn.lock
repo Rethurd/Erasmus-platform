@@ -23,6 +23,18 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
+"@date-io/core@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@date-io/core/-/core-0.0.2.tgz#35be27d26eb652e752ccfbffe624c95169200dbd"
+  integrity sha512-rkanRee2Agpw3tZLaCGJxkNRzi7FdyqueQDmEZAgZfIQaPo0MoOrO0gcTGwhTNREV8+OBKiZLpbaHK79dsU/Wg==
+
+"@date-io/moment@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@date-io/moment/-/moment-0.0.2.tgz#2020055c214fe5da7a6fc4741ebcb6a622ead6da"
+  integrity sha512-YrLDOHAZygZChOwXcr3D6W7Dusp7wLi3Y/pt6ZgxDOnX1iNlO+M7qjZ3PdD+vH0v2xlzEg2n2rZ67QschAIiKQ==
+  dependencies:
+    "@date-io/core" "^0.0.2"
+
 "@material-ui/core@^3.6.1":
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.6.1.tgz#6f8259c64eaa34c9f977165f6b8d175d9eb1858a"
@@ -4947,12 +4959,7 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
-moment@2.18.1:
-  version "2.18.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
-  integrity sha1-w2GT3Tzhwu7SrbfIAtu8d6gbHA8=
-
-moment@2.x.x, moment@>=1.6.0:
+moment@2.x.x, moment@>=1.6.0, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
   integrity sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=
