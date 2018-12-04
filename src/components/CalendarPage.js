@@ -9,13 +9,31 @@ class CalendarPage extends React.Component {
         super(props);
         this.state = {
             contextDate:moment().startOf('month'),
-            today:moment()
+            today:moment(),
+            selectedDay:moment()
         }
     }
     
     getFirstMonthDay = () => this.state.contextDate.startOf('month');    
     getLastMonthDay = () => this.state.contextDate.endOf('month');    
 
+    getEventsOfDay = (day) =>{
+        //when the function gets called when rendering for the 1st time
+        if(day==undefined)
+            day=moment();
+        //when we get a date from clicking on a calendar day
+        else this.setState(()=>({selectedDay:moment(day)}));
+        const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay);
+        return todaysEvents.map((singleEvent)=>{
+            return(
+                <div>
+                     <h4>{singleEvent.name}</h4>
+                     <p>Description: {singleEvent.description}</p>
+                </div>
+            )
+        });
+        
+    }
     //get rid of or check the parameters
     goThroughDays = (datesArray,startDate,endDate) =>{
         
@@ -25,7 +43,7 @@ class CalendarPage extends React.Component {
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
             dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
             const eventsToAdd = eventsSelector(this.props.events,dayData);
-            datesArray.push(<CalendarDay key={firstMonthIndex} day={dayData} events={eventsToAdd}/>);
+            datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} key={firstMonthIndex} day={dayData} events={eventsToAdd}/>);
         }
         return datesArray;
     };
@@ -107,7 +125,10 @@ class CalendarPage extends React.Component {
                         {this.printMonth()} 
                     </tbody>
                 </table>
-                
+                <div>
+                    <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
+                    {this.getEventsOfDay()}
+                </div>
             </div>
          );
     }
