@@ -12,6 +12,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import {firebase} from './firebase/firebase';
 import { addEvent } from './actions/events';
 import moment from 'moment';
+import uuid from 'uuid';
 
 const store = configureStore();
 
@@ -24,22 +25,32 @@ store.subscribe(()=>{
 
 console.log(store.getState());
 const event = {
+    'eventId':uuid(),
     date:moment(),
     name:'first event',
     description:'this will be such a fun event',
-    location:'My house'
+    location:'My house',
+    'participants':['asdadsa'],
+    'participantsID':[]
+            
 }
 const event2 = {
+    'eventId':uuid(),
     date:moment().add('days',1),
     name:'second event',
     description:'this will be less fun',
-    location:'My house'
+    location:'My house',
+    'participants':[],
+    'participantsID':[]
 }
 const event3 = {
+    'eventId':uuid(),
     date:moment(),
     name:'third event',
     description:'this will be horrible',
-    location:'My house'
+    location:'My house',
+    'participants':[],
+    'participantsID':[]
 }
 store.dispatch(addEvent(event));
 store.dispatch(addEvent(event2));

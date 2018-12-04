@@ -6,6 +6,8 @@ import {MuiPickersUtilsProvider } from 'material-ui-pickers';
 import {DateTimePicker} from 'material-ui-pickers';
 import {addEvent} from '../actions/events';
 import {firebase} from '../firebase/firebase';
+import uuid from 'uuid';
+
 
 // put this on a separate page and redirect after adding?
 class AddEventForm extends React.Component {
@@ -13,11 +15,12 @@ class AddEventForm extends React.Component {
         super(props);
         
         this.state = {
+            'eventId':uuid(),
             'name':'',
             'description':'',
             'date':moment(),
             'participants':[],
-            'participantsUID':[],
+            'participantsID':[],
             'location':'',
             'descriptionEmptyError':undefined,
             'nameEmptyError':undefined,
@@ -57,14 +60,11 @@ class AddEventForm extends React.Component {
                 }
                 if (this.state.name!='' && this.state.description!=''){
                     let user = firebase.auth().currentUser;
-                    console.log(user.displayName);
-                    console.log(user.uid);
+                    
                     //setState takes time to update, so I add the event only after the state has changed
                     this.setState(()=>({createdBy:user.displayName,createdById:user.uid}),()=>{
+                        //omitting properties from the state using ES7 object spread operator
                         const { descriptionEmptyError,nameEmptyError,...eventData}=this.state;
-                    
-                        console.log(eventData);
-                        console.log(this.state);
                         this.props.addEvent(eventData);
                         // if logged in then write display name, if not save 'Unknown'
                         // reset to default
@@ -79,11 +79,12 @@ class AddEventForm extends React.Component {
                             'createdBy':'Unknown'
                         }));
                     });             
-                    //omitting properties from the state using ES7 object spread operator
+                    
                     
                 }
     }
     render() { 
+        
         return ( 
             <form onSubmit={this.handleOnSubmit}>  
             <MuiPickersUtilsProvider  utils={MomentUtils}>
@@ -108,7 +109,7 @@ class AddEventForm extends React.Component {
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        addEvent: (expense) =>dispatch(addEvent(expense))
+        addEvent: (event) =>dispatch(addEvent(event))
     }
 }
 
