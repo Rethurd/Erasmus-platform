@@ -10,8 +10,11 @@ const EventModal = (props) => {
         >
 
             <h1>{props.eventData.name}</h1>
-            <h3>{props.eventData.description}</h3>
-            <div>This event will happen on: {moment(props.eventData.date).format('DD-MM-YYYY')}</div>
+            <h3>Description: {props.eventData.description}</h3>
+            <p>Even starts:{props.eventData.date.format('DD-MM-YYYY HH:mm')}</p>
+            <p>Location:{props.eventData.location}</p>
+            <p>Event created by:{ props.eventData.createdBy!=null ? props.eventData.createdBy : 'Unknown'}</p>
+            <p>User uid:{props.eventData.createdById}</p>
         </Modal>
      );
 }

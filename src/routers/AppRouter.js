@@ -19,7 +19,8 @@ const AppRouter = () =>(
         <div>
             <Header />
                  <Switch>
-                    <Route path="/" component={InfoPage} exact/>
+                    <Route path="/" component={LoginPage} exact/>
+                    <Route path="/info" component={InfoPage}/>
                     <Route path="/calendar" component={CalendarPage}/>
                     <Route path="/todo" component={ToDoPage}/>
                     <Route path="/chat" component={Chat}/>

@@ -26,17 +26,20 @@ console.log(store.getState());
 const event = {
     date:moment(),
     name:'first event',
-    description:'this will be such a fun event'
+    description:'this will be such a fun event',
+    location:'My house'
 }
 const event2 = {
     date:moment().add('days',1),
     name:'second event',
-    description:'this will be less fun'
+    description:'this will be less fun',
+    location:'My house'
 }
 const event3 = {
     date:moment(),
     name:'third event',
-    description:'this will be horrible'
+    description:'this will be horrible',
+    location:'My house'
 }
 store.dispatch(addEvent(event));
 store.dispatch(addEvent(event2));
@@ -61,20 +64,19 @@ ReactDOM.render(jsx,document.getElementById('app'));
 
 
 
-// firebase.auth().onAuthStateChanged((user)=>{
-//     if(user){
-//         console.log('uid',user.uid);
-//         store.dispatch(login(user.uid));
-       
-//         if (history.location.pathname==='/'){
-//             history.push('/dashboard');
-//         }
+firebase.auth().onAuthStateChanged((user)=>{
+    if(user){
+        console.log('uid',user.uid);
+        store.dispatch(login(user.uid));
+        if (history.location.pathname==='/'){
+            history.push('/info');
+        }
        
 
-//     }else{
-//         store.dispatch(logout());
-//         renderApp();
-//         history.push('/');
-//     }
-// });
+    }else{
+        store.dispatch(logout());
+        renderApp();
+        history.push('/');
+    }
+});
 
