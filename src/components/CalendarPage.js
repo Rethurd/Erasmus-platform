@@ -3,6 +3,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
 import eventsSelector from '../selectors/events';
+import Button from '@material-ui/core/Button';
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -129,6 +130,21 @@ class CalendarPage extends React.Component {
                     <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
                     {this.getEventsOfDay()}
                 </div>
+                <h2>Create an event!</h2>
+                <form>
+                <Button variant="contained" color="primary">
+                    Hello World
+                    </Button>
+                    <input type="text" placeholder="event name"></input>
+                    <input type="text" placeholder="starting location"></input>
+                    <input type="date"></input>
+                    <input type="time"></input>
+                    <textarea placeholder="description"></textarea>
+                    <button onSubmit={(e)=>{
+                        e.preventDefault(); // so the page doesnt refresh
+                        console.log('form submitted')
+                        }}>Submit</button>
+                </form>
             </div>
          );
     }
