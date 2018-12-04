@@ -1,6 +1,9 @@
 import React from 'react';
 import moment from 'moment';
+import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
+import eventsSelector from '../selectors/events';
+
 class CalendarPage extends React.Component {
     constructor(props){
         super(props);
@@ -10,19 +13,19 @@ class CalendarPage extends React.Component {
         }
     }
     
-
-    
     getFirstMonthDay = () => this.state.contextDate.startOf('month');    
     getLastMonthDay = () => this.state.contextDate.endOf('month');    
 
     //get rid of or check the parameters
     goThroughDays = (datesArray,startDate,endDate) =>{
+        
         let firstMonthIndex = parseInt(this.getFirstMonthDay().format('D'));
         const lastMonthIndex = parseInt(this.getLastMonthDay().format('D'));
         let dayData;
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
             dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
-            datesArray.push(<CalendarDay key={firstMonthIndex} day={dayData}/>);
+            const eventsToAdd = eventsSelector(this.props.events,dayData);
+            datesArray.push(<CalendarDay key={firstMonthIndex} day={dayData} events={eventsToAdd}/>);
         }
         return datesArray;
     };
@@ -65,7 +68,6 @@ class CalendarPage extends React.Component {
         thisMonth = this.goThroughDays(thisMonth,startDate,endDate);
         const thisModifiedMonth = [];
         let week = [];
-
         //Divide the days in the month into weeks so I can later add them to different rows
         for (let index = 1; index < thisMonth.length+1; index++) {
             
@@ -83,21 +85,9 @@ class CalendarPage extends React.Component {
             }   
         }
         return thisModifiedMonth.map((week)=><tr>{week}</tr>);
-        // this.state.contextDate.add('1','months');
-        // console.log(this.getFirstMonthDay());
-        // console.log(this.getLastMonthDay());
         
     }
-    // printRest = () =>{
-    //     const weeksArray = [];
-    //     console.log(this.state.contextDate.format('e'));
-    //     for (let index = 0; index < 7; index++) {
-            
-            
-    //     }
-
-    // }
-
+   
     render() { 
         return ( 
             <div>
@@ -117,12 +107,16 @@ class CalendarPage extends React.Component {
                         {this.printMonth()} 
                     </tbody>
                 </table>
-                {/* {this.goThroughDays().map((date)=>{
-                    return <p key={date}>{moment(date).format('MM-DD-YYYY')}</p>;
-                })} */}
+                
             </div>
          );
     }
 }
  
-export default CalendarPage;
+const mapStateToProps = (state) =>{
+    return{
+        events:state.events
+    }
+}
+
+export default connect(mapStateToProps)(CalendarPage);

@@ -10,6 +10,8 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import {firebase} from './firebase/firebase';
+import { addEvent } from './actions/events';
+import moment from 'moment';
 
 const store = configureStore();
 
@@ -20,6 +22,26 @@ store.subscribe(()=>{
     // console.log(getVisibleExpenses(state.expenses,state.filters));
 });
 
+console.log(store.getState());
+const event = {
+    date:moment(),
+    name:'first event',
+    description:'this will be such a fun event'
+}
+const event2 = {
+    date:moment().add('days',1),
+    name:'second event',
+    description:'this will be less fun'
+}
+const event3 = {
+    date:moment(),
+    name:'third event',
+    description:'this will be horrible'
+}
+store.dispatch(addEvent(event));
+store.dispatch(addEvent(event2));
+store.dispatch(addEvent(event3));
+console.log(store.getState());
 
 const jsx = (
     <Provider store={store}>
