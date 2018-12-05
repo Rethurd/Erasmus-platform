@@ -29,16 +29,18 @@ class CalendarDay extends React.Component {
         });
     };
 
-    printEvents = ()=> this.props.events.map((singleEvent)=>
-    <p className='singleEvent' onClick={(e)=>{
-            e.stopPropagation(); // this is to prevent 'EVENT BUBBLING' - dont want to trigger the 'onClick' of the table cell
-            // e.preventDefault();
-            this.toggleModal();
-            this.setState(()=>({selectedEvent:singleEvent }));
-        }}
-        key={singleEvent.name+singleEvent.description}>
-        {singleEvent.name}
-     </p>);    
+    printEvents = ()=> {
+        return(
+            this.props.events.map((singleEvent)=> <p className='singleEvent' onClick={(e)=>{
+                e.stopPropagation(); // this is to prevent 'EVENT BUBBLING' - dont want to trigger the 'onClick' of the table cell
+                // e.preventDefault();
+                this.toggleModal();
+                this.setState(()=>({selectedEvent:singleEvent }));
+            }}
+            key={singleEvent.name+singleEvent.description}>
+            {singleEvent.name}
+        </p>));
+    };
     
 
     render() { 

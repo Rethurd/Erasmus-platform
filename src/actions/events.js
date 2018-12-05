@@ -91,8 +91,6 @@ export const addParticipantToDatabase = (eventId,participantId,participantData)=
             participantId,
             participantData
         }
-        console.log('addParticipantToDatabase');
-        console.log(eventId);
         const participantToAdd=arrayToObject([newParticipant],'participantId');
         //dont have to check if it's already in there, because we validate it in EventModal
         return database.ref(`events/${eventId}/participants`).update(participantToAdd).then(()=>{

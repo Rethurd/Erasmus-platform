@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
 import eventsSelector from '../selectors/events';
 import AddEventForm from './AddEventForm';
-
+import sortedEvents from '../selectors/sortedEvents';
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -141,7 +141,7 @@ class CalendarPage extends React.Component {
  
 const mapStateToProps = (state) =>{
     return{
-        events:state.events
+        events:sortedEvents(state.events)
     }
 }
 

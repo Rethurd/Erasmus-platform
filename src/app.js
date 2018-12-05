@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import AppRouter , {history} from './routers/AppRouter';
 import configureStore from './store/configureStore';
 import {login,logout} from './actions/auth';
-import getVisibleExpenses from './selectors/expenses';
+import sortedEvents from './selectors/sortedEvents';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
@@ -49,6 +49,7 @@ firebase.auth().onAuthStateChanged((user)=>{
         store.dispatch(login(user.uid));
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
+            // sortedEvents(store.getState().events);
             if (history.location.pathname==='/'){
                 history.push('/info');
             }
