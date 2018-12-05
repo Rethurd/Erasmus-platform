@@ -7,8 +7,8 @@ const arrayToObject = (array, keyField) =>
    }, {});
 
 const isEmpty = (obj) =>{
-    for(let key in obj) {
-        if(obj.hasOwnProperty(key))
+    for(let singleParticipant in obj) {
+        if(obj.hasOwnProperty(singleParticipant))
             return false;
     }
     return true;
@@ -29,17 +29,54 @@ export const startAddEvent = (event) =>{
         const participantsObject = arrayToObject(event.participants, "participantId");
         event.participants=participantsObject;
         return database.ref('events').push(event).then((ref)=>{
+            //TO DO: spread the object like in getEvents, jut do the spread BEFORE changes.
+
             // change format so it fits the assumptions
             const changeDate = moment(event.date*1000);
             if(isEmpty(event.participants))
                 event.participants=[];
-            event.eventId=ref.key;
+            event.eventId=ref.singleParticipant;
             event.date = changeDate;
             dispatch(addEvent(event));
         });
     }
 }
 
+export const addMultipleEvents = (eventsToAdd)=>({
+type:'ADD_MULTIPLE_EVENTS',
+eventsToAdd
+});
+
+
+export const getEventsFromDatabase = () =>{
+    return(dispatch)=>{
+        return database.ref('events').once('value').then((allEvents)=>{
+            const eventsToSetArray=[];
+            allEvents.forEach((event)=>{
+                const participantsArray = [];
+                if(!!event.val().participants){
+                    
+                    const participants = event.val().participants;
+                    for (var singleParticipant in participants) {
+                        if (participants.hasOwnProperty(singleParticipant)) {
+                            participantsArray.push(participants[singleParticipant]);
+                        }
+                    }
+                }   
+                // const participants = !!event.val().participants ? event.val().participants : [];
+                const modifiedEvent = {
+                    ...event.val(),
+                    date:moment(event.val().date*1000),
+                    eventId:event.key,
+                    participants:participantsArray
+                    
+                }
+                eventsToSetArray.push(modifiedEvent);
+            });
+            dispatch(addMultipleEvents(eventsToSetArray));
+        })
+    }
+}
 
 export const addParticipant = (eventId,participantId,participantData)=>({
 type:'ADD_PARTICIPANT',
