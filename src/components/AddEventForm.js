@@ -60,7 +60,6 @@ class AddEventForm extends React.Component {
                 }
                 if (this.state.name!='' && this.state.description!=''){
                     let user = firebase.auth().currentUser;
-                    
                     //setState takes time to update, so I add the event only after the state has changed
                     this.setState(()=>({createdBy:user.displayName,createdById:user.uid}),()=>{
                         //omitting properties from the state using ES7 object spread operator

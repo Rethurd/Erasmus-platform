@@ -30,7 +30,7 @@ const event = {
     name:'first event',
     description:'this will be such a fun event',
     location:'My house',
-    'participants':['asdadsa'],
+    'participants':[],
     'participantsID':[]
             
 }
@@ -40,8 +40,8 @@ const event2 = {
     name:'second event',
     description:'this will be less fun',
     location:'My house',
-    'participants':[],
-    'participantsID':[]
+    'participants':['Kamil Grzegorek'],
+    'participantsID':['DWakg8YCU7WpwmExWJrNB4rsEMY2']
 }
 const event3 = {
     'eventId':uuid(),
@@ -49,7 +49,7 @@ const event3 = {
     name:'third event',
     description:'this will be horrible',
     location:'My house',
-    'participants':[],
+    'participants':['Kamil Grzegorek'],
     'participantsID':[]
 }
 store.dispatch(addEvent(event));

@@ -15,9 +15,12 @@ const eventsReducer = (state = defaultEventsState,action) =>{
             });
             //thisEvent is an array with 1 object, we get it here:
             const thisEventActual = thisEvent[0];
+
             //we add the participant
+            console.log('participant name: ',action.participantName);
             thisEventActual.participants.push(action.participantName);
             thisEventActual.participantsID.push(action.participantId);
+            console.log('after adding',thisEventActual);
             //add the changed event back to the array
             otherEvents.push(thisEventActual);
             return otherEvents;

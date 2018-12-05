@@ -44,7 +44,7 @@ class CalendarDay extends React.Component {
     render() { 
         return ( 
             <td onClick={()=>{
-                    console.log(this.props.day);
+                    console.log('clicked on td - get rid of this',this.props.day);
                     this.props.getEventsOfDay(this.props.day);
                 }}>
                  {this.props.day.format('D')}

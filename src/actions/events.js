@@ -10,3 +10,9 @@ eventId,
 participantId,
 participantName
 });
+export const removeParticipant = (eventId,participantId,participantName)=>({
+type:'REMOVE_PARTICIPANT',
+eventId,
+participantId,
+participantName
+});
