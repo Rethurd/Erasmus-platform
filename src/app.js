@@ -23,15 +23,24 @@ store.subscribe(()=>{
     // console.log(getVisibleExpenses(state.expenses,state.filters));
 });
 
+const singleParticipant = {
+    participantId:'blablabla',
+    participantData:{
+        name:'Random user',
+        email:'random@mail.com'
+    }
+}
+
+
 console.log(store.getState());
 const event = {
     'eventId':uuid(),
     date:moment(),
-    name:'first event',
+    name:'Event with a participant',
     description:'this will be such a fun event',
     location:'My house',
-    'participants':[],
-    'participantsID':[]
+    'participants':[singleParticipant]
+    
             
 }
 const event2 = {
@@ -40,8 +49,8 @@ const event2 = {
     name:'second event',
     description:'this will be less fun',
     location:'My house',
-    'participants':['Kamil Grzegorek'],
-    'participantsID':['DWakg8YCU7WpwmExWJrNB4rsEMY2']
+    'participants':[]
+    
 }
 const event3 = {
     'eventId':uuid(),
@@ -49,8 +58,8 @@ const event3 = {
     name:'third event',
     description:'this will be horrible',
     location:'My house',
-    'participants':['Kamil Grzegorek'],
-    'participantsID':[]
+    'participants':[]
+    
 }
 store.dispatch(addEvent(event));
 store.dispatch(addEvent(event2));

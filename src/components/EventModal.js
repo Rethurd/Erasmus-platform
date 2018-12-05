@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {addParticipant} from '../actions/events'; 
+import {addParticipant, removeParticipant} from '../actions/events'; 
 import {firebase} from '../firebase/firebase';
 import isParticipating from '../selectors/isParticipating';
 
@@ -15,7 +15,7 @@ class EventModal extends React.Component{
 
      isUserParticipating = () =>{
         const user = firebase.auth().currentUser;
-        return isParticipating(this.props.eventData.participantsID,user.uid) ?  false : user;
+        return isParticipating(this.props.eventData.participants,user.uid) ?  false : user;
     }	
     render(){
         return (
@@ -30,28 +30,28 @@ class EventModal extends React.Component{
                 <p>Even starts:{this.props.eventData.date.format('DD-MM-YYYY HH:mm')}</p>
                 <p>Location:{this.props.eventData.location}</p>
                 <p>Event created by:{ this.props.eventData.createdBy!=null ? this.props.eventData.createdBy : 'Unknown'}</p>
-                <p>User uid:{this.props.eventData.createdById}</p>
-                <p>Participants: {this.props.eventData.participants.map((participant)=>{return(<span key={participant}>{participant}</span>)})}</p>
+                <p>Creator uid:{this.props.eventData.createdById}</p>
+                <p>Participants: {this.props.eventData.participants.map((participant)=>{return(<span key={participant.participantId}>{participant.participantData.name}</span>)})}</p>
                 <button onClick={()=>{
-                    // here we should check whether the user is already one of the participants and dispatch 'remove participant' if clicked
-                    //how to do it:
-                    //define a selector, pass the event uuid to it (which we have) and the user id (which we also have) and check if he already is in there or no
-                    
+                    // e.stopPropagation();
                 const user = this.isUserParticipating();
-                console.log(user);
+                this.props.onRequestClose();
                 // if already participating
                 if(!user){
-                    console.log('remove participant');                    
+                    const existingUserUid = firebase.auth().currentUser.uid;
+                    this.props.removeParticipant(this.props.eventData.eventId,existingUserUid);                   
                 }else{
-                    this.props.onRequestClose();
+                    
                     console.log('add participant');
-                    console.log(user.uid);
-                    console.log(user.displayName);
-                    this.props.addParticipant(this.props.eventData.eventId,user.uid,user.displayName);
+                    const userData = {
+                        name:user.displayName,
+                        email: user.email
+                    }
+                    this.props.addParticipant(this.props.eventData.eventId,user.uid,userData);
                 }
 
                     //call dispatch with props.eventData.eventId and user id and user name
-                }}>Join the event!</button>
+                }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
             </Modal>
              );
         }
@@ -59,7 +59,8 @@ class EventModal extends React.Component{
  
 const mapDispatchToProps = (dispatch) =>{
     return{
-        addParticipant: (eventId,participantId,participantName) => dispatch(addParticipant(eventId,participantId,participantName))
+        addParticipant: (eventId,participantId,participantData) => dispatch(addParticipant(eventId,participantId,participantData)),
+        removeParticipant: (eventId,participantId)=> dispatch(removeParticipant(eventId,participantId))
     }
 }
 export default connect(null,mapDispatchToProps)(EventModal);

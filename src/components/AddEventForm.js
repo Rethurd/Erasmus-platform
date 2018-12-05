@@ -20,7 +20,6 @@ class AddEventForm extends React.Component {
             'description':'',
             'date':moment(),
             'participants':[],
-            'participantsID':[],
             'location':'',
             'descriptionEmptyError':undefined,
             'nameEmptyError':undefined,
