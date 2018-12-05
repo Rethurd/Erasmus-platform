@@ -106,3 +106,11 @@ type:'REMOVE_PARTICIPANT',
 eventId,
 participantId
 });
+
+export const removeParticipantFromDatabase = (eventId,participantId) =>{
+    return (dispatch)=>{
+        return database.ref(`events/${eventId}/participants/${participantId}`).remove().then(()=>{
+            dispatch(removeParticipant(eventId,participantId));
+        });
+    };
+};

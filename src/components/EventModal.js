@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {addParticipantToDatabase, removeParticipant} from '../actions/events'; 
+import {addParticipantToDatabase, removeParticipantFromDatabase} from '../actions/events'; 
 import {firebase} from '../firebase/firebase';
 import isParticipating from '../selectors/isParticipating';
 
@@ -40,17 +40,14 @@ class EventModal extends React.Component{
                 // if already participating
                 if(!user){
                     const existingUserUid = firebase.auth().currentUser.uid;
-                    this.props.removeParticipant(this.props.eventData.eventId,existingUserUid);                   
+                    this.props.removeParticipantFromDatabase(this.props.eventData.eventId,existingUserUid);                   
                 }else{
-                    
-                    console.log('add participant');
                     const userData = {
                         name:user.displayName,
                         email: user.email
                     }
                     this.props.addParticipantToDatabase(this.props.eventData.eventId,user.uid,userData);
                 }
-
                     //call dispatch with props.eventData.eventId and user id and user name
                 }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
             </Modal>
@@ -61,7 +58,7 @@ class EventModal extends React.Component{
 const mapDispatchToProps = (dispatch) =>{
     return{
         addParticipantToDatabase: (eventId,participantId,participantData) => dispatch(addParticipantToDatabase(eventId,participantId,participantData)),
-        removeParticipant: (eventId,participantId)=> dispatch(removeParticipant(eventId,participantId))
+        removeParticipantFromDatabase: (eventId,participantId)=> dispatch(removeParticipantFromDatabase(eventId,participantId))
     }
 }
 export default connect(null,mapDispatchToProps)(EventModal);
