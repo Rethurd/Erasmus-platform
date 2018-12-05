@@ -35,7 +35,7 @@ export const startAddEvent = (event) =>{
             const changeDate = moment(event.date*1000);
             if(isEmpty(event.participants))
                 event.participants=[];
-            event.eventId=ref.singleParticipant;
+            event.eventId=ref.key;
             event.date = changeDate;
             dispatch(addEvent(event));
         });
@@ -87,11 +87,12 @@ participantData
 
 export const addParticipantToDatabase = (eventId,participantId,participantData)=>{
     return(dispatch)=>{
-        
         const newParticipant = {
             participantId,
             participantData
         }
+        console.log('addParticipantToDatabase');
+        console.log(eventId);
         const participantToAdd=arrayToObject([newParticipant],'participantId');
         //dont have to check if it's already in there, because we validate it in EventModal
         return database.ref(`events/${eventId}/participants`).update(participantToAdd).then(()=>{

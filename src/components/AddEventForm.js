@@ -4,7 +4,7 @@ import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import {MuiPickersUtilsProvider } from 'material-ui-pickers';
 import {DateTimePicker} from 'material-ui-pickers';
-import {startAddEvent, addParticipant} from '../actions/events';
+import {startAddEvent, addParticipantToDatabase} from '../actions/events';
 import {firebase} from '../firebase/firebase';
 import uuid from 'uuid';
 
@@ -64,7 +64,7 @@ class AddEventForm extends React.Component {
                         //omitting properties from the state using ES7 object spread operator
                         const { descriptionEmptyError,nameEmptyError,...eventData}=this.state;
                         this.props.startAddEvent(eventData);
-                        // this.props.addParticipant(this.state.eventId,user.uid,{name:user.displayName,email:user.email}); - adding the organizer to the event - currently doesnt work
+                        // this.props.addParticipantToDatabase(this.state.eventId,user.uid,{name:user.displayName,email:user.email}); - adding the organizer to the event - currently doesnt work
                         // if logged in then write display name, if not save 'Unknown'
                         // reset to default
                         this.setState(()=>({
@@ -109,7 +109,7 @@ class AddEventForm extends React.Component {
 const mapDispatchToProps = (dispatch)=>{
     return{
         startAddEvent: (event) =>dispatch(startAddEvent(event)),
-        addParticipant: (eventId,participantId,participantData) =>dispatch(addParticipant(eventId,participantId,participantData))
+        addParticipantToDatabase: (eventId,participantId,participantData) =>dispatch(addParticipantToDatabase(eventId,participantId,participantData))
     }
 }
 

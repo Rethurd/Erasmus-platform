@@ -63,52 +63,52 @@ firebase.auth().onAuthStateChanged((user)=>{
 
 
 
-// const singleParticipant = {
-//     participantId:'blablabla',
-//     participantData:{
-//         name:'Random user',
-//         email:'random@mail.com'
-//     }
-// }
-// const secondParticipant = {
-//     participantId:'blebleble',
-//     participantData:{
-//         name:'Another user',
-//         email:'randomuser2@mail.com'
-//     }
-// }
+const singleParticipant = {
+    participantId:'blablabla',
+    participantData:{
+        name:'Random user',
+        email:'random@mail.com'
+    }
+}
+const secondParticipant = {
+    participantId:'blebleble',
+    participantData:{
+        name:'Another user',
+        email:'randomuser2@mail.com'
+    }
+}
 
 
 
-// console.log(store.getState());
-// const event = {
-//     'eventId':uuid(),
-//     'date':moment(),
-//     'name':'Event with a participant',
-//     'description':'this will be such a fun event',
-//     'location':'My house',
-//     'participants':[singleParticipant,secondParticipant]
+console.log(store.getState());
+const event = {
+    'eventId':uuid(),
+    'date':moment(),
+    'name':'Event with a participant',
+    'description':'this will be such a fun event',
+    'location':'My house',
+    'participants':[singleParticipant,secondParticipant]
     
             
-// }
-// const event2 = {
-//     'eventId':uuid(),
-//     date:moment().add('days',1),
-//     name:'second event',
-//     description:'this will be less fun',
-//     location:'My house',
-//     'participants':[]
+}
+const event2 = {
+    'eventId':uuid(),
+    date:moment().add('days',1),
+    name:'second event',
+    description:'this will be less fun',
+    location:'My house',
+    'participants':[]
     
-// }
-// const event3 = {
-//     'eventId':uuid(),
-//     date:moment().format('X'),
-//     name:'third event',
-//     description:'this will be horrible',
-//     location:'My house',
-//     'participants':[]
+}
+const event3 = {
+    'eventId':uuid(),
+    date:moment().format('X'),
+    name:'third event',
+    description:'this will be horrible',
+    location:'My house',
+    'participants':[]
     
-// }
+}
 
 // const DBevent = {
 //     'date':moment(),
@@ -132,7 +132,7 @@ firebase.auth().onAuthStateChanged((user)=>{
 // console.log('will this work',moment(test).format('DD-MM-YYYY'));
 
 
-// store.dispatch(startAddEvent(DBevent));
+// store.dispatch(startAddEvent(event));
 // store.dispatch(startAddEvent(event2));
 
 // const arrayToObject = (array, keyField) =>
