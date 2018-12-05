@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {addParticipant, removeParticipant} from '../actions/events'; 
+import {addParticipantToDatabase, removeParticipant} from '../actions/events'; 
 import {firebase} from '../firebase/firebase';
 import isParticipating from '../selectors/isParticipating';
 
@@ -48,7 +48,7 @@ class EventModal extends React.Component{
                         name:user.displayName,
                         email: user.email
                     }
-                    this.props.addParticipant(this.props.eventData.eventId,user.uid,userData);
+                    this.props.addParticipantToDatabase(this.props.eventData.eventId,user.uid,userData);
                 }
 
                     //call dispatch with props.eventData.eventId and user id and user name
@@ -60,7 +60,7 @@ class EventModal extends React.Component{
  
 const mapDispatchToProps = (dispatch) =>{
     return{
-        addParticipant: (eventId,participantId,participantData) => dispatch(addParticipant(eventId,participantId,participantData)),
+        addParticipantToDatabase: (eventId,participantId,participantData) => dispatch(addParticipantToDatabase(eventId,participantId,participantData)),
         removeParticipant: (eventId,participantId)=> dispatch(removeParticipant(eventId,participantId))
     }
 }

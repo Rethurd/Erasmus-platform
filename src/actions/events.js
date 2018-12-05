@@ -84,6 +84,22 @@ eventId,
 participantId,
 participantData
 });
+
+export const addParticipantToDatabase = (eventId,participantId,participantData)=>{
+    return(dispatch)=>{
+        
+        const newParticipant = {
+            participantId,
+            participantData
+        }
+        const participantToAdd=arrayToObject([newParticipant],'participantId');
+        //dont have to check if it's already in there, because we validate it in EventModal
+        return database.ref(`events/${eventId}/participants`).update(participantToAdd).then(()=>{
+            dispatch(addParticipant(eventId,participantId,participantData));
+        });
+    }
+}
+
 export const removeParticipant = (eventId,participantId)=>({
 type:'REMOVE_PARTICIPANT',
 eventId,
