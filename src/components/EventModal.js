@@ -23,6 +23,7 @@ class EventModal extends React.Component{
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Selected Event"
+                
             >
 
                 <h1>{this.props.eventData.name}</h1>

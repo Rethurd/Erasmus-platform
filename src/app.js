@@ -9,8 +9,8 @@ import getVisibleExpenses from './selectors/expenses';
 import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
-import {firebase} from './firebase/firebase';
-import { addEvent } from './actions/events';
+import database, {firebase} from './firebase/firebase';
+import { addEvent,startAddEvent } from './actions/events';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -30,16 +30,24 @@ const singleParticipant = {
         email:'random@mail.com'
     }
 }
+const secondParticipant = {
+    participantId:'blebleble',
+    participantData:{
+        name:'Another user',
+        email:'randomuser2@mail.com'
+    }
+}
+
 
 
 console.log(store.getState());
 const event = {
     'eventId':uuid(),
-    date:moment(),
-    name:'Event with a participant',
-    description:'this will be such a fun event',
-    location:'My house',
-    'participants':[singleParticipant]
+    'date':moment(),
+    'name':'Event with a participant',
+    'description':'this will be such a fun event',
+    'location':'My house',
+    'participants':[singleParticipant,secondParticipant]
     
             
 }
@@ -54,16 +62,62 @@ const event2 = {
 }
 const event3 = {
     'eventId':uuid(),
-    date:moment(),
+    date:moment().format('X'),
     name:'third event',
     description:'this will be horrible',
     location:'My house',
     'participants':[]
     
 }
+
+const DBevent = {
+    'date':moment(),
+    'eventId':uuid(),
+    'name':'Event with a participant',
+    'description':'this will be such a fun event',
+    'location':'My house',
+    'participants':[singleParticipant,secondParticipant]
+        
+}
+console.log(DBevent.date);
+const unix = DBevent.date.unix();
+console.log(moment(unix));
+console.log(moment.unix(unix));
+console.log(moment(unix*1000));
+const test = new Date(unix*1000);
+console.log('will this work',moment(test).format('DD-MM-YYYY'));
+// store.dispatch(startAddEvent(DBevent));
+// store.dispatch(startAddEvent(event2));
+
+// const arrayToObject = (array, keyField) =>
+//    array.reduce((obj, item) => {
+//      obj[item[keyField]] = item
+//      return obj
+//    }, {})
+// //have to do this when adding an event to firebase
+// const peopleObject = arrayToObject(DBevent.participants, "participantId");
+// DBevent.participants=peopleObject;
+// database.ref('events').push(DBevent);
+
+// const peopleObject2 = arrayToObject(event3.participants, "participantId");
+// event3.participants=peopleObject2;
+// database.ref('events').push(event3);
+
+// const participantsToAdd = [singleParticipant];
+// const participantsToAddObject = arrayToObject(participantsToAdd,"participantId");
+// database.ref(`events/-LSymEXZdMA3pvuegCjU/participants`).update(participantsToAddObject);
+
+
+
+
+
+
+
+//participants/{participantId}/participantData
+// database.ref('events').push(DBevent);
 store.dispatch(addEvent(event));
 store.dispatch(addEvent(event2));
-store.dispatch(addEvent(event3));
+// store.dispatch(addEvent(event3));
 console.log(store.getState());
 
 const jsx = (
