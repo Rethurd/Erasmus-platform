@@ -6,6 +6,10 @@ const eventsReducer = (state = defaultEventsState,action) =>{
     switch(action.type){
         case 'ADD_EVENT':
             return [...state,action.event];
+        case 'DELETE_EVENT':
+            return state.filter((singleEvent)=>{
+                return singleEvent.eventId!=action.eventId
+            });
         case 'ADD_MULTIPLE_EVENTS':
             const newState = state;
             action.eventsToAdd.forEach((singleEvent)=>{

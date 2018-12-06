@@ -15,7 +15,7 @@ class AddEventForm extends React.Component {
         super(props);
         
         this.state = {
-            'eventId':uuid(),
+            
             'name':'',
             'description':'',
             'date':moment(),

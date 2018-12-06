@@ -2,7 +2,7 @@ import Modal from 'react-modal';
 import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {addParticipantToDatabase, removeParticipantFromDatabase} from '../actions/events'; 
+import {addParticipantToDatabase, removeParticipantFromDatabase, deleteEventFromDatabase} from '../actions/events'; 
 import {firebase} from '../firebase/firebase';
 import isParticipating from '../selectors/isParticipating';
 
@@ -17,6 +17,10 @@ class EventModal extends React.Component{
         const user = firebase.auth().currentUser;
         return isParticipating(this.props.eventData.participants,user.uid) ?  false : user;
     }	
+    isUserTheCreator = () =>{
+        const user = firebase.auth().currentUser;
+        return user.uid==this.props.eventData.createdById;
+    }
     render(){
         return (
             <Modal 
@@ -28,6 +32,7 @@ class EventModal extends React.Component{
 
                 <h1>{this.props.eventData.name}</h1>
                 <h3>Description: {this.props.eventData.description}</h3>
+                <p>Event Id: {this.props.eventData.eventId}</p>
                 <p>Even starts:{this.props.eventData.date.format('DD-MM-YYYY HH:mm')}</p>
                 <p>Location:{this.props.eventData.location}</p>
                 <p>Event created by:{ this.props.eventData.createdBy!=null ? this.props.eventData.createdBy : 'Unknown'}</p>
@@ -50,6 +55,12 @@ class EventModal extends React.Component{
                 }
                     //call dispatch with props.eventData.eventId and user id and user name
                 }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
+                {this.isUserTheCreator() ? <button onClick={()=>{
+                    //delete the event
+                    this.props.onRequestClose();
+                    this.props.deleteEventFromDatabase(this.props.eventData.eventId);
+
+                }}>Delete the event</button> : null }
             </Modal>
              );
         }
@@ -58,7 +69,8 @@ class EventModal extends React.Component{
 const mapDispatchToProps = (dispatch) =>{
     return{
         addParticipantToDatabase: (eventId,participantId,participantData) => dispatch(addParticipantToDatabase(eventId,participantId,participantData)),
-        removeParticipantFromDatabase: (eventId,participantId)=> dispatch(removeParticipantFromDatabase(eventId,participantId))
+        removeParticipantFromDatabase: (eventId,participantId)=> dispatch(removeParticipantFromDatabase(eventId,participantId)),
+        deleteEventFromDatabase: (eventId) => dispatch(deleteEventFromDatabase(eventId))
     }
 }
 export default connect(null,mapDispatchToProps)(EventModal);

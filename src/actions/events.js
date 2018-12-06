@@ -42,6 +42,19 @@ export const startAddEvent = (event) =>{
     }
 }
 
+export const deleteEvent = (eventId)=>({
+    type:'DELETE_EVENT',
+    eventId
+});
+
+export const deleteEventFromDatabase = (eventId)=>{
+    return (dispatch)=>{
+        return database.ref(`events/${eventId}`).remove().then(()=>{
+            dispatch(deleteEvent(eventId));
+        });
+    };
+};
+
 export const addMultipleEvents = (eventsToAdd)=>({
 type:'ADD_MULTIPLE_EVENTS',
 eventsToAdd
