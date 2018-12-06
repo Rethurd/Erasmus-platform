@@ -40,7 +40,7 @@ class AddEventForm extends React.Component {
         const description = e.target.value
         this.setState(()=>({description}));
     }
-    handleDateDescriptionChange = (date)=>{
+    handleDateChange = (date)=>{
         // const date = e.format('MM-DD-YYYY HH:mm');
         this.setState(()=>({date}));
 
@@ -87,7 +87,7 @@ class AddEventForm extends React.Component {
         return ( 
             <form onSubmit={this.handleOnSubmit}>  
             <MuiPickersUtilsProvider  utils={MomentUtils}>
-                <DateTimePicker  value={this.state.date} onChange ={this.handleDateDescriptionChange} />
+                <DateTimePicker  value={this.state.date} onChange ={this.handleDateChange} />
             </MuiPickersUtilsProvider>
             <div>
                 <div>{this.state.nameEmptyError}</div>

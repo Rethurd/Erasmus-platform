@@ -10,6 +10,15 @@ const eventsReducer = (state = defaultEventsState,action) =>{
             return state.filter((singleEvent)=>{
                 return singleEvent.eventId!=action.eventId
             });
+        case 'EDIT_EVENT':
+            const uneditedEvents = state.filter((singleEvent)=> singleEvent.eventId!=action.eventData.eventId);
+            const eventToEdit = {
+                ...action.eventData
+            };
+            //returning uneditedEvents.push(eventToEdit) yields errors because push returns index where the new event is added (?)
+            uneditedEvents.push(eventToEdit);
+            return uneditedEvents;
+
         case 'ADD_MULTIPLE_EVENTS':
             const newState = state;
             action.eventsToAdd.forEach((singleEvent)=>{

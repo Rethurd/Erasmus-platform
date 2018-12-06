@@ -55,6 +55,26 @@ export const deleteEventFromDatabase = (eventId)=>{
     };
 };
 
+export const editEvent = (eventData)=>({
+    type:'EDIT_EVENT',
+    eventData
+});
+
+export const editEventInDatabase = (eventData)=>{
+    return (dispatch)=>{
+
+        // the format of the data changes when saving to DB, so we need the original, but assigning it creates a reference instead of cloning it
+        const unchangedEventData = Object.assign({},eventData); 
+
+        eventData.date=eventData.date.unix();
+        const participantsObject = arrayToObject(eventData.participants, "participantId");
+        eventData.participants=participantsObject;
+        return database.ref(`events/${eventData.eventId}`).update(eventData).then(()=>{
+            dispatch(editEvent(unchangedEventData));
+        });
+    };
+};
+
 export const addMultipleEvents = (eventsToAdd)=>({
 type:'ADD_MULTIPLE_EVENTS',
 eventsToAdd
