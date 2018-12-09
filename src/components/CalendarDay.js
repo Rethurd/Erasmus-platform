@@ -21,21 +21,31 @@ class CalendarDay extends React.Component {
         return true;
     }
 
-    toggleModal = () =>{
-        this.setState((state)=>{
+    turnModalOn = ()=>{
+        this.setState(()=>{
             return{
-                isModalOpen:!state.isModalOpen
+                isModalOpen:true
+            }
+        });
+    }
+
+    turnModalOff = () =>{
+        this.setState(()=>{
+            return{
+                isModalOpen:false,
+                selectedEvent:{}
             }
         });
     };
+
 
     printEvents = ()=> {
         return(
             this.props.events.map((singleEvent)=> <p className='singleEvent' onClick={(e)=>{
                 e.stopPropagation(); // this is to prevent 'EVENT BUBBLING' - dont want to trigger the 'onClick' of the table cell
                 // e.preventDefault();
-                this.toggleModal();
                 this.setState(()=>({selectedEvent:singleEvent }));
+                this.turnModalOn();
             }}
             key={singleEvent.name+singleEvent.description}>
             {singleEvent.name}
@@ -58,7 +68,8 @@ class CalendarDay extends React.Component {
                     <EventModal 
                         eventData = {this.state.selectedEvent}
                         isOpen={this.state.isModalOpen}
-                        onRequestClose={this.toggleModal}
+                        onRequestClose={this.turnModalOff}
+                        
                     />
                  }
                 

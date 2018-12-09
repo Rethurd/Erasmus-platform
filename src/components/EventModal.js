@@ -21,8 +21,7 @@ class EventModal extends React.Component{
             'nameEmptyError':undefined,
             
         }
-    }
-
+    }   
 
      isUserParticipating = () =>{
         const user = firebase.auth().currentUser;
@@ -58,8 +57,9 @@ class EventModal extends React.Component{
                 contentLabel="Selected Event"
                 
             >
-
+                <div>{this.state.nameEmptyError}</div>
                 <h1>{this.state.editMode ? <input type="text" value={this.state.name} onChange={this.handleEventNameChange}></input> : this.state.name}</h1>
+                <div>{this.state.descriptionEmptyError}</div>
                 <h3>Description: {this.state.editMode ? <textarea value={this.state.description} onChange={this.handleEventDescriptionChange} /> : this.state.description} </h3>
                 <p>Event Id: {this.state.eventId}</p>
                 Even starts: {this.state.editMode ?
@@ -98,12 +98,24 @@ class EventModal extends React.Component{
 
                 }}>Delete the event</button> : null }
                 {this.isUserTheCreator() ? <button onClick={()=>{
-                    //delete the event
+                    //edit the event
                     if(this.state.editMode){
-                        this.props.onRequestClose();
-                        const {editMode,descriptionEmptyError,nameEmptyError,...eventData} = this.state;
-                        this.props.editEventInDatabase(eventData);
-                    }
+                            if(this.state.name==''){
+                            this.setState(()=>({nameEmptyError:'The event name cannot be empty!'}));
+                            }else{
+                                this.setState(()=>({nameEmptyError:undefined}));
+                            }
+                            if(this.state.description==''){
+                                this.setState(()=>({descriptionEmptyError:'The event description cannot be empty!'}));
+                            }else{
+                                this.setState(()=>({descriptionEmptyError:undefined}));
+                            }
+                            if (this.state.name!='' && this.state.description!=''){
+                            this.props.onRequestClose();
+                            const {editMode,descriptionEmptyError,nameEmptyError,...eventData} = this.state;
+                            this.props.editEventInDatabase(eventData);
+                            }
+                        }
                     else{
                         this.setState({
                         editMode:true
