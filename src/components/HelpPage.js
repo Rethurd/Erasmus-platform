@@ -2,25 +2,38 @@ import React from 'react';
 import {connect} from 'react-redux';
 import HelpPost from './HelpPost';
 import HelpPostModal from './HelpPostModal';
+import AddHelpPostModal from './AddHelpPostModal';
 
 class HelpPage extends React.Component {
     constructor(props){
         super(props);
         this.state={
             selectedPost:undefined,
-            isModalOpen:false
+            isPostModalOpen:false,
+            isAddPostModalOpen:false
         }
     }
 
     handleSelectPost = (selectedPost) =>{
-        this.setState(()=>({selectedPost, isModalOpen:true}));
+        this.setState(()=>({selectedPost, isPostModalOpen:true}));
     };
-    handleCloseModal = ()=>{
+    handleClosePostModal = ()=>{
         this.setState(()=>({
             selectedPost:undefined,
-            isModalOpen:false
+            isPostModalOpen:false
         }));
     };
+    handleOpenAddPostModal = () =>{
+        this.setState(()=>({
+            isAddPostModalOpen:true
+        }))
+    }
+    handleCloseAddPostModal = () =>{
+        this.setState(()=>({
+            isAddPostModalOpen:false
+        }))
+    }
+
 
     render() { 
         console.log(this.props.helpPosts);
@@ -29,15 +42,22 @@ class HelpPage extends React.Component {
                 <p>This is the help page component!</p>
                 
                 {this.props.helpPosts.map((singlePost)=>{
-                    return <HelpPost handleSelectPost={this.handleSelectPost} postData={singlePost}/>
+                    return <HelpPost key={singlePost.postId} handleSelectPost={this.handleSelectPost} postData={singlePost}/>
                 })}
                 {this.state.selectedPost==undefined ? null : 
                 <HelpPostModal 
-                    isOpen={this.state.isModalOpen}
-                    onRequestClose={this.handleCloseModal}
+                    isOpen={this.state.isPostModalOpen}
+                    onRequestClose={this.handleClosePostModal}
                     postData = {this.state.selectedPost}
-                    
                 />}
+                
+                {this.state.isAddPostModalOpen ? <AddHelpPostModal 
+                    isOpen = {this.state.isAddPostModalOpen}
+                    onRequestClose = {this.handleCloseAddPostModal}
+                />: null}
+                <button onClick={this.handleOpenAddPostModal}>Add new post!</button>
+
+                
             </div>
          );
     }

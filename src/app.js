@@ -25,6 +25,7 @@ store.subscribe(()=>{
 });
 
 const helpPost = {
+    postId:uuid(),
     name:'firstPost',
 	description:'radom description',
 	datePosted:moment()
