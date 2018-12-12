@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import {connect} from 'react-redux';
-import { addCommentToDatabase, deleteCommentFromDatabase } from '../actions/help';
+import { addCommentToDatabase, deleteCommentFromDatabase,deletePostFromDatabase } from '../actions/help';
 import moment from 'moment';
 import {firebase} from '../firebase/firebase';
 
@@ -41,11 +41,31 @@ class HelpPostModal extends React.Component {
         });
     };
 
+    handleDeleteComment = (commentId)=>{
+        const postId = this.state.helpPostId;
+        this.props.deleteCommentFromDatabase(postId,commentId).then(()=>{
+            this.props.onRequestClose();
+            this.props.rerenderAfterComment(this.state.helpPostId);
+        });
+    }
+
+    handleDeletePost = ()=>{
+        this.props.onRequestClose();
+        this.props.deletePostFromDatabase(this.state.helpPostId);
+
+    }
+    handleEditPost = ()=>{
+
+    }
+
    checkIfCommentBelongsToUser = (authorId) =>{
         const user = firebase.auth().currentUser;
         return user.uid==authorId;
    };
-
+   checkIfPostBelongsToUser = () =>{
+        const user = firebase.auth().currentUser;   
+        return user.uid==this.state.helpPostId;
+    }
     render() { 
         return ( 
             <Modal 
@@ -54,6 +74,11 @@ class HelpPostModal extends React.Component {
             contentLabel="Selected HelpPost">
                 <h3>{this.props.postData.name}</h3>
                 <p>{this.props.postData.description}</p>
+                {this.checkIfPostBelongsToUser ? <button onClick={this.handleDeletePost}>Delete</button> : null}
+                {this.checkIfPostBelongsToUser ? <button onClick={this.handleEditPost}>Edit</button> : null}
+                
+                
+
                 <div>
                 <TextField 
                             placeholder="Comment..."
@@ -74,13 +99,7 @@ class HelpPostModal extends React.Component {
                         {moment(singleComment.date*1000).format('DD-MM-YYYY HH:mm:ss')+' - ' +singleComment.author+': '+singleComment.content}
                         </span>
                         {this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
-                            <IconButton  onClick={()=>{
-                            const postId = this.state.helpPostId;
-                            this.props.deleteCommentFromDatabase(postId,singleComment.commentId).then(()=>{
-                                this.props.onRequestClose();
-                                this.props.rerenderAfterComment(this.state.helpPostId);
-                            });
-                        }}> <DeleteIcon /> </IconButton>
+                            <IconButton  onClick={()=>this.handleDeleteComment(singleComment.commentId)}> <DeleteIcon /> </IconButton>
                         : 
                         null}
                         
@@ -94,7 +113,8 @@ class HelpPostModal extends React.Component {
  
 const mapDispatchToProps = (dispatch) =>({
     addCommentToDatabase: (helpPostId, comment)=>dispatch(addCommentToDatabase(helpPostId, comment)),
-    deleteCommentFromDatabase: (helpPostId, commentId)=>dispatch(deleteCommentFromDatabase(helpPostId,commentId))
+    deleteCommentFromDatabase: (helpPostId, commentId)=>dispatch(deleteCommentFromDatabase(helpPostId,commentId)),
+    deletePostFromDatabase: (helpPostId) =>dispatch(deletePostFromDatabase(helpPostId))
 })
 
 export default connect(undefined,mapDispatchToProps)(HelpPostModal);

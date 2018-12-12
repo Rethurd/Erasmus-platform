@@ -17,7 +17,6 @@ export const addPostToDatabase = (postData)=>{
                 dateUpdated:moment(postData.dateUpdated*1000),
                 comments:[]
             }
-            console.log(eventLocalFormat);
             dispatch(addPost(eventLocalFormat));
         })
     }
@@ -27,7 +26,20 @@ export const addPost = (postData) =>({
     type:'ADD_POST',
     postData
 
+});
+
+export const deletePost = (helpPostId)=>({
+    type:'DELETE_POST',
+    helpPostId
 })
+
+export const deletePostFromDatabase = (helpPostId)=>{
+    return (dispatch) =>{
+        return database.ref(`helpPosts/${helpPostId}`).remove().then(()=>{
+            dispatch(deletePost(helpPostId));
+        })
+    }
+}
 
 export const setHelpPosts = (posts) =>({
     type:'SET_HELP_POSTS',
@@ -99,8 +111,6 @@ export const deleteComment = (helpPostId, commentId)=>({
 
 export const deleteCommentFromDatabase = (helpPostId, commentId)=>{
     return (dispatch)=>{
-        console.log(helpPostId);
-        console.log(commentId);
         return database.ref(`helpPosts/${helpPostId}/comments/${commentId}`).remove().then(()=>{
             dispatch(deleteComment(helpPostId,commentId));
         });

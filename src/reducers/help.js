@@ -3,6 +3,9 @@ const helpPostsReducer = (state = defaultHelpPostsState, action) => {
     switch(action.type){
         case 'ADD_POST':
             return [...state,action.postData];
+        case 'DELETE_POST':
+            const newStateDelete = state.filter((singlePost)=>singlePost.postId!=action.helpPostId)
+            return newStateDelete;
         case 'SET_HELP_POSTS':
             const newState = [];
             action.posts.forEach((post)=>{

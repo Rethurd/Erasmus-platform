@@ -37,7 +37,6 @@ class HelpPage extends React.Component {
     };
     handleCommentAddedRerenderModal = (postId)=>{
         const selectedPost = getHelpPostById(this.props.helpPosts,postId);
-        console.log(selectedPost);
         this.setState(()=>({
             isPostModalOpen:true,
             selectedPost,
