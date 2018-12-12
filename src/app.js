@@ -11,6 +11,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import database, {firebase} from './firebase/firebase';
 import { addEvent,startAddEvent, getEventsFromDatabase } from './actions/events';
+import {addPost } from './actions/help';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -23,7 +24,13 @@ store.subscribe(()=>{
     // console.log(getVisibleExpenses(state.expenses,state.filters));
 });
 
+const helpPost = {
+    name:'firstPost',
+	description:'radom description',
+	datePosted:moment()
+}
 
+store.dispatch(addPost(helpPost));
 
 const jsx = (
     <Provider store={store}>

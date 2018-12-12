@@ -49,13 +49,43 @@ class EventModal extends React.Component{
         // const date = e.format('MM-DD-YYYY HH:mm');
         this.setState(()=>({date}));
     }
+
+    handleEditEvent = () =>{
+        if(this.state.editMode){
+            if(this.state.name==''){
+            this.setState(()=>({nameEmptyError:'The event name cannot be empty!'}));
+            }else{
+                this.setState(()=>({nameEmptyError:undefined}));
+            }
+            if(this.state.description==''){
+                this.setState(()=>({descriptionEmptyError:'The event description cannot be empty!'}));
+            }else{
+                this.setState(()=>({descriptionEmptyError:undefined}));
+            }
+            if (this.state.name!='' && this.state.description!=''){
+            this.props.onRequestClose();
+            const {editMode,descriptionEmptyError,nameEmptyError,...eventData} = this.state;
+            this.props.editEventInDatabase(eventData);
+            }
+        }
+        else{
+            this.setState({
+            editMode:true
+            });
+        }
+    };
+    handleDeleteEvent = ()=>{
+        //delete the event
+        this.props.onRequestClose();
+        this.props.deleteEventFromDatabase(this.state.eventId);
+    };
+    
     render(){
         return (
             <Modal 
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Selected Event"
-                
             >
                 <div>{this.state.nameEmptyError}</div>
                 <h1>{this.state.editMode ? <input type="text" value={this.state.name} onChange={this.handleEventNameChange}></input> : this.state.name}</h1>
@@ -91,39 +121,8 @@ class EventModal extends React.Component{
                 }
                     //call dispatch with state.eventId and user id and user name
                 }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
-                {this.isUserTheCreator() ? <button onClick={()=>{
-                    //delete the event
-                    this.props.onRequestClose();
-                    this.props.deleteEventFromDatabase(this.state.eventId);
-
-                }}>Delete the event</button> : null }
-                {this.isUserTheCreator() ? <button onClick={()=>{
-                    //edit the event
-                    if(this.state.editMode){
-                            if(this.state.name==''){
-                            this.setState(()=>({nameEmptyError:'The event name cannot be empty!'}));
-                            }else{
-                                this.setState(()=>({nameEmptyError:undefined}));
-                            }
-                            if(this.state.description==''){
-                                this.setState(()=>({descriptionEmptyError:'The event description cannot be empty!'}));
-                            }else{
-                                this.setState(()=>({descriptionEmptyError:undefined}));
-                            }
-                            if (this.state.name!='' && this.state.description!=''){
-                            this.props.onRequestClose();
-                            const {editMode,descriptionEmptyError,nameEmptyError,...eventData} = this.state;
-                            this.props.editEventInDatabase(eventData);
-                            }
-                        }
-                    else{
-                        this.setState({
-                        editMode:true
-                        });
-                    }
-                    
-
-                }}>{this.state.editMode ? 'Save' : 'Edit'}</button> : null }
+                {this.isUserTheCreator() ? <button onClick={this.handleDeleteEvent}>Delete the event</button> : null }
+                {this.isUserTheCreator() ? <button onClick={this.handleEditEvent}>{this.state.editMode ? 'Save' : 'Edit'}</button> : null }
             </Modal>
              );
         }
