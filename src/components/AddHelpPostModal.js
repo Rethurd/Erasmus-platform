@@ -2,16 +2,14 @@ import React from 'react';
 import Modal from 'react-modal';
 import {connect} from 'react-redux';
 import TextField from '@material-ui/core/TextField';
-import {addPost} from '../actions/help';
+import {addPostToDatabase} from '../actions/help';
 import {firebase} from '../firebase/firebase';
 import moment from 'moment';
-import uuid from 'uuid';
 
 class AddHelpPostModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            postId:uuid(),
             name:'',
             description:'',
             datePosted:moment(),
@@ -42,7 +40,7 @@ class AddHelpPostModal extends React.Component {
             this.setState(()=>({createdBy:user.displayName,createdById:user.uid}),()=>{
                 const { descriptionEmptyError,nameEmptyError,...postData}=this.state;
                 this.props.onRequestClose();  
-                this.props.addPost(postData);
+                this.props.addPostToDatabase(postData);
             })
         };
     }
@@ -53,7 +51,6 @@ class AddHelpPostModal extends React.Component {
     }
     handleDescriptionChange = (e)=>{
         const description = e.target.value;
-        console.log(description);
         this.setState(()=>({description}));
     }
 
@@ -94,7 +91,7 @@ class AddHelpPostModal extends React.Component {
 }
  
 const mapDispatchToProps = (dispatch) =>({
-    addPost: (postData)=>dispatch(addPost(postData))
+    addPostToDatabase: (postData)=>dispatch(addPostToDatabase(postData))
 })
 
 export default connect(null,mapDispatchToProps)(AddHelpPostModal);

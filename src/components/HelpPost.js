@@ -13,6 +13,7 @@ class HelpPost extends React.Component {
                 <p>{this.props.postData.name}</p>
                 <p>{this.props.postData.description}</p>
                 <p>{this.props.postData.datePosted.format('DD-MM-YYYY')}</p>
+                <p>Post Id: {this.props.postData.postId}</p>
 
             </div>
          );

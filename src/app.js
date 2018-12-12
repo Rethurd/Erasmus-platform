@@ -11,7 +11,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import database, {firebase} from './firebase/firebase';
 import { addEvent,startAddEvent, getEventsFromDatabase } from './actions/events';
-import {addPost } from './actions/help';
+import {addPost, getHelpPostsFromDatabase } from './actions/help';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -55,6 +55,7 @@ firebase.auth().onAuthStateChanged((user)=>{
     if(user){
         console.log('uid',user.uid);
         store.dispatch(login(user.uid));
+        store.dispatch(getHelpPostsFromDatabase());
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
             // sortedEvents(store.getState().events);

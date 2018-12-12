@@ -1,18 +1,6 @@
 import database from '../firebase/firebase';
 import moment from 'moment';
-const arrayToObject = (array, keyField) =>
-   array.reduce((obj, item) => {
-     obj[item[keyField]] = item
-     return obj
-   }, {});
-
-const isEmpty = (obj) =>{
-    for(let singleParticipant in obj) {
-        if(obj.hasOwnProperty(singleParticipant))
-            return false;
-    }
-    return true;
-};
+import {isEmpty, arrayToObject} from '../resources/functions';
 // //have to do this when adding an event to firebase
 // const peopleObject = arrayToObject(event.participants, "participantId");
 // DBevent.participants=peopleObject;
@@ -87,8 +75,9 @@ export const getEventsFromDatabase = () =>{
             const eventsToSetArray=[];
             allEvents.forEach((event)=>{
                 const participantsArray = [];
+                // if there are participants in the event
                 if(!!event.val().participants){
-                    
+                    //convert the object to an array of participants                    
                     const participants = event.val().participants;
                     for (var singleParticipant in participants) {
                         if (participants.hasOwnProperty(singleParticipant)) {

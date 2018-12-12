@@ -36,7 +36,6 @@ class HelpPage extends React.Component {
 
 
     render() { 
-        console.log(this.props.helpPosts);
         return ( 
             <div>
                 <p>This is the help page component!</p>
