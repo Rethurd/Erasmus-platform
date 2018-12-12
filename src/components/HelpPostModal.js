@@ -34,7 +34,13 @@ class HelpPostModal extends React.Component {
             author:user.displayName,
             authorId:user.uid
         }),()=>{
-            const {name,description,editMode,...commentData} = this.state;
+            const commentData = {
+                author:this.state.author,
+                authorId:this.state.authorId,
+                content:this.state.content,
+                date:this.state.date,
+                helpPostId:this.state.helpPostId,
+            }
             //after adding author:
             this.props.addCommentToDatabase(this.state.helpPostId,commentData).then(()=>{
                 // after adding the comment, rerender the modal with a new comment
@@ -66,8 +72,11 @@ class HelpPostModal extends React.Component {
         return user.uid==authorId;
    };
    checkIfPostBelongsToUser = () =>{
+       
         const user = firebase.auth().currentUser;   
-        return user.uid==this.state.helpPostId;
+        console.log(user.uid);
+        console.log(this.state.createdById);
+        return user.uid==this.state.createdById;
     }
 
     handleNameChange = (e)=>{
@@ -90,7 +99,8 @@ class HelpPostModal extends React.Component {
             <Modal 
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
-            contentLabel="Selected HelpPost">
+            contentLabel="Selected HelpPost"
+            ariaHideApp={false}>
                 {this.state.editMode ? <h3><TextField value={this.state.name} onChange={this.handleNameChange}/></h3> 
                 :
                  <h3>{this.props.postData.name}</h3> }
@@ -99,8 +109,8 @@ class HelpPostModal extends React.Component {
                   :
                    <p>{this.props.postData.description}</p> }
                 <div>
-                {this.checkIfPostBelongsToUser ? <button onClick={this.handleDeletePost}>Delete</button> : null}
-                {this.checkIfPostBelongsToUser ? 
+                {this.checkIfPostBelongsToUser() ? <button onClick={this.handleDeletePost}>Delete</button> : null}
+                {this.checkIfPostBelongsToUser() ? 
                     this.state.editMode ?  <button onClick={this.handleSaveChanges}>Save</button> 
                         : <button onClick={this.handleEditPost}>Edit</button> 
                     : 

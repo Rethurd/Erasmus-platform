@@ -35,7 +35,7 @@ class HelpPage extends React.Component {
             isAddPostModalOpen:false
         }));
     };
-    handleCommentAddedRerenderModal = (postId)=>{
+    rerenderAfterChange = (postId)=>{
         const selectedPost = getHelpPostById(this.props.helpPosts,postId);
         this.setState(()=>({
             isPostModalOpen:true,
@@ -57,7 +57,7 @@ class HelpPage extends React.Component {
                     isOpen={this.state.isPostModalOpen}
                     onRequestClose={this.handleClosePostModal}
                     postData = {this.state.selectedPost}
-                    rerenderAfterComment={this.handleCommentAddedRerenderModal}
+                    rerenderAfterComment={this.rerenderAfterChange}
                 />}
                 
                 {this.state.isAddPostModalOpen ? <AddHelpPostModal 

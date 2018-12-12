@@ -1,4 +1,5 @@
 import React from 'react';
+import Modal from 'react-modal';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import CalendarDay from './CalendarDay';
@@ -6,6 +7,9 @@ import eventsSelector from '../selectors/events';
 import AddEventForm from './AddEventForm';
 import sortedEvents from '../selectors/sortedEvents';
 import uuid from 'uuid';
+import EventModal from './EventModal';
+import {isEmpty} from '../resources/functions';
+import getEventById from '../selectors/getEventById';
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -13,10 +17,43 @@ class CalendarPage extends React.Component {
         this.state = {
             contextDate:moment().startOf('month'),
             today:moment(),
-            selectedDay:moment()
+            selectedDay:moment(),
+            selectedEvent:{},
+            isModalOpen:false
         }
     }
-    
+    turnModalOn = ()=>{
+        this.setState(()=>{
+            return{
+                isModalOpen:true
+            }
+        });
+    }
+
+    turnModalOff = () =>{
+        this.setState(()=>{
+            return{
+                isModalOpen:false,
+                selectedEvent:{}
+            }
+        });
+    };
+
+    rerenderAfterChange = (eventId)=>{
+        const selectedEvent = getEventById(this.props.events,eventId);
+        this.setState(()=>({
+            isModalOpen:true,
+            selectedEvent,
+        }));
+    }
+
+    getEvent = (selectedEvent) =>{
+        this.setState(()=>({
+            isModalOpen:true,
+            selectedEvent
+        }));
+    };
+
     getFirstMonthDay = () => this.state.contextDate.startOf('month');    
     getLastMonthDay = () => this.state.contextDate.endOf('month');    
 
@@ -46,7 +83,7 @@ class CalendarPage extends React.Component {
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
             dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
             const eventsToAdd = eventsSelector(this.props.events,dayData);
-            datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} key={uuid()} day={dayData} events={eventsToAdd}/>);
+            datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} getEvent={this.getEvent} key={uuid()} day={dayData} events={eventsToAdd}/>);
         }
         return datesArray;
     };
@@ -134,7 +171,12 @@ class CalendarPage extends React.Component {
                 </div>
                 <h2>Create an event!</h2>
                 <AddEventForm/>
-                
+                {isEmpty(this.state.selectedEvent)? null : <EventModal
+                    isOpen={this.state.isModalOpen}
+                    onRequestClose = {this.turnModalOff}
+                    eventData={this.state.selectedEvent}
+                    rerenderAfterChange={this.rerenderAfterChange}
+                /> }
             </div>
          );
     }

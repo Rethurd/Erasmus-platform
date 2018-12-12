@@ -1,5 +1,5 @@
-import Modal from 'react-modal';
 import React from 'react';
+import Modal from 'react-modal';
 import {connect} from 'react-redux';
 import {addParticipantToDatabase, removeParticipantFromDatabase, deleteEventFromDatabase, editEventInDatabase} from '../actions/events'; 
 import {firebase} from '../firebase/firebase';
@@ -8,10 +8,9 @@ import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import {MuiPickersUtilsProvider } from 'material-ui-pickers';
 import {DateTimePicker} from 'material-ui-pickers';
+
+
 class EventModal extends React.Component{
-
-
-   
     constructor(props){
         super(props);
         this.state={
@@ -65,13 +64,14 @@ class EventModal extends React.Component{
             if (this.state.name!='' && this.state.description!=''){
             this.props.onRequestClose();
             const {editMode,descriptionEmptyError,nameEmptyError,...eventData} = this.state;
-            this.props.editEventInDatabase(eventData);
+            this.props.editEventInDatabase(eventData).then(()=>{
+                   this.props.onRequestClose();
+                   this.props.rerenderAfterChange(this.state.eventId);
+              });
             }
         }
         else{
-            this.setState({
-            editMode:true
-            });
+            this.setState(()=>({editMode:true}));
         }
     };
     handleDeleteEvent = ()=>{
@@ -86,6 +86,7 @@ class EventModal extends React.Component{
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Selected Event"
+                ariaHideApp={false}
             >
                 <div>{this.state.nameEmptyError}</div>
                 <h1>{this.state.editMode ? <input type="text" value={this.state.name} onChange={this.handleEventNameChange}></input> : this.state.name}</h1>
@@ -107,17 +108,23 @@ class EventModal extends React.Component{
                 <button onClick={()=>{
                     // e.stopPropagation();
                 const user = this.isUserParticipating();
-                this.props.onRequestClose();
+                
                 // if already participating
                 if(!user){
                     const existingUserUid = firebase.auth().currentUser.uid;
-                    this.props.removeParticipantFromDatabase(this.state.eventId,existingUserUid);                   
+                    this.props.removeParticipantFromDatabase(this.state.eventId,existingUserUid).then(()=>{
+                        this.props.onRequestClose();
+                        this.props.rerenderAfterChange(this.state.eventId);
+                    });                   
                 }else{
                     const userData = {
                         name:user.displayName,
                         email: user.email
                     }
-                    this.props.addParticipantToDatabase(this.state.eventId,user.uid,userData);
+                    this.props.addParticipantToDatabase(this.state.eventId,user.uid,userData).then(()=>{
+                        this.props.onRequestClose();
+                        this.props.rerenderAfterChange(this.state.eventId);
+                    });
                 }
                     //call dispatch with state.eventId and user id and user name
                 }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>

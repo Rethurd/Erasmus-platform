@@ -1,8 +1,8 @@
 {
-  "name": "expensify",
+  "name": "Erasmus_platform",
   "version": "1.0.0",
   "main": "index.js",
-  "author": "Andrew Mead",
+  "author": "Kamil Grzegorek",
   "license": "MIT",
   "scripts": {
     "build:dev": "webpack",
@@ -39,7 +39,7 @@
     "react-addons-shallow-compare": "15.6.0",
     "react-dates": "12.3.0",
     "react-dom": "^16.6.3",
-    "react-modal": "^3.0.0-rc2",
+    "react-modal": "^3.7.1",
     "react-redux": "5.0.5",
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
