@@ -51,7 +51,7 @@ export const editEvent = (eventData)=>({
 export const editEventInDatabase = (eventData)=>{
     return (dispatch)=>{
 
-        // the format of the data changes when saving to DB, so we need the original, but assigning it creates a reference instead of cloning it
+        // the format of the data changes when saving to DB, and we need the original, but assigning it creates a reference instead of cloning it
         const unchangedEventData = Object.assign({},eventData); 
 
         eventData.date=eventData.date.unix();

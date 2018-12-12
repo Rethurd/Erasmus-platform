@@ -41,6 +41,26 @@ export const deletePostFromDatabase = (helpPostId)=>{
     }
 }
 
+export const editPost = (postData)=>({
+    type:'EDIT_POST',
+    postData
+});
+
+export const editPostInDatabase = (postData)=>{
+    return (dispatch)=>{
+        const unchangedPostData = Object.assign({},postData); 
+        const thisPostId = postData.postId;
+        postData.datePosted=postData.datePosted.unix();
+        postData.dateUpdated=postData.dateUpdated.unix();
+        const commentsObject = arrayToObject(postData.comments, "commentId");
+        postData.comments=commentsObject;
+        const {postId, ...postDataToSave} = postData;
+        return database.ref(`helpPosts/${thisPostId}`).update(postDataToSave).then(()=>{
+            dispatch(editPost(unchangedPostData));
+        })
+    }
+}
+
 export const setHelpPosts = (posts) =>({
     type:'SET_HELP_POSTS',
     posts

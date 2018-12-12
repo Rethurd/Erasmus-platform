@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import {connect} from 'react-redux';
-import { addCommentToDatabase, deleteCommentFromDatabase,deletePostFromDatabase } from '../actions/help';
+import { addCommentToDatabase, deleteCommentFromDatabase,deletePostFromDatabase,editPostInDatabase } from '../actions/help';
 import moment from 'moment';
 import {firebase} from '../firebase/firebase';
 
@@ -13,11 +13,13 @@ class HelpPostModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
+            ...this.props.postData,
             helpPostId:this.props.postData.postId,
             content:'',
             date:moment(),
             author:'',
-            authorId:''
+            authorId:'',
+            editMode:false
          }
     }
 
@@ -32,8 +34,9 @@ class HelpPostModal extends React.Component {
             author:user.displayName,
             authorId:user.uid
         }),()=>{
+            const {name,description,editMode,...commentData} = this.state;
             //after adding author:
-            this.props.addCommentToDatabase(this.state.helpPostId,this.state).then(()=>{
+            this.props.addCommentToDatabase(this.state.helpPostId,commentData).then(()=>{
                 // after adding the comment, rerender the modal with a new comment
                 this.props.onRequestClose();
                 this.props.rerenderAfterComment(this.state.helpPostId);
@@ -55,7 +58,7 @@ class HelpPostModal extends React.Component {
 
     }
     handleEditPost = ()=>{
-
+        this.setState(()=>({editMode:true}));
     }
 
    checkIfCommentBelongsToUser = (authorId) =>{
@@ -66,16 +69,43 @@ class HelpPostModal extends React.Component {
         const user = firebase.auth().currentUser;   
         return user.uid==this.state.helpPostId;
     }
+
+    handleNameChange = (e)=>{
+        const name = e.target.value;
+        this.setState(()=>({name}));
+    }
+    handleDescriptionChange = (e)=>{
+        const description = e.target.value;
+        this.setState(()=>({description}));
+    }
+    handleSaveChanges = ()=>{
+        const {helpPostId,content,date,author,authorId,editMode,...postData} = this.state;
+        this.props.editPostInDatabase(postData).then(()=>{
+            this.props.onRequestClose();
+            this.props.rerenderAfterComment(this.state.helpPostId);
+        });
+    }
     render() { 
         return ( 
             <Modal 
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
             contentLabel="Selected HelpPost">
-                <h3>{this.props.postData.name}</h3>
-                <p>{this.props.postData.description}</p>
+                {this.state.editMode ? <h3><TextField value={this.state.name} onChange={this.handleNameChange}/></h3> 
+                :
+                 <h3>{this.props.postData.name}</h3> }
+                 {this.state.editMode ?
+                   <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                  :
+                   <p>{this.props.postData.description}</p> }
+                <div>
                 {this.checkIfPostBelongsToUser ? <button onClick={this.handleDeletePost}>Delete</button> : null}
-                {this.checkIfPostBelongsToUser ? <button onClick={this.handleEditPost}>Edit</button> : null}
+                {this.checkIfPostBelongsToUser ? 
+                    this.state.editMode ?  <button onClick={this.handleSaveChanges}>Save</button> 
+                        : <button onClick={this.handleEditPost}>Edit</button> 
+                    : 
+                    null}
+                </div>
                 
                 
 
@@ -114,7 +144,8 @@ class HelpPostModal extends React.Component {
 const mapDispatchToProps = (dispatch) =>({
     addCommentToDatabase: (helpPostId, comment)=>dispatch(addCommentToDatabase(helpPostId, comment)),
     deleteCommentFromDatabase: (helpPostId, commentId)=>dispatch(deleteCommentFromDatabase(helpPostId,commentId)),
-    deletePostFromDatabase: (helpPostId) =>dispatch(deletePostFromDatabase(helpPostId))
+    deletePostFromDatabase: (helpPostId) =>dispatch(deletePostFromDatabase(helpPostId)),
+    editPostInDatabase: (postData)=>dispatch(editPostInDatabase(postData))
 })
 
 export default connect(undefined,mapDispatchToProps)(HelpPostModal);

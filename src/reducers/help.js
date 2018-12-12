@@ -6,6 +6,13 @@ const helpPostsReducer = (state = defaultHelpPostsState, action) => {
         case 'DELETE_POST':
             const newStateDelete = state.filter((singlePost)=>singlePost.postId!=action.helpPostId)
             return newStateDelete;
+        case 'EDIT_POST':
+            const uneditedPosts = state.filter((singlePost)=> singlePost.postId!=action.postData.postId);
+            const postToEdit = {
+                ...action.postData
+            };
+            uneditedPosts.push(postToEdit);
+            return uneditedPosts;
         case 'SET_HELP_POSTS':
             const newState = [];
             action.posts.forEach((post)=>{

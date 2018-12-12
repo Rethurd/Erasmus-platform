@@ -5,6 +5,7 @@ import CalendarDay from './CalendarDay';
 import eventsSelector from '../selectors/events';
 import AddEventForm from './AddEventForm';
 import sortedEvents from '../selectors/sortedEvents';
+import uuid from 'uuid';
 
 class CalendarPage extends React.Component {
     constructor(props){
@@ -28,7 +29,7 @@ class CalendarPage extends React.Component {
         const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay);
         return todaysEvents.map((singleEvent)=>{
             return(
-                <div>
+                <div key={uuid()}>
                      <h4>{singleEvent.name}</h4>
                      <p>Description: {singleEvent.description}</p>
                 </div>
@@ -45,7 +46,7 @@ class CalendarPage extends React.Component {
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
             dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
             const eventsToAdd = eventsSelector(this.props.events,dayData);
-            datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} key={firstMonthIndex} day={dayData} events={eventsToAdd}/>);
+            datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} key={uuid()} day={dayData} events={eventsToAdd}/>);
         }
         return datesArray;
     };
@@ -64,7 +65,7 @@ class CalendarPage extends React.Component {
         const weekdays = moment.weekdays();
         const removed = weekdays.splice(0,1);
         weekdays.push(removed[0]);
-        const weekdaysToTable= weekdays.map((weekday)=> <td key={weekday}>{weekday}</td>);
+        const weekdaysToTable= weekdays.map((weekday)=> <td key={uuid()}>{weekday}</td>);
         return weekdaysToTable;
     };
     printMonth=()=>{
@@ -76,7 +77,7 @@ class CalendarPage extends React.Component {
         const emptyDaysToReverse= []
         for (let index = 0; index < emptyDaysAtStartOfMonth; index++) {
             previousDay.subtract(1,'days');
-            emptyDaysToReverse.push(<td  className='grayed-out-date'>{previousDay.format('D')}</td>)
+            emptyDaysToReverse.push(<td  key={uuid()} className='grayed-out-date'>{previousDay.format('D')}</td>)
         }
         emptyDaysToReverse.reverse();
         thisMonth =thisMonth.concat(emptyDaysToReverse);
@@ -96,7 +97,7 @@ class CalendarPage extends React.Component {
                 if(index==thisMonth.length){
                     //add the days from the next month
                     for (let emptySpacesCount = 0; emptySpacesCount < emptyDaysAtEndOfMonth; emptySpacesCount++) {
-                        week.push(<td className="grayed-out-date">{emptySpacesCount+1}</td>);
+                        week.push(<td key={uuid()}   className="grayed-out-date">{emptySpacesCount+1}</td>);
                     }
                 }
                 thisModifiedMonth.push(week);
@@ -104,7 +105,7 @@ class CalendarPage extends React.Component {
                 
             }   
         }
-        return thisModifiedMonth.map((week)=><tr>{week}</tr>);
+        return thisModifiedMonth.map((week)=><tr key={uuid()}>{week}</tr>);
         
     }
    
