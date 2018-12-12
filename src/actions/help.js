@@ -45,6 +45,10 @@ export const getHelpPostsFromDatabase = () =>{
                     const comments = singlePost.val().comments;
                     for (var singleComment in comments) {
                         if (comments.hasOwnProperty(singleComment)) {
+                            comments[singleComment] = {
+                                ...comments[singleComment],
+                                commentId:singleComment
+                            }
                             commentsArray.push(comments[singleComment]);
                         }
                     }
@@ -62,6 +66,43 @@ export const getHelpPostsFromDatabase = () =>{
                 
                 dispatch(setHelpPosts(helpPostsArray));
             
+        });
+    };
+};
+
+export const addComment = (helpPostId,comment) =>({
+    type:'ADD_COMMENT',
+    helpPostId,
+    comment
+    
+});
+
+export const addCommentToDatabase = (helpPostId, comment)=>{
+    return (dispatch)=>{
+        comment.date = comment.date.unix();
+        return database.ref(`helpPosts/${helpPostId}/comments`).push(comment).then((ref)=>{
+            const modifiedComment = {
+                ...comment,
+                date:comment.date,
+                commentId:ref.key
+            }
+            dispatch(addComment(helpPostId, modifiedComment));
+        });
+    };
+};
+
+export const deleteComment = (helpPostId, commentId)=>({
+    type:'DELETE_COMMENT',
+    helpPostId,
+    commentId
+});
+
+export const deleteCommentFromDatabase = (helpPostId, commentId)=>{
+    return (dispatch)=>{
+        console.log(helpPostId);
+        console.log(commentId);
+        return database.ref(`helpPosts/${helpPostId}/comments/${commentId}`).remove().then(()=>{
+            dispatch(deleteComment(helpPostId,commentId));
         });
     };
 };

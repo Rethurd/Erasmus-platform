@@ -3,11 +3,13 @@ import {connect} from 'react-redux';
 import HelpPost from './HelpPost';
 import HelpPostModal from './HelpPostModal';
 import AddHelpPostModal from './AddHelpPostModal';
+import getHelpPostById from '../selectors/getHelpPostById';
 
 class HelpPage extends React.Component {
     constructor(props){
         super(props);
         this.state={
+            dummyRerenderValue:true,
             selectedPost:undefined,
             isPostModalOpen:false,
             isAddPostModalOpen:false
@@ -26,14 +28,22 @@ class HelpPage extends React.Component {
     handleOpenAddPostModal = () =>{
         this.setState(()=>({
             isAddPostModalOpen:true
-        }))
-    }
+        }));
+    };
     handleCloseAddPostModal = () =>{
         this.setState(()=>({
             isAddPostModalOpen:false
-        }))
+        }));
+    };
+    handleCommentAddedRerenderModal = (postId)=>{
+        const selectedPost = getHelpPostById(this.props.helpPosts,postId);
+        console.log(selectedPost);
+        this.setState(()=>({
+            isPostModalOpen:true,
+            selectedPost,
+        }));
     }
-
+    
 
     render() { 
         return ( 
@@ -48,6 +58,7 @@ class HelpPage extends React.Component {
                     isOpen={this.state.isPostModalOpen}
                     onRequestClose={this.handleClosePostModal}
                     postData = {this.state.selectedPost}
+                    rerenderAfterComment={this.handleCommentAddedRerenderModal}
                 />}
                 
                 {this.state.isAddPostModalOpen ? <AddHelpPostModal 

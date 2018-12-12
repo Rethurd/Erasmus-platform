@@ -79,7 +79,6 @@ class AddHelpPostModal extends React.Component {
                             onChange={this.handleDescriptionChange}
                             multiline
                             rows={4}
-                            
                         />
                     </div>
                     <button>Add post!</button>

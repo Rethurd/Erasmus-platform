@@ -11,7 +11,7 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import database, {firebase} from './firebase/firebase';
 import { addEvent,startAddEvent, getEventsFromDatabase } from './actions/events';
-import {addPost, getHelpPostsFromDatabase } from './actions/help';
+import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './actions/help';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -31,8 +31,16 @@ const helpPost = {
 	datePosted:moment()
 }
 
-store.dispatch(addPost(helpPost));
+const comment = {
+    date:moment(),
+    content:'this is my comment',
+    author:'Kamil',
+    commentId:'asdasd'
+}
 
+const user = firebase.auth().currentUser;
+// store.dispatch(addPost(helpPost));
+// store.dispatch(addCommentToDatabase('-LTY2Ei4jyG-jVZsDiYy',comment,'Kamil'));
 const jsx = (
     <Provider store={store}>
         <AppRouter />
