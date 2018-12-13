@@ -8,7 +8,11 @@ class InfoPost extends React.Component {
     }
     render() { 
         return ( 
+            <div onClick={()=>{this.props.handleOpenModal(this.props.postData)}}>
             <p>This is an InfoPost Component</p>
+            <h3>{this.props.postData.name}</h3>
+            <p>{this.props.postData.description}</p>
+            </div>
          );
     }
 }
