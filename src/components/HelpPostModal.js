@@ -140,9 +140,8 @@ class HelpPostModal extends React.Component {
                 </Button>
                 </div>
                 {this.props.postData.comments.map((singleComment)=>{
-                    
                     return(
-                        <div key={singleComment.date+singleComment.content}>
+                        <div key={singleComment.commentId}>
                         <span >
                         {moment(singleComment.date*1000).format('DD-MM-YYYY HH:mm:ss')+' - ' +singleComment.author+': '+singleComment.content}
                         </span>

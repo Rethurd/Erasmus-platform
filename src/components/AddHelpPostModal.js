@@ -59,7 +59,8 @@ class AddHelpPostModal extends React.Component {
             <Modal 
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
-            contentLabel="Add new help post modal">
+            contentLabel="Add new help post modal"
+            ariaHideApp={false}>
                 <h3>Add new help post</h3>
                 <form onSubmit={this.handleOnSubmit}>
                     <div>

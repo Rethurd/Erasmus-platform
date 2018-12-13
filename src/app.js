@@ -12,6 +12,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import database, {firebase} from './firebase/firebase';
 import { addEvent,startAddEvent, getEventsFromDatabase } from './actions/events';
 import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './actions/help';
+import {addInfoPost} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -21,8 +22,20 @@ const store = configureStore();
 
 store.subscribe(()=>{
     const state = store.getState();
-    // console.log(getVisibleExpenses(state.expenses,state.filters));
+    console.log(state);
 });
+
+const infoPost = {
+    infoPostId:uuid(),
+    name:'first info post',
+    description:'first info description',
+    createdBy:'',
+    createdById:'',
+    creationDate:''
+
+}
+
+store.dispatch(addInfoPost(infoPost));
 
 const helpPost = {
     postId:uuid(),
