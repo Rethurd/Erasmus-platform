@@ -19,7 +19,8 @@ class HelpPostModal extends React.Component {
             date:moment(),
             author:'',
             authorId:'',
-            editMode:false
+            editMode:false,
+            errorEmptyComment:undefined
          }
     }
 
@@ -29,25 +30,33 @@ class HelpPostModal extends React.Component {
     }
 
     handleAddComment = () =>{
-        const user = firebase.auth().currentUser;
-        this.setState(()=>({
-            author:user.displayName,
-            authorId:user.uid
-        }),()=>{
-            const commentData = {
-                author:this.state.author,
-                authorId:this.state.authorId,
-                content:this.state.content,
-                date:this.state.date,
-                helpPostId:this.state.helpPostId,
-            }
-            //after adding author:
-            this.props.addCommentToDatabase(this.state.helpPostId,commentData).then(()=>{
-                // after adding the comment, rerender the modal with a new comment
-                this.props.onRequestClose();
-                this.props.rerenderAfterComment(this.state.helpPostId);
+        console.log(this.state.content);
+
+        if(this.state.content==''){
+            this.setState(()=>({errorEmptyComment:'The comment field cannot be empty'}));
+        }
+        else{
+            const user = firebase.auth().currentUser;
+            this.setState(()=>({
+                author:user.displayName,
+                authorId:user.uid
+            }),()=>{
+                const commentData = {
+                    author:this.state.author,
+                    authorId:this.state.authorId,
+                    content:this.state.content,
+                    date:this.state.date,
+                    helpPostId:this.state.helpPostId,
+                }
+                //after adding author:
+                this.props.addCommentToDatabase(this.state.helpPostId,commentData).then(()=>{
+                    // after adding the comment, rerender the modal with a new comment
+                    this.props.onRequestClose();
+                    this.props.rerenderAfterComment(this.state.helpPostId);
+                });
             });
-        });
+        }
+       
     };
 
     handleDeleteComment = (commentId)=>{
@@ -74,8 +83,6 @@ class HelpPostModal extends React.Component {
    checkIfPostBelongsToUser = () =>{
        
         const user = firebase.auth().currentUser;   
-        console.log(user.uid);
-        console.log(this.state.createdById);
         return user.uid==this.state.createdById;
     }
 
@@ -88,7 +95,7 @@ class HelpPostModal extends React.Component {
         this.setState(()=>({description}));
     }
     handleSaveChanges = ()=>{
-        const {helpPostId,content,date,author,authorId,editMode,...postData} = this.state;
+        const {helpPostId,content,date,author,authorId,editMode,errorEmptyComment,...postData} = this.state;
         this.props.editPostInDatabase(postData).then(()=>{
             this.props.onRequestClose();
             this.props.rerenderAfterComment(this.state.helpPostId);
@@ -120,6 +127,7 @@ class HelpPostModal extends React.Component {
                 
 
                 <div>
+                {this.state.errorEmptyComment==undefined ? null : <p>{this.state.errorEmptyComment}</p> }
                 <TextField 
                             placeholder="Comment..."
                             value={this.state.comment}
