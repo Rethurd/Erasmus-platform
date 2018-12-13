@@ -11,7 +11,6 @@ class AddInfoPostModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            infoPostId:uuid(),
             name:'',
             description:'',
             createdBy:'',

@@ -12,7 +12,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import database, {firebase} from './firebase/firebase';
 import { addEvent,startAddEvent, getEventsFromDatabase } from './actions/events';
 import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './actions/help';
-import {addInfoPost} from './actions/info';
+import {addInfoPost,getInfoPostsFromDatabase} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
 
@@ -77,6 +77,7 @@ firebase.auth().onAuthStateChanged((user)=>{
         console.log('uid',user.uid);
         store.dispatch(login(user.uid));
         store.dispatch(getHelpPostsFromDatabase());
+        store.dispatch(getInfoPostsFromDatabase());
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
             // sortedEvents(store.getState().events);

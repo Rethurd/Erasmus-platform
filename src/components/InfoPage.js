@@ -29,7 +29,6 @@ class InfoPage extends React.Component {
     }
 
     render() { 
-        console.log(this.props.infoPosts);
         return ( 
             <div>
                 This is the info page component!
