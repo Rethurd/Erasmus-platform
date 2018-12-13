@@ -3,12 +3,14 @@ import {connect} from 'react-redux';
 import InfoPost from './InfoPost';
 import {isEmpty} from '../resources/functions';
 import InfoPostModal from './InfoPostModal';
+import AddInfoPostModal from './AddInfoPostModal';
 class InfoPage extends React.Component {
     constructor(props){
         super(props);
         this.state={
             isModalOpen:false,
-            selectedInfoPost:{}
+            selectedInfoPost:{},
+            isAddPostModalOpen:false
         }
     }
     handleOpenModal = (selectedInfoPost) =>{
@@ -18,6 +20,14 @@ class InfoPage extends React.Component {
     handleCloseModal = () =>{
         this.setState(()=>({isModalOpen:false,selectedInfoPost:{}}));
     }
+
+    handleOpenNewPostModal = () =>{
+        this.setState(()=>({isAddPostModalOpen:true}));
+    }
+    handleCloseNewPostModal = () =>{
+        this.setState(()=>({isAddPostModalOpen:false}));
+    }
+
     render() { 
         console.log(this.props.infoPosts);
         return ( 
@@ -29,6 +39,10 @@ class InfoPage extends React.Component {
                     })}
                 </div>
                 {isEmpty(this.state.selectedInfoPost) ? null: <InfoPostModal isOpen={this.state.isModalOpen} postData={this.state.selectedInfoPost} onRequestClose={this.handleCloseModal}/>}
+                    {/* Show the button only to admins */}
+                <button onClick={this.handleOpenNewPostModal}>Create new</button>
+                {this.state.isAddPostModalOpen ? <AddInfoPostModal isOpen={this.state.isAddPostModalOpen} onRequestClose={this.handleCloseNewPostModal}/>: null}
+            
             </div>
          );
     }

@@ -10,14 +10,14 @@ export const addPostToDatabase = (postData)=>{
         const commentsObject = arrayToObject(postData.comments, "participantId");
         postData.comments=commentsObject;
         return database.ref('helpPosts').push(postData).then((ref)=>{
-            const eventLocalFormat = {
+            const helpPostLocalFormat = {
                 ...postData,
                 postId:ref.key,
                 datePosted:moment(postData.datePosted*1000),
                 dateUpdated:moment(postData.dateUpdated*1000),
                 comments:[]
             }
-            dispatch(addPost(eventLocalFormat));
+            dispatch(addPost(helpPostLocalFormat));
         })
     }
 }

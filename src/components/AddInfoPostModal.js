@@ -1,25 +1,25 @@
 import React from 'react';
 import Modal from 'react-modal';
-import {connect} from 'react-redux';
-import TextField from '@material-ui/core/TextField';
-import {addPostToDatabase} from '../actions/help';
-import {firebase} from '../firebase/firebase';
+import uuid from 'uuid';
 import moment from 'moment';
+import TextField from '@material-ui/core/TextField';
+import {addInfoPostToDatabase} from '../actions/info';
+import {connect} from 'react-redux';
+import {firebase} from '../firebase/firebase';
 
-class AddHelpPostModal extends React.Component {
+class AddInfoPostModal extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
+            infoPostId:uuid(),
             name:'',
             description:'',
-            datePosted:moment(),
-            dateUpdated:moment(),
             createdBy:'',
             createdById:'',
-            comments:[],
+            creationDate:moment(),
             nameEmptyError:undefined,
             descriptionEmptyError:undefined
-         }
+          }
     }
 
     handleOnSubmit = (e) =>{
@@ -40,7 +40,7 @@ class AddHelpPostModal extends React.Component {
             this.setState(()=>({createdBy:user.displayName,createdById:user.uid}),()=>{
                 const { descriptionEmptyError,nameEmptyError,...postData}=this.state;
                 this.props.onRequestClose();  
-                this.props.addPostToDatabase(postData);
+                this.props.addInfoPostToDatabase(postData);
             })
         };
     }
@@ -54,15 +54,18 @@ class AddHelpPostModal extends React.Component {
         this.setState(()=>({description}));
     }
 
+
     render() { 
         return ( 
             <Modal 
-            isOpen={this.props.isOpen}
-            onRequestClose={this.props.onRequestClose}
-            contentLabel="Add new help post modal"
-            ariaHideApp={false}>
-                <h3>Add new help post</h3>
-                <form onSubmit={this.handleOnSubmit}>
+                isOpen={this.props.isOpen}
+                onRequestClose={this.props.onRequestClose}
+                contentLabel="Add new Info Post Modal"
+                ariaHideApp={false}
+            >
+                <h3>Add new Information/Announcement post</h3>
+
+                 <form onSubmit={this.handleOnSubmit}>
                     <div>
                     {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
                         <TextField 
@@ -75,7 +78,7 @@ class AddHelpPostModal extends React.Component {
                     <div>
                         {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
                         <TextField 
-                            label="Description of the problem"
+                            label="Description of the post"
                             value={this.state.description}
                             onChange={this.handleDescriptionChange}
                             multiline
@@ -84,14 +87,14 @@ class AddHelpPostModal extends React.Component {
                     </div>
                     <button>Add post!</button>
                 </form>
-                
+
             </Modal>
          );
     }
 }
  
 const mapDispatchToProps = (dispatch) =>({
-    addPostToDatabase: (postData)=>dispatch(addPostToDatabase(postData))
+    addInfoPostToDatabase: (postData)=>dispatch(addInfoPostToDatabase(postData))
 })
 
-export default connect(null,mapDispatchToProps)(AddHelpPostModal);
+export default connect(null,mapDispatchToProps)(AddInfoPostModal);
