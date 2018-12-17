@@ -14,6 +14,14 @@ const InfoPostsReducer = (state = defaultInfoPostsState,action) => {
                 newState.push(post);
             })
             return newState;
+        case 'EDIT_INFO_POST':
+            const uneditedInfoPosts = state.filter((singlePost)=> singlePost.infoPostId!=action.postData.infoPostId);
+            const infoPostToEdit = {
+                ...action.postData
+            };
+            uneditedInfoPosts.push(infoPostToEdit);
+            return uneditedInfoPosts;
+            
         default: 
             return state;
     }

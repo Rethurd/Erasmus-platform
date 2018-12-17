@@ -49,10 +49,26 @@ export const getInfoPostsFromDatabase = () =>{
                         infoPostId:singlePost.key,
                         creationDate:moment(singlePost.val().creationDate*1000),
                     }
-                    console.log(modifiedPost);
                     infoPostsArray.push(modifiedPost);
                 });
                 dispatch(setInfoPosts(infoPostsArray));
         });
     };
 };
+
+export const editInfoPost = (postData)=>({
+    type:'EDIT_INFO_POST',
+    postData
+});
+
+export const editInfoPostInDatabase = (postData)=>{
+    return (dispatch)=>{
+        const unchangedPostData = Object.assign({},postData); 
+        const thisPostId = postData.infoPostId;
+        postData.creationDate=postData.creationDate.unix();
+        const {infoPostId, ...postDataToSave} = postData;
+        return database.ref(`infoPosts/${thisPostId}`).update(postDataToSave).then(()=>{
+            dispatch(editInfoPost(unchangedPostData));
+        })
+    }
+}

@@ -22,7 +22,7 @@ const store = configureStore();
 
 store.subscribe(()=>{
     const state = store.getState();
-    console.log(state);
+    // console.log(state);
 });
 
 const infoPost = {
@@ -51,7 +51,7 @@ const comment = {
     commentId:'asdasd'
 }
 
-const user = firebase.auth().currentUser;
+
 // store.dispatch(addPost(helpPost));
 // store.dispatch(addCommentToDatabase('-LTY2Ei4jyG-jVZsDiYy',comment,'Kamil'));
 const jsx = (
@@ -60,6 +60,9 @@ const jsx = (
     </Provider>
     
 );
+
+
+
 
 let hasRendered = false;
 const renderApp = ()=>{
@@ -80,6 +83,13 @@ firebase.auth().onAuthStateChanged((user)=>{
         store.dispatch(getInfoPostsFromDatabase());
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
+            // const admin = {
+            //     'adminID':user.uid,
+            //     'adminEmail':user.email
+            // }
+            // database.ref('adminList').push(admin);
+
+
             // sortedEvents(store.getState().events);
             if (history.location.pathname==='/'){
                 history.push('/info');
