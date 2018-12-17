@@ -20,7 +20,9 @@ class HelpPostModal extends React.Component {
             author:'',
             authorId:'',
             editMode:false,
-            errorEmptyComment:undefined
+            errorEmptyComment:undefined,
+            errorEmptyName:undefined,
+            errorEmptyDescription:undefined
          }
     }
 
@@ -95,11 +97,24 @@ class HelpPostModal extends React.Component {
         this.setState(()=>({description}));
     }
     handleSaveChanges = ()=>{
-        const {helpPostId,content,date,author,authorId,editMode,errorEmptyComment,...postData} = this.state;
-        this.props.editPostInDatabase(postData).then(()=>{
-            this.props.onRequestClose();
-            this.props.rerenderAfterComment(this.state.helpPostId);
-        });
+        if(this.state.name==''){
+            this.setState(()=>({errorEmptyName:'The post name cannot be empty!'}));
+        }else{
+            this.setState(()=>({errorEmptyName:undefined}));
+        }
+        if(this.state.description==''){
+            this.setState(()=>({errorEmptyDescription:'The post description cannot be empty!'}));
+        }else{
+            this.setState(()=>({errorEmptyDescription:undefined}));
+        }
+        if (this.state.name!='' && this.state.description!=''){
+            const {helpPostId,content,date,author,authorId,editMode,errorEmptyComment,errorEmptyDescription,errorEmptyName,...postData} = this.state;
+            this.props.editPostInDatabase(postData).then(()=>{
+                this.props.onRequestClose();
+                this.props.rerenderAfterComment(this.state.helpPostId);
+            });
+        }
+        
     }
     render() { 
         return ( 
@@ -108,11 +123,17 @@ class HelpPostModal extends React.Component {
             onRequestClose={this.props.onRequestClose}
             contentLabel="Selected HelpPost"
             ariaHideApp={false}>
-                {this.state.editMode ? <h3><TextField value={this.state.name} onChange={this.handleNameChange}/></h3> 
+                {this.state.editMode ? <h3>
+                    {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
+                    <TextField value={this.state.name} onChange={this.handleNameChange}/>
+                    </h3> 
                 :
                  <h3>{this.props.postData.name}</h3> }
                  {this.state.editMode ?
-                   <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                    <div>
+                        {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
+                        <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                    </div>
                   :
                    <p>{this.props.postData.description}</p> }
                 <div>
