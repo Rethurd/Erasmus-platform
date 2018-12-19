@@ -15,6 +15,7 @@ import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './action
 import {addInfoPost,getInfoPostsFromDatabase} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
+import { addToDoPost } from './actions/toDo';
 
 const store = configureStore();
 
@@ -51,6 +52,17 @@ const comment = {
     commentId:'asdasd'
 }
 
+const toDoPost = {
+    toDoPostId:uuid(),
+    name:'first To Do Post',
+    description:' some desc',
+    createdBy:'',
+    createdById:'',
+    creationDate:moment(),
+    ratings:[1,5,5]
+}
+
+store.dispatch(addToDoPost(toDoPost));
 
 // store.dispatch(addPost(helpPost));
 // store.dispatch(addCommentToDatabase('-LTY2Ei4jyG-jVZsDiYy',comment,'Kamil'));

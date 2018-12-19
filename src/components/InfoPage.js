@@ -72,5 +72,5 @@ class InfoPage extends React.Component {
  
 const mapStateToProps = (state)=>({
     infoPosts:state.infoPosts
-})
+});
 export default connect(mapStateToProps)(InfoPage);

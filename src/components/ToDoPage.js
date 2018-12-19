@@ -1,14 +1,28 @@
 import React from 'react';
-
+import {connect} from 'react-redux';
+import ToDoPost from './ToDoPost';
 class ToDoPage extends React.Component {
-    state = {  }
+    constructor(props){
+        super(props);
+        this.state={
+            
+        };
+    };
     render() { 
         return ( 
             <div>
                 This is the ToDo page component!
+                {this.props.toDoPosts.map((singlePost)=>{
+                    return <ToDoPost key={singlePost.toDoPostId} toDoPostData={singlePost}/>
+                })}
             </div>
          );
     }
 }
  
-export default ToDoPage;
+const mapStateToProps = (state)=>({
+    toDoPosts:state.toDoPosts
+})
+
+
+export default connect(mapStateToProps)(ToDoPage);
