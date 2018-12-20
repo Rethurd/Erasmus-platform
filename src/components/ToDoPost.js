@@ -11,10 +11,12 @@ class ToDoPost extends React.Component {
                 <h3>{this.props.toDoPostData.name}</h3>
                 <p>{this.props.toDoPostData.description}</p>
                 <p>Date Posted: {this.props.toDoPostData.creationDate.format('DD-MM-YYYY')}</p>
-                <p>Number of ratings: {this.props.toDoPostData.ratings.length}</p>
-                <p>Average rating: {(this.props.toDoPostData.ratings.reduce((a,b)=>{
+                <p>Recommended by : {this.props.toDoPostData.ratingsPositive}</p>
+                <p>Not recommended by: {this.props.toDoPostData.ratingsNegative}</p>
+
+                {/* <p>Average rating: {(this.props.toDoPostData.ratings.reduce((a,b)=>{
                     return a+b;
-                },0)/this.props.toDoPostData.ratings.length).toFixed(2)}</p>
+                },0)/this.props.toDoPostData.ratings.length).toFixed(2)}</p> */}
                 {/*  if admin/owner, display delete and edit buttons here */}
             </div>
          );

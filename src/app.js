@@ -23,7 +23,7 @@ const store = configureStore();
 
 store.subscribe(()=>{
     const state = store.getState();
-    // console.log(state);
+    console.log(state);
 });
 
 const infoPost = {
@@ -52,6 +52,17 @@ const comment = {
     commentId:'asdasd'
 }
 
+const toDoPost0 = {
+    toDoPostId:uuid(),
+    name:'third To Do Post',
+    description:'Fresher post but worst reviews',
+    createdBy:'',
+    createdById:'',
+    creationDate:moment().add('days',2),
+    ratingsPositive:3,
+    ratingsNegative:3
+}
+
 const toDoPost = {
     toDoPostId:uuid(),
     name:'first To Do Post',
@@ -59,10 +70,25 @@ const toDoPost = {
     createdBy:'',
     createdById:'',
     creationDate:moment(),
-    ratings:[1,5,5]
+    ratingsPositive:5,
+    ratingsNegative:2
 }
 
+const toDoPost2 = {
+    toDoPostId:uuid(),
+    name:'second To Do Post',
+    description:'Fresher post but worse reviews',
+    createdBy:'',
+    createdById:'',
+    creationDate:moment().add('days',1),
+    ratingsPositive:5,
+    ratingsNegative:1
+}
+
+
 store.dispatch(addToDoPost(toDoPost));
+store.dispatch(addToDoPost(toDoPost2));
+store.dispatch(addToDoPost(toDoPost0));
 
 // store.dispatch(addPost(helpPost));
 // store.dispatch(addCommentToDatabase('-LTY2Ei4jyG-jVZsDiYy',comment,'Kamil'));
