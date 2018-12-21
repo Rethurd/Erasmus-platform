@@ -15,7 +15,7 @@ import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './action
 import {addInfoPost,getInfoPostsFromDatabase} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
-import { addToDoPost,addRatingToDatabasePost, getToDoPostsFromDatabase,changeRatingsSum } from './actions/toDo';
+import { addToDoPost,addRatingToDatabasePost, getToDoPostsFromDatabase,changeRatingsSum,changeRatingsSumInDatabase } from './actions/toDo';
 
 const store = configureStore();
 
@@ -24,8 +24,8 @@ const store = configureStore();
 store.subscribe(()=>{
     const state = store.getState();
 
-    console.log('store changed');
-    console.log(state);
+    // console.log('store changed');
+    // console.log(state);
 });
 
 const infoPost = {
@@ -63,8 +63,12 @@ const jsx = (
     
 );
 
+// store.dispatch(changeRatingsSumInDatabase('-LUARBxWluHbmI0E3Pnx',null,null,true,null));
 
-
+// var testTransaction = firebase.database().ref('toDoPosts/-LUARBxWluHbmI0E3Pnx/ratingsNegative');
+// testTransaction.transaction(function(currentRank) {
+//   return currentRank + 1;
+// });
 
 let hasRendered = false;
 const renderApp = ()=>{
@@ -88,7 +92,7 @@ firebase.auth().onAuthStateChanged((user)=>{
                 authorId:'DWakg8YCU7WpwmExWJrNB4rsEMY2',
                 liked:1
             }
-            store.dispatch(changeRatingsSum('-LUARBxWluHbmI0E3Pnx','NEGATIVE','ADD',false,true));
+            // store.dispatch(changeRatingsSum('-LUARBxWluHbmI0E3Pnx','NEGATIVE','ADD',false,true));
             // store.dispatch(addRatingToDatabasePost('-LUAR4IWgqCVAxmINBPG',review));
         });
         store.dispatch(getEventsFromDatabase()).then(()=>{

@@ -107,6 +107,74 @@ export const changeRatingsSum=(postId,positiveOrNegative,addOrSubstract,swapPosi
     swapNegativeToPositive
 });
 
+export const changeRatingsSumInDatabase = (postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive) =>{
+    return(dispatch)=>{
+        // console.log('changeRatingsSum');
+        // console.log('positiveOrNegative',positiveOrNegative);
+        // console.log('addOrSubtract',addOrSubstract);
+        // console.log('postId',postId);
+        if(swapPositiveToNegative==true){
+            return database.ref(`toDoPosts/${postId}/ratingsNegative`).transaction(function(currentRating) {
+                return currentRating + 1;
+            }).then(()=>{
+                database.ref(`toDoPosts/${postId}/ratingsPositive`).transaction(function(currentRating) {
+                    return currentRating - 1;
+                }).then(()=>{
+                    dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                });
+            });
+        }else if (swapNegativeToPositive==true){
+            return database.ref(`toDoPosts/${postId}/ratingsNegative`).transaction(function(currentRating) {
+                return currentRating - 1;
+            }).then(()=>{
+                database.ref(`toDoPosts/${postId}/ratingsPositive`).transaction(function(currentRating) {
+                    return currentRating + 1;
+                }).then(()=>{
+                    dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                });
+            });
+        }else if(swapPositiveToNegative==false && swapNegativeToPositive==false){
+            if(positiveOrNegative=='POSITIVE'){
+
+                if(addOrSubstract=='ADD') 
+                    return database.ref(`toDoPosts/${postId}/ratingsPositive`).transaction(function(currentRating) {
+                        return currentRating + 1;
+                    }).then(()=>{
+                        dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                    }) 
+                else{
+                    return database.ref(`toDoPosts/${postId}/ratingsPositive`).transaction(function(currentRating) {
+                        return currentRating - 1;
+                    }).then(()=>{
+                        dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                    });
+                }     
+            }else{
+                if(addOrSubstract=='ADD'){
+                    return database.ref(`toDoPosts/${postId}/ratingsNegative`).transaction(function(currentRating) {
+                        return currentRating + 1;
+                    }).then(()=>{
+                        dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                    }) 
+                } 
+                else{
+                    return database.ref(`toDoPosts/${postId}/ratingsNegative`).transaction(function(currentRating) {
+                        return currentRating - 1;
+                    }).then(()=>{
+                        dispatch(changeRatingsSum(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive));
+                    });
+                }
+                
+
+            }
+        }
+       
+    }
+}
+        
+    
+
+
 export const updateRatingOfPost = (postId,reviewId,newRating)=>({
     type:'UPDATE_RATING_OF_POST',
     postId,

@@ -1,7 +1,7 @@
 import React from 'react';
 import Modal from 'react-modal';
 import {connect} from 'react-redux';
-import {increaseRatingsPositive, addRatingToDatabasePost,deleteRatingFromDatabasePost, updateRatingOfPostInDatabase} from '../actions/toDo';
+import {increaseRatingsPositive, addRatingToDatabasePost,deleteRatingFromDatabasePost, updateRatingOfPostInDatabase,changeRatingsSumInDatabase} from '../actions/toDo';
 import {firebase} from '../firebase/firebase';
 
 class ToDoPostModal extends React.Component {
@@ -9,7 +9,6 @@ class ToDoPostModal extends React.Component {
         super(props);
         
         let leftAReview = false;
-         console.log(this.props.toDoPostData.reviews);
          for (let index = 0; index < this.props.toDoPostData.reviews.length; index++) {
              if(this.props.toDoPostData.reviews[index].authorId==firebase.auth().currentUser.uid){
                  leftAReview = true;
@@ -50,11 +49,15 @@ class ToDoPostModal extends React.Component {
     handleLikeButtonClicked = () =>{
         if(this.state.currentUserDisliked){
             //change the review from negative to positive
-            this.props.updateRatingOfPostInDatabase(this.props.toDoPostData.toDoPostId,this.state.reviewId,1);
+            this.props.updateRatingOfPostInDatabase(this.props.toDoPostData.toDoPostId,this.state.reviewId,1).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'POSITIVE','ADD',false,true);
+            });
         }
         else if(this.state.currentUserLiked){
             //delete review ('unlike')
-            this.props.deleteRatingFromDatabasePost(this.props.toDoPostData.toDoPostId,this.state.reviewId);
+            this.props.deleteRatingFromDatabasePost(this.props.toDoPostData.toDoPostId,this.state.reviewId).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'POSITIVE','SUBTRACT',false,false);
+            });;
         }else{
             //add positive review
             const userId = firebase.auth().currentUser.uid;
@@ -62,7 +65,10 @@ class ToDoPostModal extends React.Component {
                 authorId:userId,
                 liked:1
             }
-            this.props.addRatingToDatabasePost(this.props.toDoPostData.toDoPostId,review);
+            this.props.addRatingToDatabasePost(this.props.toDoPostData.toDoPostId,review).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'POSITIVE','ADD',false,false)
+            });
+            
         }
         this.props.onRequestClose();   
 
@@ -71,12 +77,16 @@ class ToDoPostModal extends React.Component {
 
     handleDislikeButtonClicked = () =>{
         if(this.state.currentUserLiked){
-            //change the review from negative to positive
-            this.props.updateRatingOfPostInDatabase(this.props.toDoPostData.toDoPostId,this.state.reviewId,0);
+            //change the review from positive to negative
+            this.props.updateRatingOfPostInDatabase(this.props.toDoPostData.toDoPostId,this.state.reviewId,0).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'POSITIVE','ADD',true,false);
+            });;
         }
         else if(this.state.currentUserDisliked){
-            //delete review ('unlike')
-            this.props.deleteRatingFromDatabasePost(this.props.toDoPostData.toDoPostId,this.state.reviewId);
+            //delete review ('cancel dislike')
+            this.props.deleteRatingFromDatabasePost(this.props.toDoPostData.toDoPostId,this.state.reviewId).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'NEGATIVE','SUBTRACT',false,false);
+            });;
         }else{
             //add negative review
             const userId = firebase.auth().currentUser.uid;
@@ -84,7 +94,9 @@ class ToDoPostModal extends React.Component {
                 authorId:userId,
                 liked:0
             }
-            this.props.addRatingToDatabasePost(this.props.toDoPostData.toDoPostId,review);
+            this.props.addRatingToDatabasePost(this.props.toDoPostData.toDoPostId,review).then(()=>{
+                this.props.changeRatingsSumInDatabase(this.props.toDoPostData.toDoPostId,'NEGATIVE','ADD',false,false);
+            });;
         }
         this.props.onRequestClose(); 
     }
@@ -114,7 +126,8 @@ const mapDispatchToProps = (dispatch)=>({
     increaseRatingsPositive: (toDoPostId) => dispatch(increaseRatingsPositive(toDoPostId)),
     addRatingToDatabasePost: (postId, review) =>dispatch(addRatingToDatabasePost(postId,review)),
     deleteRatingFromDatabasePost: (postId,reviewId) =>dispatch(deleteRatingFromDatabasePost(postId,reviewId)),
-    updateRatingOfPostInDatabase: (postId,reviewId,newRating) =>dispatch(updateRatingOfPostInDatabase(postId,reviewId,newRating))
+    updateRatingOfPostInDatabase: (postId,reviewId,newRating) =>dispatch(updateRatingOfPostInDatabase(postId,reviewId,newRating)),
+    changeRatingsSumInDatabase : (postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive) =>dispatch(changeRatingsSumInDatabase(postId,positiveOrNegative,addOrSubstract,swapPositiveToNegative,swapNegativeToPositive))
 })
 
 export default connect(null,mapDispatchToProps)(ToDoPostModal);

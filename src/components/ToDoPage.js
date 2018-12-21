@@ -43,16 +43,12 @@ class ToDoPage extends React.Component {
         this.setState(()=>({isModalOpen:false,selectedToDoPost:{}}));
     }
     renderToDoPosts = () =>{
-        console.log(this.props.toDoPosts);
         return getToDoPosts(this.props.toDoPosts,this.state.sortByValue).map((singlePost)=>{
-            console.log(singlePost);
             return <ToDoPost openPostModal={this.openPostModal} key={singlePost.toDoPostId} toDoPostData={singlePost} />
         });
     }
     
     render() { 
-        console.log('toDoPage rerendered');
-        console.log(this.props.toDoPosts);
         return ( 
             <div>
                 <div>

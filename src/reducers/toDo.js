@@ -61,7 +61,6 @@ const ToDoReducer = (state = defaultToDoPostsState,action) => {
                 if(action.positiveOrNegative=='POSITIVE'){
 
                     action.addOrSubstract=='ADD' ? singlePostToChangeRatingsIn.ratingsPositive++ : singlePostToChangeRatingsIn.ratingsPositive--;
-                    console.log(singlePostToChangeRatingsIn);
                 }else{
     
                     action.addOrSubstract=='ADD' ? singlePostToChangeRatingsIn.ratingsNegative++ : singlePostToChangeRatingsIn.ratingsNegative--;
