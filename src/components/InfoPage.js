@@ -9,6 +9,7 @@ import getInfoPostById from '../selectors/getInfoPostById';
 
 class InfoPage extends React.Component {
     constructor(props){
+        console.log('infoPage constructor ran');
         super(props);
         const user = firebase.auth().currentUser;
         let isUserAdmin=false;

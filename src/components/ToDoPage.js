@@ -2,13 +2,20 @@ import React from 'react';
 import {connect} from 'react-redux';
 import ToDoPost from './ToDoPost';
 import getToDoPosts from '../selectors/getToDoPosts';
+import {isEmpty} from '../resources/functions';
 import AddToDoPostModal from './AddToDoPostModal';
+import ToDoPostModal from './ToDoPostModal';
+import getToDoPostById from '../selectors/getToDoPostById';
+
 class ToDoPage extends React.Component {
     constructor(props){
         super(props);
         this.state={
             sortByValue:'rating',
-            isModalOpen:false
+            isAddNewModalOpen:false,
+            isModalOpen:false,
+            selectedToDoPost:{}
+            
         };
     };
 
@@ -19,17 +26,33 @@ class ToDoPage extends React.Component {
         else if(e.target.value=='date'){
             this.setState(()=>({sortByValue:'date'}))
         }
-        console.log(e.target.value);
     }
 
     openAddPostModal = () =>{
-        this.setState(()=>({isModalOpen:true}));
+        this.setState(()=>({isAddNewModalOpen:true}));
     }
     closeAddPostModal = () =>{
-        this.setState(()=>({isModalOpen:false}));
+        this.setState(()=>({isAddNewModalOpen:false}));
     }
 
+    openPostModal = (toDoPostId) =>{
+        const selectedToDoPost = getToDoPostById(this.props.toDoPosts,toDoPostId);
+        this.setState(()=>({isModalOpen:true,selectedToDoPost}));
+    }
+    closePostModal = () =>{
+        this.setState(()=>({isModalOpen:false,selectedToDoPost:{}}));
+    }
+    renderToDoPosts = () =>{
+        console.log(this.props.toDoPosts);
+        return getToDoPosts(this.props.toDoPosts,this.state.sortByValue).map((singlePost)=>{
+            console.log(singlePost);
+            return <ToDoPost openPostModal={this.openPostModal} key={singlePost.toDoPostId} toDoPostData={singlePost} />
+        });
+    }
+    
     render() { 
+        console.log('toDoPage rerendered');
+        console.log(this.props.toDoPosts);
         return ( 
             <div>
                 <div>
@@ -39,13 +62,12 @@ class ToDoPage extends React.Component {
                     </select>
                 </div>
             
-                This is the ToDo page component!
+                <p>This is the ToDo page component!</p>
                 <button onClick={this.openAddPostModal}>Add a new recommendation!</button>
-                {getToDoPosts(this.props.toDoPosts,this.state.sortByValue).map((singlePost)=>{
-                    return <ToDoPost key={singlePost.toDoPostId} toDoPostData={singlePost}/>
-                })}
-                <AddToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closeAddPostModal}/>
-
+                {this.renderToDoPosts()}
+                {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
+                {isEmpty(this.state.selectedToDoPost) ? null :
+                 <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost}/>}
             </div>
          );
     }
@@ -53,7 +75,7 @@ class ToDoPage extends React.Component {
  
 const mapStateToProps = (state)=>({
     toDoPosts:state.toDoPosts
-})
+});
 
 
 export default connect(mapStateToProps)(ToDoPage);

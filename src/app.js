@@ -15,7 +15,7 @@ import {addPost, getHelpPostsFromDatabase, addCommentToDatabase } from './action
 import {addInfoPost,getInfoPostsFromDatabase} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
-import { addToDoPost } from './actions/toDo';
+import { addToDoPost,addRatingToDatabasePost, getToDoPostsFromDatabase,changeRatingsSum } from './actions/toDo';
 
 const store = configureStore();
 
@@ -23,6 +23,8 @@ const store = configureStore();
 
 store.subscribe(()=>{
     const state = store.getState();
+
+    console.log('store changed');
     console.log(state);
 });
 
@@ -51,44 +53,6 @@ const comment = {
     author:'Kamil',
     commentId:'asdasd'
 }
-
-const toDoPost0 = {
-    toDoPostId:uuid(),
-    name:'third To Do Post',
-    description:'Fresher post but worst reviews',
-    createdBy:'',
-    createdById:'',
-    creationDate:moment().add('days',2),
-    ratingsPositive:3,
-    ratingsNegative:3
-}
-
-const toDoPost = {
-    toDoPostId:uuid(),
-    name:'first To Do Post',
-    description:' some desc',
-    createdBy:'',
-    createdById:'',
-    creationDate:moment(),
-    ratingsPositive:5,
-    ratingsNegative:2
-}
-
-const toDoPost2 = {
-    toDoPostId:uuid(),
-    name:'second To Do Post',
-    description:'Fresher post but worse reviews',
-    createdBy:'',
-    createdById:'',
-    creationDate:moment().add('days',1),
-    ratingsPositive:5,
-    ratingsNegative:1
-}
-
-
-store.dispatch(addToDoPost(toDoPost));
-store.dispatch(addToDoPost(toDoPost2));
-store.dispatch(addToDoPost(toDoPost0));
 
 // store.dispatch(addPost(helpPost));
 // store.dispatch(addCommentToDatabase('-LTY2Ei4jyG-jVZsDiYy',comment,'Kamil'));
@@ -119,6 +83,14 @@ firebase.auth().onAuthStateChanged((user)=>{
         store.dispatch(login(user.uid));
         store.dispatch(getHelpPostsFromDatabase());
         store.dispatch(getInfoPostsFromDatabase());
+         store.dispatch(getToDoPostsFromDatabase()).then(()=>{
+            const review = {
+                authorId:'DWakg8YCU7WpwmExWJrNB4rsEMY2',
+                liked:1
+            }
+            store.dispatch(changeRatingsSum('-LUARBxWluHbmI0E3Pnx','NEGATIVE','ADD',false,true));
+            // store.dispatch(addRatingToDatabasePost('-LUAR4IWgqCVAxmINBPG',review));
+        });
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
             // const admin = {
@@ -245,3 +217,47 @@ const event3 = {
 // store.dispatch(addEvent(event2));
 // // store.dispatch(addEvent(event3));
 // console.log(store.getState());
+
+
+
+
+
+
+
+// const toDoPost0 = {
+//     toDoPostId:uuid(),
+//     name:'third To Do Post',
+//     description:'Fresher post but worst reviews',
+//     createdBy:'',
+//     createdById:'',
+//     creationDate:moment().add('days',2),
+//     ratingsPositive:3,
+//     ratingsNegative:3
+// }
+
+// const toDoPost = {
+//     toDoPostId:uuid(),
+//     name:'first To Do Post',
+//     description:' some desc',
+//     createdBy:'',
+//     createdById:'',
+//     creationDate:moment(),
+//     ratingsPositive:5,
+//     ratingsNegative:2
+// }
+
+// const toDoPost2 = {
+//     toDoPostId:uuid(),
+//     name:'second To Do Post',
+//     description:'Fresher post but worse reviews',
+//     createdBy:'',
+//     createdById:'',
+//     creationDate:moment().add('days',1),
+//     ratingsPositive:5,
+//     ratingsNegative:1
+// }
+
+
+// store.dispatch(addToDoPost(toDoPost));
+// store.dispatch(addToDoPost(toDoPost2));
+// store.dispatch(addToDoPost(toDoPost0));

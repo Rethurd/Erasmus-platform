@@ -20,6 +20,7 @@ class AddToDoPostModal extends React.Component {
             creationDate:moment(),
             ratingsPositive:0,
             ratingsNegative:0,
+            reviews:[],
             nameEmptyError:undefined,
             descriptionEmptyError:undefined
          }
@@ -50,7 +51,6 @@ class AddToDoPostModal extends React.Component {
         }
         if (this.state.name!='' && this.state.description!=''){
 
-            console.log('successfuly submitted');
             let user = firebase.auth().currentUser;
            
             this.setState(()=>({createdBy:user.displayName,createdById:user.uid}),()=>{

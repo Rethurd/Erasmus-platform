@@ -69,6 +69,7 @@ class CalendarPage extends React.Component {
                 <div key={uuid()}>
                      <h4>{singleEvent.name}</h4>
                      <p>Description: {singleEvent.description}</p>
+                     {/* <p>Participants: {singleEvent.participants.map((singleParticipant)=>{return <p key={uuid()}>{singleParticipant.participantData.name}</p>})}</p>  */}
                 </div>
             )
         });
