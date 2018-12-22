@@ -6,6 +6,8 @@ import {isEmpty} from '../resources/functions';
 import AddToDoPostModal from './AddToDoPostModal';
 import ToDoPostModal from './ToDoPostModal';
 import getToDoPostById from '../selectors/getToDoPostById';
+import ToDoFilters from './ToDoFilters';
+import selectToDoPosts from '../selectors/selectToDoPosts'
 
 class ToDoPage extends React.Component {
     constructor(props){
@@ -57,7 +59,7 @@ class ToDoPage extends React.Component {
                         <option value="date">Date posted</option>
                     </select>
                 </div>
-            
+                <ToDoFilters/>
                 <p>This is the ToDo page component!</p>
                 <button onClick={this.openAddPostModal}>Add a new recommendation!</button>
                 {this.renderToDoPosts()}
@@ -70,7 +72,7 @@ class ToDoPage extends React.Component {
 }
  
 const mapStateToProps = (state)=>({
-    toDoPosts:state.toDoPosts
+    toDoPosts:selectToDoPosts(state.toDoPosts,state.toDoFilters)
 });
 
 
