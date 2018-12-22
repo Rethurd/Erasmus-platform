@@ -5,6 +5,16 @@ const ToDoReducer = (state = defaultToDoPostsState,action) => {
     switch(action.type){
         case 'ADD_TO_DO_POST':
             return [...state,action.toDoPostData];
+        case 'DELETE_TO_DO_POST':
+            const newStateDelete = state.filter((singlePost)=>singlePost.toDoPostId!=action.toDoPostId);
+            return newStateDelete;
+        case 'EDIT_TO_DO_POST':
+            const uneditedPosts = state.filter((singlePost)=> singlePost.toDoPostId!=action.postData.toDoPostId);
+            const postToEdit = {
+                ...action.postData
+            };
+            uneditedPosts.push(postToEdit);
+            return uneditedPosts;
         case 'SET_TO_DO_POSTS':
             const newState = [];
             action.posts.forEach((post)=>{

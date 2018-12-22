@@ -25,6 +25,38 @@ export const addToDoPostToDatabase = (toDoPostData) =>{
     }
 };
 
+export const deleteToDoPost = (toDoPostId) => ({
+    type:'DELETE_TO_DO_POST',
+    toDoPostId
+});
+
+export const deleteToDoPostFromDatabase = (toDoPostId) =>{
+    return (dispatch)=>{
+        return database.ref(`toDoPosts/${toDoPostId}`).remove().then(()=>{
+            dispatch(deleteToDoPost(toDoPostId));
+        })
+    }
+}
+
+export const editToDoPost = (postData)=>({
+    type:'EDIT_TO_DO_POST',
+    postData
+});
+
+export const editToDoPostInDatabase = (postData)=>{
+    return (dispatch)=>{
+        const unchangedPostData = Object.assign({},postData); 
+        const thisPostId = postData.toDoPostId;
+        postData.creationDate=postData.creationDate.unix();
+        const reviewsObject = arrayToObject(postData.reviews, "reviewId");
+        postData.reviews=reviewsObject;
+        const {toDoPostId, ...postDataToSave} = postData;
+        return database.ref(`toDoPosts/${thisPostId}`).update(postDataToSave).then(()=>{
+            dispatch(editToDoPost(unchangedPostData));
+        })
+    }
+}
+
 export const setToDoPosts = (posts) =>({
     type:'SET_TO_DO_POSTS',
     posts
