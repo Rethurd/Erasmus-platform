@@ -3,26 +3,32 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import database, {firebase} from '../firebase/firebase';
 import moment from 'moment';
-
+import classNames from 'classnames';
 class Chat extends React.Component {
     constructor(props) {
         super(props);
+        const userID=firebase.auth().currentUser.uid;
         this.state = { 
             message:'',
-            messageList:[]
+            messageList:[],
+            userID
          }
 
     }
 
     componentDidMount(){
         this.getMessagesFromDatabase();
+        this.chatBottom.scrollIntoView();
+    }
+
+    componentDidUpdate(){
+        this.chatBottom.scrollIntoView();
     }
 
     getMessagesFromDatabase = () =>{
         database.ref('messages').on('value',(allMessages)=>{
             const messageList=[];
             allMessages.forEach((singleMessage)=>{
-                console.log(singleMessage)
                 const message = {
                     ...singleMessage.val(),
                     messageId:singleMessage.key
@@ -38,50 +44,81 @@ class Chat extends React.Component {
         this.setState(()=>({message}));
     }
     handleSendMessage = () =>{
-        const user = firebase.auth().currentUser.displayName;
-        const messageObject = {
-            user,
-            dateSent:moment().unix(),
-            message:this.state.message
+        if(this.state.message!=''){
+            const user = firebase.auth().currentUser;
+            const messageObject = {
+                user:user.displayName,
+                userID:user.uid,
+                dateSent:moment().unix(),
+                message:this.state.message
+            }
+            database.ref(`messages`).push(messageObject).then(()=>{
+                this.setState(()=>({message:''}));
+            });
         }
-        database.ref(`messages`).push(messageObject).then(()=>{
-            this.setState(()=>({message:''}));
-        });
+        
     }
 
     renderMessages = () =>{
         return this.state.messageList.map((singleMessage)=>{
-            return(
-            <li key={singleMessage.messageId}>
-                <div>
-                    <p>{singleMessage.user}</p>
-                    <p>{moment(singleMessage.dateSent*1000).format('DD-MM HH:mm')}</p>
-                </div>
-                <div>
-                    {singleMessage.message}
-                </div>
-            </li>
-            )
+            if(singleMessage.userID==this.state.userID){
+                return(
+                    <li key={singleMessage.messageId} className="chatMessage--currentUsers">
+                        <div className="chatMessage__header">
+                            <p>{singleMessage.user}</p>
+                            <p>{moment(singleMessage.dateSent*1000).format('DD-MM HH:mm')}</p>
+                        </div>
+                        <div className="chatMessage__message">
+                            {singleMessage.message}
+                        </div>
+                    </li>
+                    
+                    )
+            }else{
+                return(
+                    <li key={singleMessage.messageId} className="chatMessage">
+                        <div className="chatMessage__header">
+                            <p>{singleMessage.user}</p>
+                            <p>{moment(singleMessage.dateSent*1000).format('DD-MM HH:mm')}</p>
+                        </div>
+                        <div className="chatMessage__message">
+                            {singleMessage.message}
+                        </div>
+                    </li>
+                    
+                    )
+            }
+            
         });
         
     }
     render() { 
         return ( 
-            <div>
-                <ul >
-                    {this.renderMessages()}
-                </ul>
-                <TextField 
-                    multiline={true}
-                    rows={3}
-                    autoFocus={true}
-                    placeholder="Message..."
-                    value={this.state.message}
-                    onChange={this.handleMessageChange}
-                />
-                <Button variant="outlined" onClick={this.handleSendMessage}>
-                    Send
-                </Button>
+            <div className="chatBox">
+                <div>
+                    <div className="chatHeader">Chat</div>
+                    <ul className={classNames("chatList","chatBox__scrollbar")}>
+                        {this.renderMessages()}
+                        <li className="chatMessage--hidden" ref={(el)=>{
+                            this.chatBottom=el;
+                        }}></li>
+                    </ul>
+                    <div className="messageBox">
+                        <TextField 
+                            multiline={true}
+                            rows={3}
+                            autoFocus={true}
+                            placeholder="Message..."
+                            value={this.state.message}
+                            onChange={this.handleMessageChange}
+                            className="chatInput"
+                        />
+                            <Button variant="outlined" onClick={this.handleSendMessage} className="chatSendButton">
+                                Send
+                            </Button>
+                        
+                    </div>
+                </div>
             </div>
          );
     }

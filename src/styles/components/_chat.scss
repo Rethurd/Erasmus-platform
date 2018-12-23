@@ -1,0 +1,154 @@
+.chatBox{
+    margin-top:2rem;
+    margin-bottom:3rem;
+}
+
+.chatHeader{
+    color:white;
+    border: 2px solid black;
+    border-bottom:0;
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+    margin-top:20px;
+    margin:auto;
+    background:#3B3E40;
+    text-align:center;
+    font-size:$l-size;
+    width:70rem;
+}
+.chatList{
+    background-image:url('../resources/graphics/prism.png');
+    border: 2px solid black;
+    
+    height:400px;
+    margin:auto;
+    padding:2em 0 0.5em 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    list-style-type: none;
+    width:70rem;
+
+    li:nth-child(even){
+        background:lighten(#D3D3D3,15%);
+    }
+    li:nth-child(odd){
+        background:lighten(#D3D3D3,5%);
+    }
+}
+.messageBox{
+    padding:0.3em 0;
+    border: 2px solid black;
+    border-top:0;
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+    margin-top:20px;
+    margin:auto;
+    background:#3B3E40;
+    font-size:$l-size;
+    width:70rem;
+    display:flex;
+    align-items: center !important;
+}
+.chatMessage{
+    white-space: pre;
+    padding: 0 0.3em 0.3em 0.3em;
+    border-radius:0.5em;
+    margin-bottom:1.5em;
+    margin-left:0.5em;
+    display:inline-block;
+    clear:both;
+    float:left;
+    max-width:30em;
+    min-width:15em;
+    // width:20em;
+}
+
+.chatMessage--currentUsers{
+    @extend .chatMessage;
+    float:right;
+    background:lighten($esn-blue,5%) !important;
+}
+.chatMessage--hidden{
+    display:inline-block;
+    clear:both;
+    float:left;
+}
+
+.chatMessage__header{
+    color:$esn-dark-blue;
+    display:flex;
+    font-weight: bold;
+    flex-direction:row;
+    justify-content: space-between;
+    font-size:0.9rem;
+}
+.chatMessage__message{
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.chatMessage__header__author{
+
+}
+
+
+
+.chatBox__scrollbar::-webkit-scrollbar-track
+{
+    border-radius:2em;
+	background-color: #F5F5F5;
+}
+
+.chatBox__scrollbar::-webkit-scrollbar
+{
+    border-radius:2em;
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.chatBox__scrollbar::-webkit-scrollbar-thumb
+{
+    border-radius:2em;
+	background-color: $esn-blue;	
+	background-image: -webkit-linear-gradient(90deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
+}
+
+.chatInput{
+    background: white;
+    border-radius: 0.3em;
+    width:40%;
+    height:100%;
+    margin-left:5em !important;
+    
+}
+
+
+//material-ui
+
+
+.chatInput *:before{
+    border-bottom-color: $esn-blue !important;
+    border-bottom-left-radius: 1em !important;
+    border-bottom-right-radius: 1em !important;
+}
+.chatInput *:after{
+    border-bottom-color: $esn-blue !important;
+    border-bottom-left-radius: 1em !important;
+    border-bottom-right-radius: 1em !important;
+}
+
+.chatInput *{
+    padding-left:1em !important;
+}
+
+.chatSendButton{
+    background:$esn-blue !important;
+    margin-left:30px !important;
+    height:100% !important;
+    vertical-align: middle !important;
+}

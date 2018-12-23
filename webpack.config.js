@@ -43,6 +43,13 @@ module.exports = (env) => {
             }
           ]
         })
+      },{
+        test: /\.(png|jpg)$/,
+        use:[
+        {
+            loader:'file-loader'
+          }
+        ]
       }]  
     },
     plugins: [

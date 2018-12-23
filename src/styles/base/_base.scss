@@ -2,9 +2,10 @@ html{
     font-size:62.5%; // 62.5 * 16 = 10, so 1 rem = 10px;
 }
 body{
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', Helvetica, sans-serif,Arial;
     font-size:$m-size;
-    
+    background-image:url("../resources/graphics/doodles.png");
+
 }
 button{
     cursor:pointer;
