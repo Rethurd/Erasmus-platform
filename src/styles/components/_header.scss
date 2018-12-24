@@ -7,6 +7,13 @@
     border-bottom:1px solid $dark-gray;
     height:8rem;
 }
+
+.header__responsiveMenu{
+    color:white;
+    display:none;
+}
+
+
 .header__logo{
     color:white;
     margin-left:2rem;
@@ -15,6 +22,16 @@
     display:table;
     height:8rem;
     align-items:center;
+}
+
+@media (max-width:850px){
+    .header{
+        flex-direction: column;
+    }
+    .header__links{
+        display:flex;
+        flex-direction:column;
+    }
 }
 
 .header__link{

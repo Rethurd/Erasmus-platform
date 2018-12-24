@@ -6,6 +6,7 @@ import {firebase} from '../firebase/firebase';
 export const Header = () =>(
     <header className="header">
         <h1 className="header__logo">Erasmus platform</h1>
+        <div className="header__responsiveMenu"><i class="fas fa-bars"></i></div>
         <div className="header__links"> 
             <NavLink className="header__link--first" to="/info" activeClassName="is-active">Announcements/Information</NavLink>
             <NavLink className="header__link" to="/calendar" activeClassName="is-active">Calendar</NavLink>
