@@ -4,6 +4,7 @@ import {firebase} from '../firebase/firebase';
 import {connect} from 'react-redux';
 import {deleteInfoPostFromDatabase,editInfoPostInDatabase} from '../actions/info';
 import TextField from '@material-ui/core/TextField';
+import classNames from 'classnames';
 
 class InfoPostModal extends React.Component {
     constructor(props) {
@@ -59,27 +60,31 @@ class InfoPostModal extends React.Component {
                 contentLabel="Selected Info Post"
                 ariaHideApp={false}
                 onRequestClose={this.props.onRequestClose}
+                className={classNames("modal","modal--info")}
+
                 >
-                <p>This is my InfoPost Modal</p>
-                {this.state.editMode ? <h3>
-                    {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
-                    <TextField value={this.state.name} onChange={this.handleNameChange}/>
-                    </h3> 
+                {this.state.editMode ? 
+                <h3 className="infoModal__name" >
+                    {this.state.nameEmptyError==undefined ? null: <p className="infoModal__name__error" >{this.state.nameEmptyError}</p>}
+                    <TextField className="infoModal__name--edit" value={this.state.name} onChange={this.handleNameChange}/>
+                </h3> 
                 :
-                 <h3>{this.props.postData.name}</h3> }
+                 <h3 className="infoModal__name" >{this.props.postData.name}</h3> }
                 {this.state.editMode ?
                     <div>
-                        {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
-                        <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                        {this.state.descriptionEmptyError==undefined ? null: <p className="infoModal__description__error" >{this.state.descriptionEmptyError}</p>}
+                        <TextField className="infoModal__description--edit" value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5} rowsMax={20}/> 
                     </div>
                   :
-                   <p>{this.props.postData.description}</p> }
-                {this.props.isUserAdmin ? <button onClick={this.handleDeletePost}>Delete</button> : null}
-                {this.props.isUserAdmin ? 
-                    this.state.editMode ?  <button onClick={this.handleSaveChanges}>Save</button> 
-                        : <button onClick={this.handleEditPost}>Edit</button> 
-                    : 
-                    null}
+                   <p className="infoModal__description">{this.props.postData.description}</p> }
+                <div className="infoModal__buttons">
+                    {this.props.isUserAdmin ? <button className={classNames("btn btn-danger")} onClick={this.handleDeletePost}>Delete</button> : null}
+                    {this.props.isUserAdmin ? 
+                        this.state.editMode ?  <button className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
+                            : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
+                        : 
+                        null}
+                </div>
             </Modal>
          );
     }
