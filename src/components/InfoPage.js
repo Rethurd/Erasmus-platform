@@ -45,7 +45,7 @@ class InfoPage extends React.Component {
     }
 
     rerenderAfterChange = (infoPostId)=>{
-        const selectedInfoPost = getInfoPostById(this.props.infoPosts,infoPostId);
+        const selectedInfoPost = getInfoPostById(tshis.props.infoPosts,infoPostId);
         this.setState(()=>({
             isModalOpen:true,
             selectedInfoPost,
@@ -55,8 +55,11 @@ class InfoPage extends React.Component {
     render() { 
         return ( 
             <div>
-                This is the info page component!
-                <div>
+
+            
+
+                <h1 className="page__title">Information / Announcements</h1>
+                <div className="infoPage__allPosts">
                     {this.props.infoPosts.map((singlePostData)=>{
                         return <InfoPost handleOpenModal={this.handleOpenModal} key={singlePostData.infoPostId} postData={singlePostData}/>
                     })}

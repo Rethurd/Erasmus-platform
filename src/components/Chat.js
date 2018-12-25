@@ -4,6 +4,9 @@ import Button from '@material-ui/core/Button';
 import database, {firebase} from '../firebase/firebase';
 import moment from 'moment';
 import classNames from 'classnames';
+// import {Jumbotron} from 'react-bootstrap';
+// import BSButton from 'react-bootstrap/lib/Button'
+
 class Chat extends React.Component {
     constructor(props) {
         super(props);

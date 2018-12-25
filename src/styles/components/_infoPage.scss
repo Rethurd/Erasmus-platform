@@ -1,0 +1,144 @@
+.infoPage__allPosts{    
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items:center;
+}
+
+
+
+.infoPost{
+    justify-self: center;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    -webkit-border-radius: 1.5rem;
+    -moz-border-radius: 1.5rem;
+    border-radius: 1.5rem;
+    border: none;
+    background-image:url('../resources/graphics/prism.png');
+    opacity:0.9;
+    color:white;
+    margin:2rem;
+    width:280px;
+    height:300px;
+}
+
+.infoPost__title{
+    height:40px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    text-align:center;
+    border:1px solid black;
+    border-top-right-radius: 1.5rem;
+    border-top-left-radius: 1.5rem;;
+    background:darken($esn-orange,10%);
+    margin:0;    
+    padding:0.5rem 0.2rem;
+}
+
+.infoPost__description{
+    border-left:1px solid black;
+    border-right:1px solid black;
+    flex-grow:5;
+    text-align:center;
+    display: table;
+    justify-self:flex-end;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    white-space: pre-wrap; // just pre doesnt work with word-wrap ????  https://stackoverflow.com/questions/4413015/browser-compatible-word-wrap-and-whitespace-pre/4413129
+    overflow-y: scroll;
+}
+
+.infoPost__footer{
+    border:1px solid black;
+    border-bottom-right-radius: 1.5rem;
+    border-bottom-left-radius: 1.5rem;
+    height:30px;
+    display: flex;
+    justify-content: space-between;
+    font-size:0.9rem;
+    color:darken($esn-orange,10%);
+    font-weight:bold;
+    padding:0.2rem 0.3rem;
+}
+
+
+
+.descriptionContainer{
+    display: table;
+    height: 230px;
+    // overflow: hidden;
+}
+
+.descriptionContainer__inner{
+    border-left:1px solid black;
+    border-right:1px solid black;
+    // padding:0.5rem;
+    white-space: pre-wrap ;
+    max-width:280px;
+    text-align:center;
+    display: table-cell;
+    vertical-align: middle; 
+    word-wrap:break-word;
+}
+
+.descriptionContainer__text{
+   
+    padding:1rem;
+    // vertical-align: middle;
+    height:230px;
+    overflow-y:scroll;
+}
+
+
+.infoDescription__scrollBar::-webkit-scrollbar-track
+{
+    border-radius:2em;
+	background-color: #F5F5F5;
+}
+
+.infoDescription__scrollBar::-webkit-scrollbar
+{
+    border-radius:2em;
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.infoDescription__scrollBar::-webkit-scrollbar-thumb
+{
+    border-radius:2em;
+	background-color: $esn-orange;	
+	background-image: -webkit-linear-gradient(90deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
+}
+@media(min-width:600px) and (max-width:960px){
+    .infoPage__allPosts{
+        grid-template-columns: 1fr 1fr;
+
+    }
+}
+@media(max-width:600px){
+    .infoPage__allPosts{
+        grid-template-columns: 1fr;
+
+    }
+}
+
+@media(min-width:1200px){
+    // .infoPage__allPosts{
+    //     grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    // }
+    .infoPost{
+        width:350px;
+    }
+    .descriptionContainer__inner{
+        max-width:330px;
+    }
+
+}
