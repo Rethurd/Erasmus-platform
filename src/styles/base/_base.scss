@@ -27,7 +27,7 @@ button:disabled{
     opacity:0.85;
     display:grid;
     align-items: center; // vertical centering 
-    grid-template-rows: 1fr 7fr 1fr;
+    grid-template-rows: 2fr 7fr 1fr;
     flex-direction: column;
     width:500px;
     max-height:600px;

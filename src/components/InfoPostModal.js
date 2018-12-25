@@ -66,17 +66,20 @@ class InfoPostModal extends React.Component {
                 {this.state.editMode ? 
                 <h3 className="infoModal__name" >
                     {this.state.nameEmptyError==undefined ? null: <p className="infoModal__name__error" >{this.state.nameEmptyError}</p>}
-                    <TextField className="infoModal__name--edit" value={this.state.name} onChange={this.handleNameChange}/>
+                    <TextField className="infoModal__name--edit" value={this.state.name} onChange={this.handleNameChange} multiline rowsMax={3}/>
                 </h3> 
                 :
-                 <h3 className="infoModal__name" >{this.props.postData.name}</h3> }
+                this.props.postData.name.length>30 ?
+                    <h3 className="infoModal__name" >{this.props.postData.name.substring(0,50)}...</h3> 
+                     :
+                    <h3 className="infoModal__name" >{this.props.postData.name}</h3> }
                 {this.state.editMode ?
                     <div>
                         {this.state.descriptionEmptyError==undefined ? null: <p className="infoModal__description__error" >{this.state.descriptionEmptyError}</p>}
-                        <TextField className="infoModal__description--edit" value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5} rowsMax={20}/> 
+                        <TextField className={classNames("infoModalDescription__scrollBar infoModal__description--edit")} value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5} rowsMax={20}/> 
                     </div>
                   :
-                   <p className="infoModal__description">{this.props.postData.description}</p> }
+                   <p className={classNames("infoModalDescription__scrollBar","infoModal__description")}>{this.props.postData.description}</p> }
                 <div className="infoModal__buttons">
                     {this.props.isUserAdmin ? <button className={classNames("btn btn-danger")} onClick={this.handleDeletePost}>Delete</button> : null}
                     {this.props.isUserAdmin ? 

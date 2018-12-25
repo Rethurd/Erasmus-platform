@@ -45,7 +45,7 @@ class InfoPage extends React.Component {
     }
 
     rerenderAfterChange = (infoPostId)=>{
-        const selectedInfoPost = getInfoPostById(tshis.props.infoPosts,infoPostId);
+        const selectedInfoPost = getInfoPostById(this.props.infoPosts,infoPostId);
         this.setState(()=>({
             isModalOpen:true,
             selectedInfoPost,
