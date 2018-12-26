@@ -6,6 +6,7 @@ import helpPostsReducer from '../reducers/help';
 import infoPostsReducer from '../reducers/info';
 import toDoPostsReducer from '../reducers/toDo';
 import toDoFiltersReducer from '../reducers/toDoFilters';
+import usersReducer from '../reducers/users';
 
 //Store creation
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -16,7 +17,8 @@ export default () => {
         helpPosts:helpPostsReducer,
         infoPosts:infoPostsReducer,
         toDoPosts:toDoPostsReducer,
-        toDoFilters:toDoFiltersReducer
+        toDoFilters:toDoFiltersReducer,
+        users:usersReducer
 }),
         composeEnhancers(applyMiddleware(thunk)) // for asynchronous actions
         // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

@@ -16,6 +16,7 @@ import {addInfoPost,getInfoPostsFromDatabase} from './actions/info';
 import moment from 'moment';
 import uuid from 'uuid';
 import { addToDoPost,addRatingToDatabasePost, getToDoPostsFromDatabase,changeRatingsSum,changeRatingsSumInDatabase } from './actions/toDo';
+import {getUsersFromDatabase} from './actions/users';
 
 const store = configureStore();
 
@@ -84,17 +85,23 @@ ReactDOM.render(<p>Loading...</p>,document.getElementById('app'));
 firebase.auth().onAuthStateChanged((user)=>{
     if(user){
         console.log('uid',user.uid);
+        const userObj = {
+            userId:user.uid,
+            userName:user.displayName,
+            userEmail:user.email,
+        }
+        //check if user exists in DB:
+        database.ref(`users/${user.uid}`).once("value", (snapshot) =>{
+            if(snapshot.val()==null){
+                //add to the DB if the user doesnt exist.
+                 database.ref(`users/${user.uid}`).set(userObj);
+            }
+        });
+        store.dispatch(getUsersFromDatabase());
         store.dispatch(login(user.uid));
         store.dispatch(getHelpPostsFromDatabase());
         store.dispatch(getInfoPostsFromDatabase());
-         store.dispatch(getToDoPostsFromDatabase()).then(()=>{
-            const review = {
-                authorId:'DWakg8YCU7WpwmExWJrNB4rsEMY2',
-                liked:1
-            }
-            // store.dispatch(changeRatingsSum('-LUARBxWluHbmI0E3Pnx','NEGATIVE','ADD',false,true));
-            // store.dispatch(addRatingToDatabasePost('-LUAR4IWgqCVAxmINBPG',review));
-        });
+        store.dispatch(getToDoPostsFromDatabase())
         store.dispatch(getEventsFromDatabase()).then(()=>{
             renderApp();
             // const admin = {

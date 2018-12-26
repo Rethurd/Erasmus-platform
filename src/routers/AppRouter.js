@@ -9,6 +9,7 @@ import HelpPage from '../components/HelpPage';
 import InfoPage from '../components/InfoPage';
 import ToDoPage from '../components/ToDoPage';
 import LoginPage from '../components/LoginPage';
+import FriendsPage from '../components/FriendsPage';
 export const history = createHistory();
 
 
@@ -23,6 +24,7 @@ const AppRouter = () =>(
                     <Route path="/todo" component={ToDoPage}/>
                     <Route path="/chat" component={Chat}/>
                     <Route path="/help" component={HelpPage}/>
+                    <Route path="/friends" component={FriendsPage}/>
                     <Route component={NotFoundPage} />
                 </Switch>
         </div>

@@ -3,7 +3,7 @@ import {NavLink} from 'react-router-dom';
 import {connect} from 'react-redux';
 import {startLogout} from '../actions/auth';
 import {firebase} from '../firebase/firebase';
-import {Nav, Navbar, NavItem} from 'react-bootstrap';
+import {Nav, Navbar, NavItem,NavDropdown,MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
 import classNames from 'classNames';
 
@@ -44,12 +44,32 @@ export const Header = () =>(
             Help section
         </NavItem>
         </LinkContainer>
-        {firebase.auth().currentUser ? 
-            <NavItem eventKey={6} href="#" onClick={startLogout} className="header__link--logout">
-                <span>Logout &nbsp;</span>
-                <i className="fas fa-sign-out-alt"></i>
-            </NavItem>
-             : null}
+        <NavDropdown eventKey={6} title="More" className={classNames("header__link","header__link--dropdownList")} id="user-options">
+
+            <MenuItem eventKey={6.1}>
+                <div className="header__link--dropdown">
+                <LinkContainer  to="/friends" activeClassName="is-active">
+                    <div className="header__link--dropdown__text">
+                            Friends
+                    </div>
+                    </LinkContainer>
+                </div>  
+                </MenuItem>
+
+            <MenuItem eventKey={6.2}>
+                {firebase.auth().currentUser ? 
+                <div onClick={startLogout} className="header__link--dropdown">
+                    <div className="header__link--dropdown__text">
+                        <span>Logout &nbsp;</span>
+                        <i className="fas fa-sign-out-alt"></i>
+                    </div>
+                    
+                </div>
+                : null}
+             </MenuItem>
+            
+        </NavDropdown>
+        
     </Nav>
   </Navbar.Collapse>
 </Navbar>

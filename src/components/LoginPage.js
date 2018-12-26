@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {startLogin} from '../actions/auth';
 import Modal from 'react-modal'
-import {firebase} from '../firebase/firebase';
+import database, {firebase} from '../firebase/firebase';
 
 export class LoginPage extends React.Component{
 
@@ -82,7 +82,15 @@ export class LoginPage extends React.Component{
         if (this.state.fname!='' && this.state.lname!=''){
             firebase.auth().createUserWithEmailAndPassword(this.state.email,this.state.password).then((user)=>{
                 const displayName=this.state.fname+' '+this.state.lname;
-                user.updateProfile({displayName});
+                user.updateProfile({displayName}).then(()=>{
+                    //add user to userList in the DB
+                    const userObj = {
+                        userId:user.uid,
+                        userName:user.displayName,
+                        userEmail:user.email,
+                    }
+                    database.ref(`users/${user.uid}`).set(userObj);
+                });
             }).catch((error)=>{
                 this.setState(()=>({registerError:error.message}));
             });
