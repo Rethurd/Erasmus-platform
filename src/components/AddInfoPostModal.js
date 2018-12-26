@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import {addInfoPostToDatabase} from '../actions/info';
 import {connect} from 'react-redux';
 import {firebase} from '../firebase/firebase';
+import classNames from 'classnames';
 
 class AddInfoPostModal extends React.Component {
     constructor(props) {
@@ -61,30 +62,42 @@ class AddInfoPostModal extends React.Component {
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Add new Info Post Modal"
                 ariaHideApp={false}
+                className={classNames("modal modal--info")}
             >
-                <h3>Add new Information/Announcement post</h3>
 
-                 <form onSubmit={this.handleOnSubmit}>
-                    <div>
-                    {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
+                 <form className="addInfoPost__form" onSubmit={this.handleOnSubmit}>
+                    <div className="infoPost__name__container" >
+                   
                         <TextField 
                             label="Post name"
                             value={this.state.name}
                             onChange={this.handleNameChange}
+                            className="infoModal__name--new"
+                            multiline
+                            rowsMax={3}
+                            required
+                            placeholder="..."
+                            autoFocus
                         />
                     </div>
                         
-                    <div>
-                        {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
+                    <div className="infoPost__description__container"  >
+                      
                         <TextField 
                             label="Description of the post"
                             value={this.state.description}
                             onChange={this.handleDescriptionChange}
                             multiline
-                            rows={4}
+                            rows={25}
+                            className={classNames("infoModalDescription__scrollBar infoModal__description--new")}
+                            required
                         />
                     </div>
-                    <button>Add post!</button>
+                    {/* <div className="infoModal__errors--new">
+                        {this.state.nameEmptyError==undefined ? null: <p className="infoModal__name__error">{this.state.nameEmptyError}</p>}
+                        {this.state.descriptionEmptyError==undefined ? null: <p className="infoModal__description__error">{this.state.descriptionEmptyError}</p>}
+                    </div> */}
+                    <div className={classNames("text-center")}><button className={classNames("btn", "btn-success","addInfoPost__btn")}>Add post!</button></div>
                 </form>
 
             </Modal>

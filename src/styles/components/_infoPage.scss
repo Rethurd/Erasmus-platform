@@ -7,6 +7,7 @@
 
 
 .infoPost{
+    cursor:pointer;
     justify-self: center;
     display:flex;
     flex-direction:column;
@@ -45,6 +46,7 @@
     justify-self:flex-end;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    word-break: break-all;
     white-space: pre-wrap; // just pre doesnt work with word-wrap ????  https://stackoverflow.com/questions/4413015/browser-compatible-word-wrap-and-whitespace-pre/4413129
     overflow-y: scroll;
 }
@@ -74,7 +76,7 @@
     border-left:1px solid black;
     border-right:1px solid black;
     // padding:0.5rem;
-    white-space: pre-wrap ;
+    // white-space: pre-wrap ;
     max-width:280px;
     text-align:center;
     display: table-cell;
@@ -86,6 +88,7 @@
    
     padding:1.3rem;
     // vertical-align: middle;
+    max-height:230px;
     height:230px;
     overflow-y:scroll;
 }
@@ -141,4 +144,17 @@
         max-width:330px;
     }
 
+}
+
+.btnNewInfoPost__container{
+    text-align: center;
+}
+
+.btnNewInfoPost{
+    color:white;
+    background:$esn-orange;
+    width:15rem;
+    height:5rem;
+    margin-bottom:8rem;
+    margin-top:5rem;
 }

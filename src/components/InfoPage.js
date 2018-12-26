@@ -6,6 +6,7 @@ import InfoPostModal from './InfoPostModal';
 import AddInfoPostModal from './AddInfoPostModal';
 import database, {firebase} from '../firebase/firebase';
 import getInfoPostById from '../selectors/getInfoPostById';
+import classNames from 'classnames';
 
 class InfoPage extends React.Component {
     constructor(props){
@@ -66,7 +67,7 @@ class InfoPage extends React.Component {
                 </div>
                 {isEmpty(this.state.selectedInfoPost) ? null: <InfoPostModal rerenderAfterChange={this.rerenderAfterChange} isUserAdmin={this.state.isUserAdmin} isOpen={this.state.isModalOpen} postData={this.state.selectedInfoPost} onRequestClose={this.handleCloseModal}/>}
                     {/* Show the button only to admins */}
-                {this.state.isUserAdmin ? <button onClick={this.handleOpenNewPostModal}>Create new</button> : null }
+                {this.state.isUserAdmin ? <div className="btnNewInfoPost__container"><button className={classNames("text-center", "btn", "btnNewInfoPost")} onClick={this.handleOpenNewPostModal}>Create new</button></div> : null }
                 {this.state.isAddPostModalOpen ? <AddInfoPostModal  isOpen={this.state.isAddPostModalOpen} onRequestClose={this.handleCloseNewPostModal}/>: null}
             
             </div>

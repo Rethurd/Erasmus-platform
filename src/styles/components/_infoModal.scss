@@ -49,6 +49,7 @@
     max-height:140px;
     padding:1rem;
 }
+
 .infoModal__name--edit{
     text-align:center;
     width:100%;
@@ -77,6 +78,17 @@
 }
 .infoModal__name--edit *:after{
     border:none !important;
+}
+
+.infoModal__name--new{
+    @extend .infoModal__name--edit;
+    background:$esn-orange;
+    textarea{
+        height:60px !important;
+    }
+    label{
+        padding-left:3rem;
+    }
 }
 
 
@@ -110,14 +122,20 @@
 }   
 
 .infoModal__description--edit *:before{
-    border-bottom-color: $esn-orange !important;
-    border-bottom-left-radius: 1em !important;
-    border-bottom-right-radius: 1em !important;
+    border:none !important;
 }
 .infoModal__description--edit *:after{
-    border-bottom-color: $esn-orange !important;
-    border-bottom-left-radius: 1em !important;
-    border-bottom-right-radius: 1em !important;
+    border:none !important;
+}
+
+.infoModal__description--new{
+    @extend .infoModal__description--edit;
+    textarea{
+        height:350px !important;
+    }
+    label{
+        padding-left:3rem;
+    }
 }
 
 .infoModal__buttons{
@@ -176,4 +194,98 @@
                                             rgba(255, 255, 255, .2) 50%,
                                             rgba(255, 255, 255, .2) 75%,
                                             transparent 75%)
+}
+
+
+@media (max-width:480px){
+    .modal{
+        width:340px;
+    }
+}
+
+@media (max-width:360px){
+    .modal{
+        width:280px;
+    }
+    .infoModal__name__error{
+        font-size:1.2rem;
+    }
+}
+
+@media (max-height:640px){
+    .modal{
+        min-height:400px;
+        height:400px;
+    }
+    
+    .infoPost__name__container{
+        height:60px;
+    }
+    .infoModal__description{
+        min-height:240px;
+        height:240px;
+        max-height:240px;
+        font-size:1.3rem;
+    }
+    .infoModal__name{
+        font-size:1.5rem;
+    }
+    .infoModal__buttons .btn{
+        height:2.4rem;
+        font-size:1rem;
+    }
+    .infoModal__description--edit{
+        min-height:220px;
+        height:220px;
+        max-height:220px;
+        textarea{
+            height:200px !important;
+            max-height:200px !important;
+        }
+    }
+    .infoModal__name--edit{
+        max-height:80px;
+        textarea{
+            
+            height:80px !important;
+            max-height:80px;
+        }
+
+    }
+    .addInfoPost__form{
+        grid-template-rows: 2fr 5fr 1fr !important;
+    }
+
+    .infoModal__description--new{
+        min-height:240px;
+        height:240px;
+        max-height:240px;
+        font-size:1.3rem;
+    }
+    .infoPost__description__container{
+        height:240px;
+    }
+    .infoModal__name--new{
+        textarea{
+            height:50px !important;
+        }
+        label{
+            display:none !important;
+            padding-left:3rem;
+            font-size:1rem !important;
+        }
+    }
+    .addInfoPost__btn{
+        height:35px !important;
+    }
+    
+}
+
+.addInfoPost__form{
+    display:grid;
+    grid-template-rows: 2fr 7fr 1fr;
+    .btn{
+        width:120px;
+        height:50px;
+    }
 }
