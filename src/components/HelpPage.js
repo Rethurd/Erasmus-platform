@@ -4,7 +4,8 @@ import HelpPost from './HelpPost';
 import HelpPostModal from './HelpPostModal';
 import AddHelpPostModal from './AddHelpPostModal';
 import getHelpPostById from '../selectors/getHelpPostById';
-
+import {Pager} from 'react-bootstrap';
+import classNames from 'classnames';
 class HelpPage extends React.Component {
     constructor(props){
         super(props);
@@ -12,7 +13,8 @@ class HelpPage extends React.Component {
             dummyRerenderValue:true,
             selectedPost:undefined,
             isPostModalOpen:false,
-            isAddPostModalOpen:false
+            isAddPostModalOpen:false,
+            currentPage:1
         }
     }
 
@@ -42,16 +44,30 @@ class HelpPage extends React.Component {
             selectedPost,
         }));
     }
-    
+    handleNextPage = ()=>{
+        this.setState((state)=>({
+            currentPage:state.currentPage+1
+        }));
+    }
+    handlePreviousPage = ()=>{
+        this.setState((state)=>({
+            currentPage:state.currentPage-1
+        }));
+    }
 
     render() { 
         return ( 
             <div>
-                <p>This is the help page component!</p>
-                
-                {this.props.helpPosts.map((singlePost)=>{
-                    return <HelpPost key={singlePost.postId} handleSelectPost={this.handleSelectPost} postData={singlePost}/>
-                })}
+                <h1 className="page__title">Help section</h1>
+                <div className="helpPage__posts">
+                    {this.props.helpPosts.map((singlePost)=>{
+                        return <HelpPost key={singlePost.postId} handleSelectPost={this.handleSelectPost} postData={singlePost}/>
+                    }).splice(6*(this.state.currentPage-1),6)}
+                </div>
+                <Pager className="helpPage__pagination">
+                    {this.state.currentPage==1 ? <Pager.Item href="#" className="helpPage__pagination__button" disabled onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item> : <Pager.Item href="#" className="helpPage__pagination__button"  onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item>}
+                    {Math.ceil(this.props.helpPosts.length/6)==this.state.currentPage ? <Pager.Item className="helpPage__pagination__button" href="#" disabled onClick={this.handleNextPage}>Next &rarr; </Pager.Item> : <Pager.Item  className="helpPage__pagination__button" href="#" onClick={this.handleNextPage}>Next &rarr;</Pager.Item>}
+                </Pager>
                 {this.state.selectedPost==undefined ? null : 
                 <HelpPostModal 
                     isOpen={this.state.isPostModalOpen}
@@ -64,7 +80,7 @@ class HelpPage extends React.Component {
                     isOpen = {this.state.isAddPostModalOpen}
                     onRequestClose = {this.handleCloseAddPostModal}
                 />: null}
-                <button onClick={this.handleOpenAddPostModal}>Add new post!</button>
+                <div className="btnNewHelpPost__container"><button className={classNames("btn", "btnNewHelpPost")} onClick={this.handleOpenAddPostModal}>Add new post!</button></div>
 
                 
             </div>

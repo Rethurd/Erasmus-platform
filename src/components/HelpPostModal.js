@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import { addCommentToDatabase, deleteCommentFromDatabase,deletePostFromDatabase,editPostInDatabase } from '../actions/help';
 import moment from 'moment';
 import {firebase} from '../firebase/firebase';
+import classNames from 'classnames'; 
 
 class HelpPostModal extends React.Component {
     constructor(props) {
@@ -122,58 +123,83 @@ class HelpPostModal extends React.Component {
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
             contentLabel="Selected HelpPost"
-            ariaHideApp={false}>
-                {this.state.editMode ? <h3>
+            ariaHideApp={false}
+            className="helpModal"
+            >
+                {this.state.editMode ? 
+                <h3 className="helpPostModal__name">
                     {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
                     <TextField value={this.state.name} onChange={this.handleNameChange}/>
-                    </h3> 
+                </h3> 
                 :
-                 <h3>{this.props.postData.name}</h3> }
+                 
+                 this.props.postData.name.length>=60 ? 
+                 <h3 className="helpPostModal__name" >{this.props.postData.name.substring(0,60)}...</h3> 
+                 :
+                 <h3 className="helpPostModal__name" > {this.props.postData.name}</h3>
+                }
                  {this.state.editMode ?
-                    <div>
-                        {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
+                    <div className="helpPostModal__description--container">
+                        {this.state.descriptionEmptyError==undefined ? null: <p className="helpPostModal__description">{this.state.descriptionEmptyError}</p>}
                         <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
                     </div>
                   :
-                   <p>{this.props.postData.description}</p> }
-                <div>
-                {this.checkIfPostBelongsToUser() ? <button onClick={this.handleDeletePost}>Delete</button> : null}
+                   <div className="helpPostModal__description--container" ><p className="helpPostModal__description" >{this.props.postData.description}</p></div> }
+                <div className="helpPostModal__buttons">
+                {this.checkIfPostBelongsToUser() ? <button onClick={this.handleDeletePost} className={classNames("btn btn-danger")}  >Delete</button> : null}
                 {this.checkIfPostBelongsToUser() ? 
-                    this.state.editMode ?  <button onClick={this.handleSaveChanges}>Save</button> 
-                        : <button onClick={this.handleEditPost}>Edit</button> 
+                    this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
+                        : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
                     : 
                     null}
                 </div>
                 
                 
 
-                <div>
+                <div className="helpPostModal__addComment">
                 {this.state.errorEmptyComment==undefined ? null : <p>{this.state.errorEmptyComment}</p> }
-                <TextField 
-                            placeholder="Comment..."
-                            value={this.state.comment}
-                            onChange={this.handleCommentChange}
-                            multiline
-                            rows={3}
-                />
-                <Button variant="outlined" onClick={this.handleAddComment}>
-                    Send
-                </Button>
+                    <div className="helpPostModal__commentField__container">
+                        <TextField 
+                                    placeholder="Comment..."
+                                    value={this.state.comment}
+                                    onChange={this.handleCommentChange}
+                                    multiline
+                                    rows={3}
+                                    className="helpPostModal__commentField"
+                        />
+                    </div>
+
+                    <div className="helpPostModal__sendCommentButton__container">
+                        <Button className="helpPostModal__sendCommentButton" variant="outlined" onClick={this.handleAddComment}>
+                            Send
+                        </Button>
+                    </div>
+                    
                 </div>
+                <div className="helpPostModal__commentSection">
                 {this.props.postData.comments.map((singleComment)=>{
                     return(
-                        <div key={singleComment.commentId}>
-                        <span >
-                        {moment(singleComment.date*1000).format('DD-MM-YYYY HH:mm:ss')+' - ' +singleComment.author+': '+singleComment.content}
-                        </span>
-                        {this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
-                            <IconButton  onClick={()=>this.handleDeleteComment(singleComment.commentId)}> <DeleteIcon /> </IconButton>
-                        : 
-                        null}
+                        <div key={singleComment.commentId} className="helpPostModal__singleComment">
+                            <div className="comment__header">
+                                <div className="comment__date">
+                                {moment(singleComment.date*1000).format('DD-MM-YYYY HH:mm:ss')}
+                                </div>
+                                <div className="comment__author"> {singleComment.author}</div>
+                            </div>
+                            <div className="comment__deleteButton">
+                                {this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
+                                    <IconButton  onClick={()=>this.handleDeleteComment(singleComment.commentId)}> <DeleteIcon /> </IconButton>
+                                : 
+                                null}
+                            </div>
+                            <div className="comment__content">{singleComment.content}</div>
+
+                            
                         
                         </div>
                     )
                 }).reverse()}
+                </div>
             </Modal>
          );
     }
