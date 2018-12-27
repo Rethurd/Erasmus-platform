@@ -1,40 +1,21 @@
  import database,{firebase} from '../firebase/firebase';
  import {arrayToObject, isEmpty} from '../resources/functions';
 
- export const addFriend = (userId, friend)=>({
-    type:'ADD_FRIEND',
-    userId,
-    friend
-})
 
-export const removeFriend = (userId, friendID)=>({
-    type:'ADD_FRIEND',
-    userId,
-    friendID
-});
 
 
 export const addFriendToDatabase = (userId, friend)=>{
-    return (dispatch)=>{
+    return ()=>{
         return database.ref(`users/${userId}/friends`).push(friend).then((ref)=>{
-            // dispatch(addFriend(userId, friend));
+            // return friendshipId in the promise so it can be used in StrangerCard
+            return ref.key;
         });
     };
 };
 
-export const deleteComment = (helpPostId, commentId)=>({
-    type:'DELETE_COMMENT',
-    helpPostId,
-    commentId
-});
-
-export const deleteCommentFromDatabase = (helpPostId, commentId)=>{
-    return (dispatch)=>{
-        return database.ref(`helpPosts/${helpPostId}/comments/${commentId}`).remove().then(()=>{
-            dispatch(deleteComment(helpPostId,commentId));
-        });
-    };
-};
+export const removeFriendFromDatabase = (userId,friendshipId)=>{
+    return ()=>  database.ref(`users/${userId}/friends/${friendshipId}`).remove();
+}
 
 export const addUsersToStore = (users)=>({
     type:'ADD_USERS_TO_STORE',

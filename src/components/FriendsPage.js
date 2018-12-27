@@ -23,6 +23,7 @@ class FriendsPage extends React.Component {
                                 if (friends.hasOwnProperty(singleFriend)) {
                                     friends[singleFriend] = {
                                         ...friends[singleFriend],
+                                        friendshipId:singleFriend
                                 }
                                 friendsArray.push(friends[singleFriend]);
                             }
@@ -36,16 +37,25 @@ class FriendsPage extends React.Component {
     }
 
     addFriendToList = (friend) =>{
-        console.log('adding friend');
         this.setState((state)=>{
             const newFriendsList = state.friends;
             newFriendsList.push(friend);
             return{
-                state:newFriendsList
+                friends:newFriendsList
             }
         })
     }
 
+    removeFriendFromList = (friendId) =>{
+        this.setState((state)=>{
+            const newFriendsList = state.friends.filter((singleFriend)=>{
+                return singleFriend.friendId!=friendId;
+            });
+            return{
+                friends:newFriendsList
+            }
+        })
+    }
     render() { 
         
         return (
@@ -67,7 +77,7 @@ class FriendsPage extends React.Component {
                             <div className="friendsList__search">Search</div>
                             <div className="friendsList__list">
                                 {this.state.friends.map((singleFriend)=>{
-                                    return <FriendCard key={singleFriend.userId} userData={singleFriend}/>
+                                    return <FriendCard removeFriend={this.removeFriendFromList} key={singleFriend.userId} userData={singleFriend}/>
                                 })}
                             </div>
                     </div>
