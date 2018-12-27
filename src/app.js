@@ -78,7 +78,11 @@ const renderApp = ()=>{
         hasRendered=true;
     }
 }
-ReactDOM.render(<p>Loading...</p>,document.getElementById('app'));
+
+const loading = (
+    <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+)
+ReactDOM.render(loading,document.getElementById('app'));
 
 
 

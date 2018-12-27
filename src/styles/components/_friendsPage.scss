@@ -8,6 +8,39 @@
 
     margin-bottom:3rem;
 }
+.strangers__search{
+    display:flex;
+    flex-direction: row;
+    justify-content:center;
+    margin-bottom:1rem;
+    p{
+        height:100%;
+        margin-bottom:0 !important;
+        margin-block-start: 1em;
+        margin-right:2rem;
+    }
+    div{
+        *{
+            border-color:$esn-green;
+        }
+        label{
+            color:$esn-green !important;
+            font-weight:bold !important;
+        }
+        input{
+            padding-left:0.5rem !important;
+            background:lighten($esn-green,20%);
+            color:black;
+            border-radius:2rem;
+            
+        }
+        
+        *::before, *::after{
+            border-color:$esn-green !important ;
+        }
+        
+    }
+}
 .strangers__grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
@@ -58,7 +91,8 @@
 
 
 .friendsList{
-    max-height:550px;
+    max-height:475px;
+    margin-top:75px;
     overflow-y:auto;
     max-width:220px;
     min-width:200px;
@@ -67,7 +101,7 @@
 
 .friendsList__list{
     
-    max-height:500px;
+    max-height:425px;
     overflow-y:auto;
     background-image:url('../resources/graphics/prism.png');
 }
@@ -78,7 +112,26 @@
 }
 .friendsList__search{
     background:$esn-green;
+    padding-bottom:0.5rem;
+    *{
+        border:none !important;
+    }
+    
+    input{
+        padding-left:0.5rem !important;
+        background:white;
+        color:black;
+        border-radius:2rem;
+        
+    }
+    
+    *::before, *::after{
+        border:none !important ;
+    }
+    
 }
+    
+
 .friendCard{
     padding:0.5rem 0;
     max-height:60px;
@@ -136,7 +189,7 @@
 @media (max-width:480px){
     .strangers__grid{
         grid-template-columns:1fr;
-        
+        margin-right:1rem;
     }
     
     .friendsPage{

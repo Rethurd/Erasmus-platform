@@ -7,7 +7,7 @@ const SelectToDoPosts = (toDoPosts,toDoFilters) => {
             return typeFiltered;
         }else{
             return typeFiltered.filter((singlePost)=>{
-                return singlePost.name.toLowerCase().includes(toDoFilters.text) || singlePost.description.toLowerCase().includes(toDoFilters.text)
+                return singlePost.name.toLowerCase().includes(toDoFilters.text.toLowerCase()) || singlePost.description.toLowerCase().includes(toDoFilters.text.toLowerCase())
             });
         }
     }else{
@@ -15,7 +15,7 @@ const SelectToDoPosts = (toDoPosts,toDoFilters) => {
             return toDoPosts;
         }else{
             return toDoPosts.filter((singlePost)=>{
-                return (singlePost.name.toLowerCase().includes(toDoFilters.text) || singlePost.description.toLowerCase().includes(toDoFilters.text));
+                return (singlePost.name.toLowerCase().includes(toDoFilters.text.toLowerCase()) || singlePost.description.toLowerCase().includes(toDoFilters.text.toLowerCase()));
             })
         }
     }
