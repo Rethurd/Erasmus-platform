@@ -1,0 +1,76 @@
+.toDoPage{
+
+
+}
+
+.toDoPage__dataManagement{
+  width:300px;
+  background:$esn-dark-blue;
+  color:white;
+  border-radius:2rem;
+  padding:1.5rem;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+}
+.toDoPage__sorting{
+    display:flex;
+    margin-bottom:20px;
+    justify-content: center;
+    div{
+        *{
+            color:white !important;
+        }
+    }
+    *::before, *::after{
+        border-color: $lighter-gray !important;
+    }
+    p{
+        margin: 0;
+        margin-right: 20px; 
+    }
+}
+
+.toDoPage__filtering{
+    .filtering__type{
+        margin-left:20px;
+        display:flex;
+        p{
+            margin: 0;
+            margin-right: 20px;
+        }
+        div{
+            *{
+                color:white !important;
+            }
+        }
+        *::before, *::after{
+            border-color: $lighter-gray !important;
+        }
+    }
+    .filtering__text{
+        display:flex;
+        margin: 10px 0 20px 20px;
+        align-items:flex-end;
+        p{
+            margin: 0;
+            margin-right: 20px;
+        }
+        div{
+            *{
+                color:white !important;
+            }
+        }
+        *::before, *::after{
+            border-color: $lighter-gray !important;
+        }
+    }
+}
+.btnNewToDoPost{
+    background:$esn-dark-blue;
+    color:white;
+}
+.toDoPage__btnContainer{
+    text-align:center;
+}

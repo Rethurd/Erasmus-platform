@@ -7,8 +7,10 @@ import AddToDoPostModal from './AddToDoPostModal';
 import ToDoPostModal from './ToDoPostModal';
 import getToDoPostById from '../selectors/getToDoPostById';
 import ToDoFilters from './ToDoFilters';
-import selectToDoPosts from '../selectors/selectToDoPosts'
-
+import selectToDoPosts from '../selectors/selectToDoPosts';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import classNames from 'classnames';
 class ToDoPage extends React.Component {
     constructor(props){
         super(props);
@@ -52,16 +54,22 @@ class ToDoPage extends React.Component {
     
     render() { 
         return ( 
-            <div>
-                <div>
-                    <select onChange={this.handleSortByChange}>
-                        <option value="rating">Ratings</option>
-                        <option value="date">Date posted</option>
-                    </select>
+            <div className="toDoPage">
+                <h1 className="page__title">What To Do during your Erasmus ?</h1>
+                <div className="toDoPage__dataManagement">
+                    <div className="toDoPage__sorting">
+                        <p>Sort by:</p>
+                        <Select value={this.state.sortByValue} onChange={this.handleSortByChange}>
+                            <MenuItem value="rating">Ratings</MenuItem>
+                            <MenuItem value="date">Date posted</MenuItem>
+                        </Select>
+                    </div>
+                    <ToDoFilters/>
                 </div>
-                <ToDoFilters/>
-                <p>This is the ToDo page component!</p>
-                <button onClick={this.openAddPostModal}>Add a new recommendation!</button>
+                
+                <div className="toDoPage__btnContainer">
+                    <button className={classNames("btn","btnNewToDoPost")} onClick={this.openAddPostModal}>Add a new recommendation!</button>
+                </div>
                 {this.renderToDoPosts()}
                 {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
                 {isEmpty(this.state.selectedToDoPost) ? null :

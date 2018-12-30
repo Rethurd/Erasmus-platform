@@ -23,9 +23,11 @@ class ToDoFilters extends React.Component {
         this.props.changeTextFilter(e.target.value);
     }
     render() { 
-        return ( <div>
+        return (
+            
+        <div className="toDoPage__filtering">
             <p>Filter by:</p>
-            <div>
+            <div className="filtering__type">
                 <p>Type:</p>
                 <Select
                         value={this.props.toDoFilters.type}
@@ -43,7 +45,7 @@ class ToDoFilters extends React.Component {
                         <MenuItem value={'Other'}>Other</MenuItem>
                 </Select>
             </div>
-            <div>
+            <div className="filtering__text">
                 <p>Text:</p>
                 <TextField 
                     label="Search"
