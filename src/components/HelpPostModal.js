@@ -128,20 +128,20 @@ class HelpPostModal extends React.Component {
             >
                 {this.state.editMode ? 
                 <h3 className="helpPostModal__name">
-                    {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
-                    <TextField value={this.state.name} onChange={this.handleNameChange}/>
+                    {/* {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>} */}
+                    <TextField required value={this.state.name} onChange={this.handleNameChange} multiline maxRows={2} className="helpPostModal__name--edit"/>
                 </h3> 
                 :
                  
-                 this.props.postData.name.length>=60 ? 
-                 <h3 className="helpPostModal__name" >{this.props.postData.name.substring(0,60)}...</h3> 
+                 this.props.postData.name.length>=40 ? 
+                 <h3 className="helpPostModal__name" >{this.props.postData.name.substring(0,40)}...</h3> 
                  :
                  <h3 className="helpPostModal__name" > {this.props.postData.name}</h3>
                 }
                  {this.state.editMode ?
                     <div className="helpPostModal__description--container">
-                        {this.state.descriptionEmptyError==undefined ? null: <p className="helpPostModal__description">{this.state.descriptionEmptyError}</p>}
-                        <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                        {/* {this.state.descriptionEmptyError==undefined ? null: <p className="helpPostModal__description">{this.state.descriptionEmptyError}</p>} */}
+                        <TextField required value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={20} className="helpPostModal__description--edit"/> 
                     </div>
                   :
                    <div className="helpPostModal__description--container" ><p className="helpPostModal__description" >{this.props.postData.description}</p></div> }
@@ -157,7 +157,7 @@ class HelpPostModal extends React.Component {
                 
 
                 <div className="helpPostModal__addComment">
-                {this.state.errorEmptyComment==undefined ? null : <p>{this.state.errorEmptyComment}</p> }
+                {this.state.errorEmptyComment==undefined ? null : <p className="commentEmptyError">{this.state.errorEmptyComment}</p> }
                     <div className="helpPostModal__commentField__container">
                         <TextField 
                                     placeholder="Comment..."
@@ -179,6 +179,7 @@ class HelpPostModal extends React.Component {
                 <div className="helpPostModal__commentSection">
                 {this.props.postData.comments.map((singleComment)=>{
                     return(
+                        this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
                         <div key={singleComment.commentId} className="helpPostModal__singleComment">
                             <div className="comment__header">
                                 <div className="comment__date">
@@ -187,10 +188,20 @@ class HelpPostModal extends React.Component {
                                 <div className="comment__author"> {singleComment.author}</div>
                             </div>
                             <div className="comment__deleteButton">
-                                {this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
                                     <IconButton  onClick={()=>this.handleDeleteComment(singleComment.commentId)}> <DeleteIcon /> </IconButton>
-                                : 
-                                null}
+                            </div>
+                            <div className="comment__content">{singleComment.content}</div>
+
+                            
+                        
+                        </div> 
+                        :
+                        <div key={singleComment.commentId} className="helpPostModal__singleComment--noOwnership">
+                            <div className="comment__header">
+                                <div className="comment__date">
+                                {moment(singleComment.date*1000).format('DD-MM-YYYY HH:mm:ss')}
+                                </div>
+                                <div className="comment__author"> {singleComment.author}</div>
                             </div>
                             <div className="comment__content">{singleComment.content}</div>
 
