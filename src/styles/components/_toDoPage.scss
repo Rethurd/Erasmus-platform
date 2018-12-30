@@ -1,19 +1,35 @@
 .toDoPage{
 
-
+    .btn:hover, .btn:focus{
+        color:white;
+        background-color:lighten($esn-dark-blue,20%);
+    }
 }
-
+.toDoPage__allPosts{
+    margin:10px 20px 30px 20px;
+    padding:10px;
+}
+.toDoPage__collapsible__button{
+    background-color:$esn-dark-blue;
+    color:white;
+    width:160px;
+}
 .toDoPage__dataManagement{
+  height:200px;
+  max-height:0;
   width:300px;
   background:$esn-dark-blue;
   color:white;
   border-radius:2rem;
-  padding:1.5rem;
+  padding:0;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
+  transition: all 0.2s ease-out;
+  overflow:hidden;
 }
+
 .toDoPage__sorting{
     display:flex;
     margin-bottom:20px;
@@ -73,4 +89,80 @@
 }
 .toDoPage__btnContainer{
     text-align:center;
+}
+
+.toDoPost{
+    display:grid;
+    grid-template-rows:1fr auto;
+    grid-template-columns: 5fr 1fr;
+}
+.toDoPost__name{
+    margin-left:30px;
+}
+.toDoPost__descriptionContainer{
+    grid-column: 1/3;
+}
+.toDoPost__description{
+    padding:10px 0;
+    grid-column: 1/3;
+    max-height:150px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space:pre-wrap;
+    overflow-y:auto;
+}
+.toDoPost__date{
+    color:$esn-dark-blue;
+    font-weight: bold;
+    font-size:0.8rem;
+    text-align: center;
+    grid-column: 1/3;
+}
+.toDoPost__reviews{
+    display:flex;
+    align-items:center;
+    width: 90px;
+    height: 50px;
+}
+.toDoPost__recommended__container{
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toDoPost__recommended__separator{
+    margin:0 10px;
+}
+.toDoPost__recommended{
+    margin-right:6px;
+    background:#49CD49;
+    border-radius:50%;
+
+    i{
+        height: 30px;
+        text-align: center;
+        width: 30px;
+        line-height: 30px;
+    }
+}
+.toDoPost__recommended__container, .toDoPost__notRecommended__container{
+    height: 50px;
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.toDoPost__notRecommended{
+
+    margin-left:6px;
+    background:$warning;
+    border-radius:50%;
+
+    i{
+        height: 30px;
+        text-align: center;
+        width: 30px;
+        line-height: 30px;
+    }
 }

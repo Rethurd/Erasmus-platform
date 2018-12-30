@@ -40,6 +40,7 @@
     "react": "^16.6.3",
     "react-addons-shallow-compare": "15.6.0",
     "react-bootstrap": "^0.32.4",
+    "react-collapsible": "^2.3.2",
     "react-dates": "12.3.0",
     "react-dom": "^16.6.3",
     "react-modal": "^3.7.1",

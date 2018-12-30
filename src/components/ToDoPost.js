@@ -1,8 +1,6 @@
 import React from 'react';
-import moment from 'moment';
 import database,{firebase} from '../firebase/firebase';
-import {connect} from 'react-redux';
-import {addRatingToDatabasePost} from '../actions/toDo'
+import classNames from 'classnames';
 
 class ToDoPost extends React.Component {
     constructor(props) {
@@ -51,37 +49,26 @@ class ToDoPost extends React.Component {
 
     render() { 
         return ( 
-            <div onClick={()=>{this.props.openPostModal(this.props.toDoPostData.toDoPostId)}}>
-                <h3>{this.props.toDoPostData.name}</h3>
-                <p>{this.props.toDoPostData.description}</p>
-                <p>Date Posted: {this.props.toDoPostData.creationDate.format('DD-MM-YYYY')}</p>
-                <p>Recommended by : {this.props.toDoPostData.ratingsPositive}</p>
-                <p>Not recommended by: {this.props.toDoPostData.ratingsNegative}</p>
-
-                {/* if user hasnt liked OR disliked the post */}
-                {/* {(this.state.thisUserDisliked==false && this.state.thisUserLiked==false) ? 
-                <div>
-                    <button onClick={this.handleAddPositiveReview}>Thumbs up</button>
-                    <button onClick={this.handleAddNegativeReview}>Thumbs down</button>
-                </div> : null}
-                {this.state.thisUserDisliked==true ? 
-                    <div>
-                    <button onClick={this.handleChangeNegativeToPositiveReview}>Change - to +</button>
-                    <button onClick={this.handleCancelNegativeReview}>Cancel negative</button>
+            <div className="toDoPost" onClick={()=>{this.props.openPostModal(this.props.toDoPostData.toDoPostId)}}>
+                <h3 className="toDoPost__name">{this.props.toDoPostData.name}</h3>
+                <div className="toDoPost__reviews">
+                    <div className="toDoPost__recommended__container"> 
+                        <span className="toDoPost__recommended"><i className={classNames("fas fa-thumbs-up")}></i></span><span>{this.props.toDoPostData.ratingsPositive}</span>
+                    </div>
+                    <div className="toDoPost__recommended__separator"><span>:</span></div>
+                    <div className="toDoPost__notRecommended__container"> 
+                        <span>{this.props.toDoPostData.ratingsNegative}</span><span className="toDoPost__notRecommended"><i className={classNames("fas fa-thumbs-down")}></i></span>
+                    </div>
                 </div>
-                 : null}
-                 {this.state.thisUserLiked==true ? 
-                    <div>
-                    <button onClick={this.handleCancelPositiveReview}>Cancel Positive</button>
-                    <button onClick={this.handleChangePositiveToNegativeReview}>Change + to - </button>
+                <div className="toDoPost__descriptionContainer">
+                    <h4 className="text-center">Description:</h4>
+                    <div className="toDoPost__description" >{this.props.toDoPostData.description}</div>
                 </div>
-                 : null} */}
+                <div className="toDoPost__date" >Date Posted: {this.props.toDoPostData.creationDate.format('DD-MM-YYYY')}</div>
+                
+                
 
-
-                {/* <p>Average rating: {(this.props.toDoPostData.ratings.reduce((a,b)=>{
-                    return a+b;
-                },0)/this.props.toDoPostData.ratings.length).toFixed(2)}</p> */}
-                {/*  if admin/owner, display delete and edit buttons here */}
+            
             </div>
          );
     }

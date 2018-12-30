@@ -11,6 +11,8 @@ import selectToDoPosts from '../selectors/selectToDoPosts';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import classNames from 'classnames';
+import Collapsible from 'react-collapsible';
+
 class ToDoPage extends React.Component {
     constructor(props){
         super(props);
@@ -18,7 +20,8 @@ class ToDoPage extends React.Component {
             sortByValue:'rating',
             isAddNewModalOpen:false,
             isModalOpen:false,
-            selectedToDoPost:{}
+            selectedToDoPost:{},
+            filtersOpen:false
             
         };
     };
@@ -51,12 +54,27 @@ class ToDoPage extends React.Component {
             return <ToDoPost openPostModal={this.openPostModal} key={singlePost.toDoPostId} toDoPostData={singlePost} />
         });
     }
-    
+    testCollapse = () =>{
+        let thing = document.getElementById("TDP_dataManagement");
+        if(this.state.filtersOpen){
+            thing.style.maxHeight=0;
+            thing.style.padding=0;
+            this.setState(()=>({filtersOpen:false}));
+        }else{
+            thing.style.maxHeight='200px';
+            thing.style.padding='1.5rem';
+            this.setState(()=>({filtersOpen:true}));
+        }
+        
+    }
     render() { 
         return ( 
             <div className="toDoPage">
-                <h1 className="page__title">What To Do during your Erasmus ?</h1>
-                <div className="toDoPage__dataManagement">
+                <h1 className="page__title">What to do during your Erasmus ?</h1>
+                <div className="center-container">
+                    <button onClick={this.testCollapse} className={classNames("btn","toDoPage__collapsible__button")}>Filter results</button>
+                </div>
+                <div id="TDP_dataManagement" className="toDoPage__dataManagement">
                     <div className="toDoPage__sorting">
                         <p>Sort by:</p>
                         <Select value={this.state.sortByValue} onChange={this.handleSortByChange}>
@@ -70,7 +88,10 @@ class ToDoPage extends React.Component {
                 <div className="toDoPage__btnContainer">
                     <button className={classNames("btn","btnNewToDoPost")} onClick={this.openAddPostModal}>Add a new recommendation!</button>
                 </div>
-                {this.renderToDoPosts()}
+                <div className="toDoPage__allPosts">
+                    {this.renderToDoPosts()}
+
+                </div>
                 {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
                 {isEmpty(this.state.selectedToDoPost) ? null :
                  <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost}/>}
