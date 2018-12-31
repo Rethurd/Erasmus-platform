@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import {addPostToDatabase} from '../actions/help';
 import {firebase} from '../firebase/firebase';
 import moment from 'moment';
-
+import classNames from 'classnames';
 class AddHelpPostModal extends React.Component {
     constructor(props) {
         super(props);
@@ -60,29 +60,36 @@ class AddHelpPostModal extends React.Component {
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
             contentLabel="Add new help post modal"
-            ariaHideApp={false}>
-                <h3>Add new help post</h3>
-                <form onSubmit={this.handleOnSubmit}>
-                    <div>
+            ariaHideApp={false}
+            className={classNames("addPostModal","addPostModal--help")}>
+                <form className={classNames("addPostForm","addPostForm--help")} onSubmit={this.handleOnSubmit}>
+                    <div className={classNames("addPostModal__name","addPostModal__name--help")}>
                     {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
                         <TextField 
                             label="Post name"
                             value={this.state.name}
                             onChange={this.handleNameChange}
+                            required
+                            multiline
+                            rowsMax={3}
                         />
                     </div>
                         
-                    <div>
+                    <div className={classNames("addPostModal__description","addPostModal__description--help")}>
                         {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
                         <TextField 
                             label="Description of the problem"
                             value={this.state.description}
                             onChange={this.handleDescriptionChange}
                             multiline
-                            rows={4}
+                            required
+                            rows={20}
                         />
                     </div>
-                    <button>Add post!</button>
+                    <div className={classNames("addPostModal__buttonContainer","addPostModal__buttonContainer--help")}>
+                         <button className={classNames("btn","btnAddPost","btnAddPost--help")}>Add post!</button>
+                    </div>
+
                 </form>
                 
             </Modal>

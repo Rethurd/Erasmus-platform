@@ -6,7 +6,7 @@ import {firebase} from '../firebase/firebase';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import classNames from 'classnames';
 
 class ToDoPostModal extends React.Component {
     constructor(props) {
@@ -163,53 +163,91 @@ class ToDoPostModal extends React.Component {
             <Modal
                 isOpen={this.props.isOpen}
                 onRequestClose={this.props.onRequestClose}
-                ariaHideApp={false}>
-                <div>Recommendation</div>
-                {this.state.editMode ? <h3>
-                    {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
-                    <TextField value={this.state.name} onChange={this.handleNameChange}/>
+                ariaHideApp={false}
+                className="toDoPostModal">
+                {this.state.editMode ? <h3 className="toDoPostModal__name">
+                    {/* {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>} */}
+                    <TextField value={this.state.name} onChange={this.handleNameChange} multiline maxRows={3} required className="toDoPostModal__name--edit"/>
                     </h3> 
                 :
-                 <h3>{this.props.toDoPostData.name}</h3> }
+                this.props.toDoPostData.name.length>40 ? 
+                <h3 className="toDoPostModal__name">{`${this.props.toDoPostData.name.substring(0,40)}...`}</h3>
+                :
+                <h3 className="toDoPostModal__name">{this.props.toDoPostData.name}</h3> }
+                 <div className="toDoPostModal__ratings">
+                 <div className="toDoPost__recommended__container"> 
+                    <span className="positiveRatingContainer">
+                            {this.state.currentUserLiked ? 
+                                <button className={classNames("btn","rating-button--positive","rating-button--positiveLiked")} onClick={this.handleLikeButtonClicked}><i className={classNames("fas fa-thumbs-up")}/></button>
+                                :
+                                <button className={classNames("btn","rating-button--positive")} onClick={this.handleLikeButtonClicked}><i className={classNames("fas fa-thumbs-up")}/></button>}
+                                
+                        </span>
+                    <span> {this.props.toDoPostData.ratingsPositive}</span>
+
+                 </div>
+                 
+                 <div className="toDoPost__recommended__separator"><span>:</span></div>
+                    
+                <div className="toDoPost__notRecommended__container"> 
+                    <span > {this.props.toDoPostData.ratingsNegative}</span>
+                    
+                    <span className="negativeRatingContainer">
+                    {this.state.currentUserDisliked ? 
+                        <button className={classNames("btn","rating-button--negative","rating-button--negativeDisliked")} onClick={this.handleDislikeButtonClicked} ><i className={classNames("fas fa-thumbs-down")}/></button> : 
+                        <button className={classNames("btn","rating-button--negative")} onClick={this.handleDislikeButtonClicked} ><i className={classNames("fas fa-thumbs-down")}/></button>
+                    }
+
+                       
+                    </span>
+                </div>
+                    
+                </div>
                  {this.state.editMode ?
-                    <div>
-                        {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
-                        <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={5}/> 
+                    <div className="toDoPostModal__description__container">
+                        {this.state.descriptionEmptyError==undefined ? null: <p className="toDoModal__description__error">{this.state.descriptionEmptyError}</p>}
+                        <TextField value={this.state.description} onChange={this.handleDescriptionChange} multiline rows={20} className="toDoPostModal__description--edit"/> 
                     </div>
                   :
-                   <p>{this.props.toDoPostData.description}</p> }
+                   <p className="toDoPostModal__description">{this.props.toDoPostData.description}</p> }
+                
                  {this.state.editMode ? 
-                    <Select
-                        value={this.state.type}
-                        onChange={this.handleTypeChange}
-                        displayEmpty
-                        name="type"
-                    >
-                        <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
-                        <MenuItem value={'Club/Pub/Bar'}>Club/Pub/Bar</MenuItem>
-                        <MenuItem value={'Museum'}>Museum</MenuItem>
-                        <MenuItem value={'City/Location'}>City/Location</MenuItem>
-                        <MenuItem value={'Nature'}>Nature</MenuItem>
-                        <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-                        <MenuItem value={'Other'}>Other</MenuItem>
-                    </Select>
+                    <div className="toDoPostModal__selectContainer">
+                        <span>Type: </span>
+                        <Select
+                            value={this.state.type}
+                            onChange={this.handleTypeChange}
+                            displayEmpty
+                            name="type"
+                            className="toDoPostModal__select"
+                        >
+                            <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
+                            <MenuItem value={'Club/Pub/Bar'}>Club/Pub/Bar</MenuItem>
+                            <MenuItem value={'Museum'}>Museum</MenuItem>
+                            <MenuItem value={'City/Location'}>City/Location</MenuItem>
+                            <MenuItem value={'Nature'}>Nature</MenuItem>
+                            <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
+                            <MenuItem value={'Other'}>Other</MenuItem>
+                        </Select>
+                    </div>
+                    
                     :
-                    <p>Type: {this.state.type}</p>}
-                <p>Date Posted: {this.props.toDoPostData.creationDate.format('DD-MM-YYYY')}</p>
-                <p>Recommended by : {this.props.toDoPostData.ratingsPositive}</p>
-                <p>Not recommended by: {this.props.toDoPostData.ratingsNegative}</p>
+                    <div className="toDoPostModal__type">Type: {this.state.type}</div>}
+                 
+                
                 {/* <p>Current user liked: {this.state.currentUserLiked.toString()}</p>
                 <p>Current user disliked: {this.state.currentUserDisliked.toString()}</p> */}
-                <button onClick={this.handleLikeButtonClicked} >Thumbs up!</button>
-                <button onClick={this.handleDislikeButtonClicked} >Thumbs down!</button>
-                <div>
-                {this.checkIfPostBelongsToUser() ? <button onClick={this.handleDeletePost}>Delete</button> : null}
-                {this.checkIfPostBelongsToUser() ? 
-                    this.state.editMode ?  <button onClick={this.handleSaveChanges}>Save</button> 
-                        : <button onClick={this.handleEditPost}>Edit</button> 
-                    : 
-                    null}
+                
+                <div className="toDoPostModal__buttons">
+                    {this.checkIfPostBelongsToUser() ? <button className={classNames("btn btn-danger")} onClick={this.handleDeletePost}>Delete</button> : null}
+                    {this.checkIfPostBelongsToUser() ? 
+                        this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
+                            : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
+                        : 
+                        null}
                 </div>
+                <p className="toDoPostModal__date">Date Posted: {this.props.toDoPostData.creationDate.format('DD-MM-YYYY')}</p>
+
                 
             </Modal>
          );

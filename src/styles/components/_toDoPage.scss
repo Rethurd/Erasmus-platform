@@ -92,18 +92,40 @@
 }
 
 .toDoPost{
+    border: 1px solid black;
+    border-radius:1rem;
+    background:white;
+    opacity:0.8;
     display:grid;
     grid-template-rows:1fr auto;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: 3fr 1fr;
+    padding:0 1.5rem 1.5rem 1.5rem;
+    margin-bottom:2rem;
+}
+
+.toDoPost:hover{
+    background-image:url('../resources/graphics/prism.png');
+    color:white;
+    .toDoPost__date{
+        color:$esn-blue;
+    }
 }
 .toDoPost__name{
     margin-left:30px;
+    max-width:400px;
+    overflow: hidden;
 }
+
 .toDoPost__descriptionContainer{
     grid-column: 1/3;
+    .text-center{
+        font-size:1.2rem;
+        font-weight: bold;
+    }
 }
 .toDoPost__description{
-    padding:10px 0;
+    padding: 0 10px;
+    margin:15px 0;
     grid-column: 1/3;
     max-height:150px;
     word-wrap: break-word;
@@ -119,10 +141,12 @@
     grid-column: 1/3;
 }
 .toDoPost__reviews{
-    display:flex;
-    align-items:center;
-    width: 90px;
-    height: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 100%;
+    
 }
 .toDoPost__recommended__container{
     height: 50px;
@@ -164,5 +188,54 @@
         text-align: center;
         width: 30px;
         line-height: 30px;
+    }
+}
+
+
+.toDoPost__description::-webkit-scrollbar-track
+{
+    border-radius:2em;
+	background-color: #F5F5F5;
+}
+
+.toDoPost__description::-webkit-scrollbar
+{
+    border-radius:2em;
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.toDoPost__description::-webkit-scrollbar-thumb
+{
+    border-radius:2em;
+	background-color: $esn-dark-blue;	
+	background-image: -webkit-linear-gradient(90deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
+}
+
+.toDoPage__pagination__button{
+    a{
+        background-image:url('../resources/graphics/prism.png') !important;
+        color:white;
+        width:150px;
+        margin:0 2rem;
+    }
+    a:hover{
+        color:lighten($esn-dark-blue,15%);
+    }
+}
+
+@media (max-width:640px){
+    .toDoPost__name{
+        font-size:1.6rem;
+        margin-right:15px;
+    }
+    .toDoPost__description{
+        font-size:1.3rem;
     }
 }

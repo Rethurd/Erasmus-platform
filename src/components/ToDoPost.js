@@ -50,7 +50,7 @@ class ToDoPost extends React.Component {
     render() { 
         return ( 
             <div className="toDoPost" onClick={()=>{this.props.openPostModal(this.props.toDoPostData.toDoPostId)}}>
-                <h3 className="toDoPost__name">{this.props.toDoPostData.name}</h3>
+                {this.props.toDoPostData.name.length>30 ? <h3 className="toDoPost__name">{this.props.toDoPostData.name.substring(0,30)}...</h3> : <h3 className="toDoPost__name">{this.props.toDoPostData.name}</h3> }
                 <div className="toDoPost__reviews">
                     <div className="toDoPost__recommended__container"> 
                         <span className="toDoPost__recommended"><i className={classNames("fas fa-thumbs-up")}></i></span><span>{this.props.toDoPostData.ratingsPositive}</span>

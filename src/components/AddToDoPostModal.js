@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {connect} from 'react-redux';
 import {firebase} from '../firebase/firebase';
 import {addToDoPostToDatabase} from '../actions/toDo';
+import classNames from 'classnames';
 
 class AddToDoPostModal extends React.Component {
     constructor(props) {
@@ -67,44 +68,56 @@ class AddToDoPostModal extends React.Component {
             isOpen={this.props.isOpen}
             onRequestClose={this.props.onRequestClose}
             contentLabel="Add new ToDo Post"
-            ariaHideApp={false}>
-            <div>Recommend a place to visit!</div>
-                 <form onSubmit={this.handleOnSubmit}>
-                    <div>
+            ariaHideApp={false}
+            className={classNames("addPostModal","addPostModal--toDo")}>
+                 <form className={classNames("addPostForm","addPostForm--toDo")} onSubmit={this.handleOnSubmit}>
+                    <div className={classNames("addPostModal__name","addPostModal__name--toDo")} >
                     {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>}
                         <TextField 
                             label="Name"
                             value={this.state.name}
                             onChange={this.handleNameChange}
+                            className="addPostModal__name"
+                            required
+                            multiline
+                            rowsMax={3}
                         />
                     </div>
                         
-                    <div>
+                    <div className={classNames("addPostModal__description","addPostModal__description--toDo")} >
                         {this.state.descriptionEmptyError==undefined ? null: <p>{this.state.descriptionEmptyError}</p>}
                         <TextField 
                             label="Description"
                             value={this.state.description}
                             onChange={this.handleDescriptionChange}
                             multiline
-                            rows={4}
+                            rows={20}
+                            required
                         />
                     </div>
 
-                    <Select
-                        value={this.state.type}
-                        onChange={this.handleTypeChange}
-                        displayEmpty
-                        name="type"
-                    >
-                        <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
-                        <MenuItem value={'Club/Pub/Bar'}>Club/Pub/Bar</MenuItem>
-                        <MenuItem value={'Museum'}>Museum</MenuItem>
-                        <MenuItem value={'City/Location'}>City/Location</MenuItem>
-                        <MenuItem value={'Nature'}>Nature</MenuItem>
-                        <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
-                        <MenuItem value={'Other'}>Other</MenuItem>
-                    </Select>
-                    <button>Submit</button>
+                    <div className="addPostModal__select__container"> 
+                        <span>Type:</span>
+                        <Select
+                            value={this.state.type}
+                            onChange={this.handleTypeChange}
+                            displayEmpty
+                            name="type"
+                            className="addPostModal__select"
+                        >
+                            <MenuItem value={'Restaurant'}>Restaurant</MenuItem>
+                            <MenuItem value={'Club/Pub/Bar'}>Club/Pub/Bar</MenuItem>
+                            <MenuItem value={'Museum'}>Museum</MenuItem>
+                            <MenuItem value={'City/Location'}>City/Location</MenuItem>
+                            <MenuItem value={'Nature'}>Nature</MenuItem>
+                            <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
+                            <MenuItem value={'Other'}>Other</MenuItem>
+                        </Select>
+                    </div>
+                   
+                    <div className="addPostModal__buttonContainer">
+                        <button className={classNames("btn","btnAddPost","btnAddPost--toDo")}>Submit</button>
+                    </div>
                 </form>
 
             </Modal>

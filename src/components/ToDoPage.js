@@ -12,6 +12,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import classNames from 'classnames';
 import Collapsible from 'react-collapsible';
+import {Pager} from 'react-bootstrap';
 
 class ToDoPage extends React.Component {
     constructor(props){
@@ -21,8 +22,8 @@ class ToDoPage extends React.Component {
             isAddNewModalOpen:false,
             isModalOpen:false,
             selectedToDoPost:{},
-            filtersOpen:false
-            
+            filtersOpen:false,
+            currentPage:1
         };
     };
 
@@ -67,6 +68,16 @@ class ToDoPage extends React.Component {
         }
         
     }
+    handleNextPage = ()=>{
+        this.setState((state)=>({
+            currentPage:state.currentPage+1
+        }));
+    }
+    handlePreviousPage = ()=>{
+        this.setState((state)=>({
+            currentPage:state.currentPage-1
+        }));
+    }
     render() { 
         return ( 
             <div className="toDoPage">
@@ -89,9 +100,13 @@ class ToDoPage extends React.Component {
                     <button className={classNames("btn","btnNewToDoPost")} onClick={this.openAddPostModal}>Add a new recommendation!</button>
                 </div>
                 <div className="toDoPage__allPosts">
-                    {this.renderToDoPosts()}
+                    {this.renderToDoPosts().splice(5*(this.state.currentPage-1),5)}
 
                 </div>
+                <Pager className="infoPage__pagination">
+                    {this.state.currentPage==1 ? <Pager.Item href="#" className="toDoPage__pagination__button" disabled onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item> : <Pager.Item href="#" className="toDoPage__pagination__button"  onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item>}
+                    {Math.ceil(getToDoPosts(this.props.toDoPosts,this.state.sortByValue).length/5)==this.state.currentPage ? <Pager.Item className="toDoPage__pagination__button" href="#" disabled onClick={this.handleNextPage}>Next &rarr; </Pager.Item> : <Pager.Item  className="toDoPage__pagination__button" href="#" onClick={this.handleNextPage}>Next &rarr;</Pager.Item>}
+                </Pager>
                 {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
                 {isEmpty(this.state.selectedToDoPost) ? null :
                  <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost}/>}

@@ -361,3 +361,36 @@
     }
 
 }
+
+
+.addPostForm--help{
+    grid-template-rows:3fr 9fr 2fr;
+}
+
+.addPostModal__name--help{
+    background: $esn-pink;
+    div{
+        width:100%;
+    }
+}
+
+
+.addPostModal__description--help *::-webkit-scrollbar-thumb{
+
+	background-color: $esn-pink !important;	
+	
+}
+.btnAddPost--help{
+    height:35px;
+    background:$esn-pink;
+    
+}
+.addPostModal__buttonContainer--help{
+    display:flex;
+    align-items:center;
+}
+@media(max-height:600px){
+    .addPostForm--help{
+        grid-template-rows: 3fr 7fr 2fr
+    }
+}

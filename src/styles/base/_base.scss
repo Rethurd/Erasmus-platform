@@ -40,6 +40,154 @@ button:disabled{
     // padding:1rem;
 }
 
+.addPostModal{
+    display:grid;
+    grid-template-rows: 3fr 12fr 1fr;
+    opacity:0.85;
+    width:500px;
+    height:480px;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right:50%;
+    transform: translate(-50%, -50%);
+    background-image:url('../resources/graphics/prism.png');
+    -webkit-border-radius: 1.5rem;
+    -moz-border-radius: 1.5rem;
+    border-radius: 1.5rem;
+    border: none;
+    color:white;
+    align-items: center;
+}
+.addPostForm{
+  display: grid;
+  grid-template-rows: 3fr 12fr 1fr;
+}
+.addPostModal__name{
+  *{
+    color:white !important;
+  }
+  text-align:center;
+  width:100%;
+  padding:1rem;
+  font-weight: bold;
+  min-height:100px;
+  max-height:100px;
+  border-radius:1rem;
+  label{
+    font-size:1.5rem;
+  }
+  textarea{
+      font-size:1.5rem;
+      word-break: break-word;
+      padding:0.4rem;
+      color:white;
+      overflow-y:auto;
+      max-height:50px;
+      line-height:1.8rem;
+  }
+}
+
+
+.addPostModal__name *:before, .addPostModal__name *:after{
+  border: none !important;
+}
+
+.addPostModal__description{
+  max-height:230px;
+  padding:1rem;
+  height:100%;
+  *{
+    color:white !important;
+  }
+  div{
+    width:100%;
+  }
+  textarea{
+      color: white;
+      font-size: 1.8rem;
+      padding: 1rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height:2.2rem;
+      max-height:230px;
+  }
+  label{
+    font-size:1.5rem;
+  }
+}
+.addPostModal__description *:before, .addPostModal__description *:after{
+  border: none !important;
+}
+
+
+.addPostModal__name *::-webkit-scrollbar-track, .addPostModal__description *::-webkit-scrollbar-track 
+{
+    border-radius:2em;
+	background-color: #F5F5F5;
+}
+
+.addPostModal__name *::-webkit-scrollbar, .addPostModal__description *::-webkit-scrollbar
+{
+    border-radius:2em;
+	width: 10px;
+	background-color: #F5F5F5;
+}
+
+.addPostModal__name *::-webkit-scrollbar-thumb,{
+    border-radius:2em;
+	background-color: #363636;	
+	background-image: -webkit-linear-gradient(90deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
+}
+
+.addPostModal__buttonContainer{
+  display: flex;
+  justify-content: center;
+  .btn{
+    width:150px;
+  }
+  
+}
+
+
+@media (max-width:480px){
+  .addPostModal{
+      width:340px;
+  }
+}
+
+@media (max-width:360px){
+  .addPostModal{
+      width:280px;
+  }
+}
+
+@media(max-height:600px){
+  .addPostModal{
+    height:400px;
+  }
+  .addPostModal__description{
+    max-height:180px;
+    textarea{
+      height:150px;
+    }
+  }
+  .addPostModal__name{
+    max-height:80px;
+    textarea{
+      height:30px;
+    }
+  }
+}
+
 .center-container{
     display: flex;
     justify-content: center;
