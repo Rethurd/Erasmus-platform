@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {startLogin} from '../actions/auth';
 import Modal from 'react-modal'
 import database, {firebase} from '../firebase/firebase';
-
+import classNames from 'classnames';
 export class LoginPage extends React.Component{
 
     constructor(props){
@@ -104,65 +104,78 @@ export class LoginPage extends React.Component{
     render(){
         return(
             <div>
-                <button onClick={this.props.startLogin}>Login using Google</button>
-                <button onClick={this.openModal}>Login using Email/password</button>
+                <div className="loginPage__loginBox">
+                    <h3>Login:</h3>
+                    <div className="loginPage__buttons">
+                        <button className={classNames("btn")} onClick={this.props.startLogin}><span>Login using Google</span><span><i className={classNames("fab","fa-google")}></i></span></button>
+                        <button className={classNames("btn")} onClick={this.openModal}><span>Login using Email/password </span><span><i className={classNames("fas","fa-at")}></i></span></button>
+                    </div>
+                </div>
+                
+                
                 <Modal
                     isOpen={this.state.isModalOpen}
                     onRequestClose={this.closeModal}
                     contentLabel="Login form"
                     ariaHideApp={false}
+                    className="loginModal"
                  >
                 
                 {this.state.isRegisterForm ? 
-                <div>
-                    <p> Register a new account! </p>
-                    <form onSubmit={this.handleRegisterRequest}>
-                        <div>
+                <div className="register__container">
+                    <div className="login__header"> Register a new account! </div>
+                    <form onSubmit={this.handleRegisterRequest} className="register__form">
+                        <div className="login__input--register">
                             <p>Account email:</p>
-                            <input type='text' value={this.state.email} onChange={this.handleEmailChange}/>
+                            <input type='text' className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
 
                         </div>
-                        <div>
+                        {this.state.fnameEmptyError== undefined ? null : <div className="error__message--login">{this.state.fnameEmptyError}</div>}
+                        <div className="login__input--register">
                             <p>First name:</p>
-                            {this.state.fnameEmptyError== undefined ? null : this.state.fnameEmptyError}
-                            <input type='text' value={this.state.fname} onChange={this.handleFnameChange}/>
+                            <input type='text' className="form-control" value={this.state.fname} onChange={this.handleFnameChange}/>
 
                         </div>
-                        <div>
+                        {this.state.lnameEmptyError== undefined ? null : <div className="error__message--login">{this.state.lnameEmptyError}</div>}
+
+                        <div className="login__input--register">
                             <p>Last name:</p>
-                            {this.state.lnameEmptyError== undefined ? null : this.state.lnameEmptyError}
-                            <input type='text' value={this.state.lname} onChange={this.handleLnameChange}/>
+                            <input type='text' className="form-control" value={this.state.lname} onChange={this.handleLnameChange}/>
 
                         </div>
-                        <div>
+                        <div className="login__input--register">
                             <p>Password:</p>
-                            <input type='password' value={this.state.password} onChange={this.handlePasswordChange}/>
+                            <input type='password' className="form-control" value={this.state.password} onChange={this.handlePasswordChange}/>
                         </div>
 
-                        {this.state.registerError==undefined ? null : <p>{this.state.registerError}</p> }
+                        {this.state.registerError==undefined ? null : <div className="error__message--login">{this.state.registerError}</div> }
 
-                        <button>Register</button>
+                        <div className="text-center">
+                            <button className={classNames("btn","btn--login")}>Register</button>
+                        </div>
                     </form>
-                    <button onClick={this.handleShowLoginForm}>Already have an account? Click to email!</button>
+                    <div className="login__noAccount" onClick={this.handleShowLoginForm}>Already have an account? Click to login!</div>
                 </div>
                  : 
-                 <div>
-                    <p> Login using Email/password! </p>
-                    <form onSubmit={this.handleLoginRequest}>
-                       <div>
+                 <div className="login__container">
+                    <div className="login__header"> Login using Email/password! </div>
+                    <form onSubmit={this.handleLoginRequest} className="login__form">
+                       <div className="login__input">
                             <p>Account email:</p>
-                            <input type='text' value={this.state.email} onChange={this.handleEmailChange}/>
+                            <input type='text' className="form-control" value={this.state.email} onChange={this.handleEmailChange}/>
 
                         </div>
                         
-                        <div>
+                        <div className="login__input">
                             <p>Password:</p>
-                            <input type='password' value={this.state.password} onChange={this.handlePasswordChange}/>
+                            <input type='password' className="form-control" value={this.state.password} onChange={this.handlePasswordChange}/>
                         </div>
-                        {this.state.loginError==undefined ? null : <p>{this.state.loginError}</p> }
-                        <button>Login</button>
+                        {this.state.loginError==undefined ? null : <p className="error__message--login">{this.state.loginError}</p> }
+                        <div className="text-center">
+                            <button className={classNames("btn","btn--login")}>Login</button>
+                        </div>
                     </form>
-                    <button onClick={this.handleShowRegisterForm}>No account yet? Click to register!</button>
+                    <div className="login__noAccount" onClick={this.handleShowRegisterForm}>No account yet? Click to register!</div>
                  </div>
                  }
                 

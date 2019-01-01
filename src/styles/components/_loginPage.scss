@@ -1,0 +1,124 @@
+.loginPage__loginBox{
+    margin: 150px auto;
+    background:$calendar-background;
+    width: 300px;
+    height: 300px;
+    border-radius: 1.5rem;
+    h3{
+        margin:0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height:50px;
+        background: $esn-dark-blue;
+        border-top-left-radius: 1.5rem;
+        border-top-right-radius: 1.5rem;
+        color:white;
+        text-align: center;
+    }
+}
+.loginPage__buttons{
+    box-shadow: inset 0px 0px 5px 0px #363636;
+    border-bottom-left-radius: 1.5rem;
+    border-bottom-right-radius: 1.5rem;
+    padding:15px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .btn{
+        border: 1px solid #363636;
+        background:$calendar-full;
+        display: flex;
+        justify-content: space-between;
+        margin:7px 0;
+        width:250px;
+        height:45px;
+    }
+    .btn:hover{
+        background: darken($calendar-full,15%);
+    }
+}
+
+.loginModal{
+    opacity:0.85;
+    width:300px;
+    height:400px;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right:50%;
+    transform: translate(-50%, -50%);
+    background-image:url('../resources/graphics/prism.png');
+    -webkit-border-radius: 1.5rem;
+    -moz-border-radius: 1.5rem;
+    border-radius: 1.5rem;
+    border: none;
+    color:white;
+    align-items: center;
+}
+
+.register__container{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 6fr 1fr;
+}
+.register__form{
+    padding:10px;
+}
+.login__container{
+    height:100%;
+    display:grid;
+    grid-template-rows: 1fr 3fr 1fr ;
+}
+.login__header{
+    background:$esn-dark-blue;
+    border-top-left-radius: 1.5rem;
+    border-top-right-radius: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login__form{
+    padding:10px;
+    display:grid;
+    grid-template-rows: 4fr 4fr 2fr;
+    grid-row-gap:5px;
+}
+
+.login__input{
+    text-align:center;
+}
+.login__input--register{
+    @extend .login__input;
+    margin-bottom: 10px;
+    p{
+        font-size:1.4rem;
+        margin-block-end: 0;
+        margin-block-start: 0;
+        margin: 0;
+    }
+    input{
+        height: 25px;
+    }
+
+}
+.btn--login{
+    background:#49CD49;
+    color:black;
+    width:130px;
+}
+.login__noAccount{
+    cursor: pointer;
+    color:$esn-blue;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.login__noAccount:hover{
+    color:darken($esn-blue,5%);
+}
