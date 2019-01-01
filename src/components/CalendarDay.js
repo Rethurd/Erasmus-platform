@@ -23,10 +23,12 @@ class CalendarDay extends React.Component {
 
     render() { 
         return ( 
-            <div className="calendarDay" onClick={()=>{
-                    this.props.getEventsOfDay(this.props.day);
-                }}>
-                 <span className="calendarDay__number">{this.props.day.format('D')}</span>
+            <div className="calendarDay" onClick={()=>{this.props.getEventsOfDay(this.props.day)}}>
+                 <span 
+                    onClick={()=>{this.props.getEventsOfDay(this.props.day)}} 
+                    className="calendarDay__number">
+                    {this.props.day.format('D')}
+                </span>
                  {
                      this.props.events.length==0 ? null : this.printEvents()
                  }

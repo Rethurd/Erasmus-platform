@@ -67,9 +67,10 @@ class CalendarPage extends React.Component {
         const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay);
         return todaysEvents.map((singleEvent)=>{
             return(
-                <div key={uuid()}>
-                     <h4>{singleEvent.name}</h4>
-                     <p>Description: {singleEvent.description}</p>
+                <div className="eventsToday__singleEvent" onClick={()=>{this.getEvent(singleEvent)}} key={uuid()}>
+                     <div><span>Name:</span> <div>{singleEvent.name}</div></div>
+                     <div><span>Location:</span> <div>{singleEvent.location}</div></div>
+                     <div><span>Description:</span> <div className="eventsToday__description">{singleEvent.description}</div></div>
                      {/* <p>Participants: {singleEvent.participants.map((singleParticipant)=>{return <p key={uuid()}>{singleParticipant.participantData.name}</p>})}</p>  */}
                 </div>
             )
@@ -151,11 +152,9 @@ class CalendarPage extends React.Component {
         let toggleContent = document.getElementById("createEvent__toggle");
         if(this.state.formOpen){
             toggleContent.style.maxHeight=0;
-            toggleContent.style.padding=0;
             this.setState(()=>({formOpen:false}));
         }else{
             toggleContent.style.maxHeight='320px';
-            toggleContent.style.padding='1.5rem';
             this.setState(()=>({formOpen:true}));
         }
         
@@ -191,7 +190,7 @@ class CalendarPage extends React.Component {
                                 <AddEventForm/>
                         </div>
                     </div>
-                    <div className="calendar__todaysEvents">
+                    <div className="calendar__eventsToday__container">
                         <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
                         {this.getEventsOfDay()}
                     </div>

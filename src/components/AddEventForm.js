@@ -49,9 +49,13 @@ class AddEventForm extends React.Component {
         e.preventDefault(); // so the page doesnt refresh
         let error1 = document.getElementById("CE_error1");
         let error2 = document.getElementById("CE_error2");
+        let descContainer = document.getElementById("CE_description__container");
                 if(this.state.name==''){
                     error1.style.setProperty("height","50px","important");
-                    error1.style.setProperty("margin-bottom","15px","important");
+                    error1.style.setProperty("margin-bottom","8px","important");
+                    if(this.state.description!=''){
+                        descContainer.style.setProperty("margin-top","25px");
+                    }
                     this.setState(()=>({nameEmptyError:'The event name cannot be empty!'}));
                 }else{
                     error1.style.setProperty("height","0px","important");
@@ -61,6 +65,7 @@ class AddEventForm extends React.Component {
                 if(this.state.description==''){
                     error2.style.setProperty("height","50px","important");
                     error2.style.setProperty("margin-bottom","15px","important");
+                    descContainer.style.setProperty("margin-bottom","35px");
                     this.setState(()=>({descriptionEmptyError:'The event description cannot be empty!'}));
                 }else{
                     error2.style.setProperty("height","0px","important");
@@ -111,7 +116,7 @@ class AddEventForm extends React.Component {
                 <span>Location: </span><TextField className="textFieldInput" value={this.state.location}  onChange={this.handleEventLocationChange} placeholder="Starting location"></TextField>
             </div>
             <div id="CE_error2" className="error__message">{this.state.descriptionEmptyError}</div>
-            <div className="createEvent__description__container">
+            <div id="CE_description__container" className="createEvent__description__container">
                 <span>Description: </span><TextField multiline rowsMax={3} placeholder="Description..." value={this.state.description} onChange={this.handleEventDescriptionChange} className={classNames("textFieldInput","textFieldInput--multiline")} ></TextField>
             </div>
             <div className="createEvent__btn__container">

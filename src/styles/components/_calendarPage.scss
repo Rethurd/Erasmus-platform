@@ -97,31 +97,6 @@ td{
         font-weight: bold;
     }
 }
-.calendarDay::-webkit-scrollbar-track
-{
-    border-radius:2em;
-	background-color: #F5F5F5;
-}
-
-.calendarDay::-webkit-scrollbar
-{
-    border-radius:2em;
-	width: 5px;
-	background-color: #F5F5F5;
-}
-
-.calendarDay::-webkit-scrollbar-thumb
-{
-    border-radius:2em;
-	background-color: $esn-dark-blue;	
-	background-image: -webkit-linear-gradient(45deg,
-                                            rgba(255, 255, 255, .2) 25%,
-                                            transparent 25%,
-                                            transparent 50%,
-                                            rgba(255, 255, 255, .2) 50%,
-                                            rgba(255, 255, 255, .2) 75%,
-                                            transparent 75%)
-}
 
 .calendarDay:hover{
     background:darken($calendar-full,15%);
@@ -213,6 +188,8 @@ td{
 .createEvent__description__container{
     height:80px !important;
 }
+
+
 .textFieldInput{
     *{
         background:white !important;
@@ -253,6 +230,51 @@ td{
     background-color:darken(#49CD49,15%);
 }
 
+.calendar__eventsToday__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom:100px;
+    max-height: 500px;
+    overflow-y: auto;
+    margin-top: 40px;
+}
+.eventsToday__singleEvent{
+    cursor: pointer;
+    margin-bottom: 5px;
+    opacity:0.93;
+    width:450px;
+    padding:1rem;
+    background:$navy-blue;
+    color:white;
+    border-radius:1.5rem;
+    div{
+        display:flex;
+        // align-items: center;
+        flex-direction: row;
+        padding:2px;
+        div{
+            width:100%;
+        }
+        span{
+            align-self:center;
+            display:block;
+            min-width: 90px;
+            width:90px;
+            margin-right:20px;
+        }
+    }
+}
+.eventsToday__singleEvent:hover{
+    background:lighten($navy-blue,15%);
+    box-shadow:inset 0px 0px 11px 0px black;
+}
+.eventsToday__description{
+    max-height:100px;
+    overflow-y:auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
 @media (max-width:1200px){
     .calendarPage__container{
         grid-template-columns: 1fr;
@@ -272,4 +294,126 @@ td{
         width:80px;
         height: 80px;
     }
+}
+
+@media(max-width:600px){
+
+    .calendarPage__container{
+        justify-content: center;
+    }
+    .calendar__header,.calendar__days,.calendar__weekDays{
+        max-width:300px !important;
+    }
+    .calendar__date{
+        margin:0 !important;
+    }
+    .calendar__weekDays{
+        div{
+            width:36px !important;
+            font-size:0.7rem;
+        }
+    }
+    
+    .calendarDay{
+
+        width:36px;
+        height: 36px;
+        padding:0;
+        text-align: center;
+        .calendarDay__number{
+            display:block;
+            width:100%;
+            height:100%;
+        }
+        .singleEvent{
+            display:none;
+        }
+    }
+    .emptyDay{
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    .createEvent__form{
+        width:280px;
+        div{
+            *{
+                font-size:1.1rem !important;
+                width:160px !important;
+            }
+            input, textarea{
+                
+            }
+            span{
+                display:block;
+                margin-right:20px;
+                width:60px !important;
+                font-size: 1rem !important;
+            }
+        }
+    }
+    .eventsToday__singleEvent{
+        width:280px;
+        div{
+            span{
+                font-size:1rem;
+                width:50px !important;
+            }
+            div{
+                width:130px;
+            }
+        }
+        
+    }
+    .calendar__eventsToday__container{
+        h2{
+            font-size: 2.5rem;
+            text-align: center;
+        }
+    }
+
+}
+
+.calendarDay::-webkit-scrollbar-track,.createEvent__description__container *::-webkit-scrollbar-track,
+.eventsToday__description::-webkit-scrollbar-track,.calendar__eventsToday__container::-webkit-scrollbar-track
+{
+    border-radius:2em;
+	background-color: #F5F5F5;
+}
+
+.calendarDay::-webkit-scrollbar,
+{
+    border-radius:2em;
+	width: 5px;
+	background-color: #F5F5F5;
+}
+.createEvent__description__container *::-webkit-scrollbar,.eventsToday__description::-webkit-scrollbar,.calendar__eventsToday__container::-webkit-scrollbar{
+    border-radius:2em;
+	width: 10px;
+	background-color: #F5F5F5;
+}
+.calendarDay::-webkit-scrollbar-thumb
+{
+    border-radius:2em;
+	background-color: $esn-dark-blue;	
+	background-image: -webkit-linear-gradient(45deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
+}
+
+.createEvent__description__container *::-webkit-scrollbar-thumb,.eventsToday__description::-webkit-scrollbar-thumb,.calendar__eventsToday__container::-webkit-scrollbar-thumb{
+
+    border-radius:2em;
+	background-color: #363636;	
+	background-image: -webkit-linear-gradient(45deg,
+                                            rgba(255, 255, 255, .2) 25%,
+                                            transparent 25%,
+                                            transparent 50%,
+                                            rgba(255, 255, 255, .2) 50%,
+                                            rgba(255, 255, 255, .2) 75%,
+                                            transparent 75%)
 }
