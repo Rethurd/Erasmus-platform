@@ -8,6 +8,8 @@ import MomentUtils from '@date-io/moment';
 import moment from 'moment';
 import {MuiPickersUtilsProvider } from 'material-ui-pickers';
 import {DateTimePicker} from 'material-ui-pickers';
+import TextField from '@material-ui/core/TextField';
+import classNames from 'classnames';
 
 
 class EventModal extends React.Component{
@@ -87,49 +89,94 @@ class EventModal extends React.Component{
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Selected Event"
                 ariaHideApp={false}
+                className="eventModal"
             >
-                <div>{this.state.nameEmptyError}</div>
-                <h1>{this.state.editMode ? <input type="text" value={this.state.name} onChange={this.handleEventNameChange}></input> : this.state.name}</h1>
-                <div>{this.state.descriptionEmptyError}</div>
-                <h3>Description: {this.state.editMode ? <textarea value={this.state.description} onChange={this.handleEventDescriptionChange} /> : this.state.description} </h3>
-                <p>Event Id: {this.state.eventId}</p>
-                Even starts: {this.state.editMode ?
-                 <MuiPickersUtilsProvider  utils={MomentUtils}>
-                  <DateTimePicker  value={this.state.date} onChange={this.handleDateChange} />
-                 </MuiPickersUtilsProvider> 
+                {/* <div>{this.state.nameEmptyError}</div> */}
+                {this.state.editMode ? 
+                <div className="eventModal__name">
+                    <TextField required className="eventModal__name--edit" multiline rowsMax={3} value={this.state.name} onChange={this.handleEventNameChange}></TextField> 
+                </div>
                 :
-                 this.state.date.format('DD-MM-YYYY HH:mm')}
+                    this.state.name.length>40 ? 
+                    <div className="eventModal__name">{this.state.name.substring(0,40)}...</div>
+                    :
+                    <div className="eventModal__name">{this.state.name}</div>}
+                <div className="eventModal__date__container">
+                    <span>Even starts:</span> 
+                    {this.state.editMode ?
+                        <MuiPickersUtilsProvider  utils={MomentUtils}>
+                        <DateTimePicker  value={this.state.date} onChange={this.handleDateChange} className="eventModal__date--edit" />
+                        </MuiPickersUtilsProvider> 
+                    :
+                        <div className="eventModal__date">{this.state.date.format('DD-MM-YYYY HH:mm')}</div>}
+
+                </div>
+
+                <div className="eventModal__location__container">
+                    <span>Location:</span>  
+                    {this.state.editMode ? 
+                        <TextField className="eventModal__location--edit" value={this.state.location} onChange={this.handleEventLocationChange}></TextField>
+                        :
+                        <div className="eventModal__location"> {this.state.location} </div>} 
+                </div>
+
+                {/* <div>{this.state.descriptionEmptyError}</div> */}
+                <div>
+                    {this.state.editMode ? <TextField required multiline rows={20} value={this.state.description} 
+                    onChange={this.handleEventDescriptionChange} className="eventModal__description--edit" /> : <div className="eventModal__description">{this.state.description}</div>}
+                </div>
+                
+               
                 
                 
-                <p>Location:  {this.state.editMode ? <input type="text" value={this.state.location} onChange={this.handleEventLocationChange}></input>: this.state.location} </p>
-                <p>Event created by:{ this.state.createdBy!=null ? this.state.createdBy : 'Unknown'}</p>
-                <p>Creator uid:{this.state.createdById}</p>
-                <p>Participants: {this.state.participants.map((participant)=>{return(<span key={participant.participantId}>{participant.participantData.name}</span>)})}</p>
-                <button onClick={()=>{
-                    // e.stopPropagation();
-                const user = this.isUserParticipating();
                 
-                // if already participating
-                if(!user){
-                    const existingUserUid = firebase.auth().currentUser.uid;
-                    this.props.removeParticipantFromDatabase(this.state.eventId,existingUserUid).then(()=>{
-                        this.props.onRequestClose();
-                        this.props.rerenderAfterChange(this.state.eventId);
-                    });                   
-                }else{
-                    const userData = {
-                        name:user.displayName,
-                        email: user.email
+                
+                <div className="eventModal__participants__container">
+                    <div className="eventModal__participants__header">Participants: </div>
+                    <div className="eventModal__participants__grid">
+                    {this.state.participants.map((participant)=>
+                    {return(
+                        <span key={participant.participantId}>
+                            {participant.participantData.name}
+                        </span>)
+                    })}
+                    </div>
+                </div>
+
+                <div className="eventModal__participationButton__container">
+                    <button className={classNames("btn","btn--participate")} onClick={()=>{
+                        // e.stopPropagation();
+                    const user = this.isUserParticipating();
+                    // if already participating
+                    if(!user){
+                        const existingUserUid = firebase.auth().currentUser.uid;
+                        this.props.removeParticipantFromDatabase(this.state.eventId,existingUserUid).then(()=>{
+                            this.props.onRequestClose();
+                            this.props.rerenderAfterChange(this.state.eventId);
+                        });                   
+                    }else{
+                        const userData = {
+                            name:user.displayName,
+                            email: user.email
+                        }
+                        this.props.addParticipantToDatabase(this.state.eventId,user.uid,userData).then(()=>{
+                            this.props.onRequestClose();
+                            this.props.rerenderAfterChange(this.state.eventId);
+                        });
                     }
-                    this.props.addParticipantToDatabase(this.state.eventId,user.uid,userData).then(()=>{
-                        this.props.onRequestClose();
-                        this.props.rerenderAfterChange(this.state.eventId);
-                    });
-                }
-                    //call dispatch with state.eventId and user id and user name
-                }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
-                {this.isUserTheCreator() ? <button onClick={this.handleDeleteEvent}>Delete the event</button> : null }
-                {this.isUserTheCreator() ? <button onClick={this.handleEditEvent}>{this.state.editMode ? 'Save' : 'Edit'}</button> : null }
+                        //call dispatch with state.eventId and user id and user name
+                    }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
+                </div>
+                <div className="eventModal__buttons">
+                    {this.isUserTheCreator() ? <button  className={classNames("btn","btn-danger")} onClick={this.handleDeleteEvent}>Delete the event</button> : null }
+                    {this.isUserTheCreator() ? 
+                        this.state.editMode ? 
+                            <button  className={classNames("btn","btn-success")} onClick={this.handleEditEvent}>Save</button>
+                            :
+                            <button  className={classNames("btn","btn-primary")} onClick={this.handleEditEvent}>Edit</button>
+                         : 
+                         null }
+                </div>
             </Modal>
              );
         }

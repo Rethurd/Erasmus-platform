@@ -68,7 +68,10 @@ class CalendarPage extends React.Component {
         return todaysEvents.map((singleEvent)=>{
             return(
                 <div className="eventsToday__singleEvent" onClick={()=>{this.getEvent(singleEvent)}} key={uuid()}>
-                     <div><span>Name:</span> <div>{singleEvent.name}</div></div>
+                    {singleEvent.name.length>22 ?
+                     <div><span>Name:</span> <div>{`${singleEvent.name.substring(0,22)}...`}</div></div> 
+                     :
+                      <div><span>Name:</span> <div>{singleEvent.name}</div></div>}
                      <div><span>Location:</span> <div>{singleEvent.location}</div></div>
                      <div><span>Description:</span> <div className="eventsToday__description">{singleEvent.description}</div></div>
                      {/* <p>Participants: {singleEvent.participants.map((singleParticipant)=>{return <p key={uuid()}>{singleParticipant.participantData.name}</p>})}</p>  */}

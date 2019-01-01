@@ -8,6 +8,8 @@ export const login = (uid)=>({
 export const startLogin = () =>{
     return () =>{
         return firebase.auth().signInWithPopup(googleAuthProvider).then(()=>{
+            console.log('123');
+            window.location.reload(); //workaround to calendar rendering the same events AGAIN after relog
             
         });
     };

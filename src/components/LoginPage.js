@@ -52,7 +52,8 @@ export class LoginPage extends React.Component{
     handleLoginRequest = (e) =>{
         e.preventDefault();
         firebase.auth().signInWithEmailAndPassword(this.state.email,this.state.password).then(()=>{
-            //
+            window.location.reload();
+    //
         }).catch((error)=>{
             this.setState(()=>({loginError:error.message}));
         })
@@ -90,6 +91,8 @@ export class LoginPage extends React.Component{
                         userEmail:user.email,
                     }
                     database.ref(`users/${user.uid}`).set(userObj);
+                    window.location.reload();
+
                 });
             }).catch((error)=>{
                 this.setState(()=>({registerError:error.message}));
