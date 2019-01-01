@@ -193,6 +193,18 @@ button:disabled{
     justify-content: center;
 }
 
+
+.error__message{
+  height:0px !important;
+  margin:0 !important;
+  display:flex;
+  justify-content: center;
+  text-align:center;
+  font-weight:bold;
+  font-size:1rem;
+  color:$warning;
+}
+
 // css spinner (loading.io/css)
 .lds-spinner {
     position: absolute;

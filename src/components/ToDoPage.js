@@ -55,15 +55,15 @@ class ToDoPage extends React.Component {
             return <ToDoPost openPostModal={this.openPostModal} key={singlePost.toDoPostId} toDoPostData={singlePost} />
         });
     }
-    testCollapse = () =>{
-        let thing = document.getElementById("TDP_dataManagement");
+    handleToggleCollapsible = () =>{
+        let toggleContent = document.getElementById("TDP_dataManagement");
         if(this.state.filtersOpen){
-            thing.style.maxHeight=0;
-            thing.style.padding=0;
+            toggleContent.style.maxHeight=0;
+            toggleContent.style.padding=0;
             this.setState(()=>({filtersOpen:false}));
         }else{
-            thing.style.maxHeight='200px';
-            thing.style.padding='1.5rem';
+            toggleContent.style.maxHeight='200px';
+            toggleContent.style.padding='1.5rem';
             this.setState(()=>({filtersOpen:true}));
         }
         
@@ -83,7 +83,7 @@ class ToDoPage extends React.Component {
             <div className="toDoPage">
                 <h1 className="page__title">What to do during your Erasmus ?</h1>
                 <div className="center-container">
-                    <button onClick={this.testCollapse} className={classNames("btn","toDoPage__collapsible__button")}>Filter results</button>
+                    <button onClick={this.handleToggleCollapsible} className={classNames("btn","toDoPage__collapsible__button")}>Filter results</button>
                 </div>
                 <div id="TDP_dataManagement" className="toDoPage__dataManagement">
                     <div className="toDoPage__sorting">

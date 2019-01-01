@@ -10,7 +10,7 @@ import uuid from 'uuid';
 import EventModal from './EventModal';
 import {isEmpty} from '../resources/functions';
 import getEventById from '../selectors/getEventById';
-
+import classNames from 'classnames';
 class CalendarPage extends React.Component {
     constructor(props){
         super(props);
@@ -19,7 +19,8 @@ class CalendarPage extends React.Component {
             today:moment(),
             selectedDay:moment(),
             selectedEvent:{},
-            isModalOpen:false
+            isModalOpen:false,
+            formOpen:true
         }
     }
     turnModalOn = ()=>{
@@ -103,7 +104,7 @@ class CalendarPage extends React.Component {
         const weekdays = moment.weekdays();
         const removed = weekdays.splice(0,1);
         weekdays.push(removed[0]);
-        const weekdaysToTable= weekdays.map((weekday)=> <td key={uuid()}>{weekday}</td>);
+        const weekdaysToTable= weekdays.map((weekday)=> <div className="weekDay" key={uuid()}>{weekday}</div>);
         return weekdaysToTable;
     };
     printMonth=()=>{
@@ -115,7 +116,7 @@ class CalendarPage extends React.Component {
         const emptyDaysToReverse= []
         for (let index = 0; index < emptyDaysAtStartOfMonth; index++) {
             previousDay.subtract(1,'days');
-            emptyDaysToReverse.push(<td  key={uuid()} className='grayed-out-date'>{previousDay.format('D')}</td>)
+            emptyDaysToReverse.push(<div className="emptyDay"  key={uuid()}>{previousDay.format('D')}</div>)
         }
         emptyDaysToReverse.reverse();
         thisMonth =thisMonth.concat(emptyDaysToReverse);
@@ -135,7 +136,7 @@ class CalendarPage extends React.Component {
                 if(index==thisMonth.length){
                     //add the days from the next month
                     for (let emptySpacesCount = 0; emptySpacesCount < emptyDaysAtEndOfMonth; emptySpacesCount++) {
-                        week.push(<td key={uuid()}   className="grayed-out-date">{emptySpacesCount+1}</td>);
+                        week.push(<div className="emptyDay" key={uuid()} >{emptySpacesCount+1}</div>);
                     }
                 }
                 thisModifiedMonth.push(week);
@@ -143,35 +144,61 @@ class CalendarPage extends React.Component {
                 
             }   
         }
-        return thisModifiedMonth.map((week)=><tr key={uuid()}>{week}</tr>);
+        return thisModifiedMonth;
         
     }
-   
+    handleToggleCreateEvent = () =>{
+        let toggleContent = document.getElementById("createEvent__toggle");
+        if(this.state.formOpen){
+            toggleContent.style.maxHeight=0;
+            toggleContent.style.padding=0;
+            this.setState(()=>({formOpen:false}));
+        }else{
+            toggleContent.style.maxHeight='320px';
+            toggleContent.style.padding='1.5rem';
+            this.setState(()=>({formOpen:true}));
+        }
+        
+    }
     render() { 
         return ( 
             <div>
-                <p>This is the calendar component!</p>
-                <div>
-                    <button onClick={this.previousMonth}>&lt;</button>
-                    {this.state.contextDate.format('MMMM')}-{this.state.contextDate.format('YYYY')}
-                    <button onClick={this.nextMonth}>&gt;</button>
+                <h1 className="page__title">Calendar</h1>
+                <div className="calendarPage__container">
+                    <div className="calendar">
+                        <div className="calendar__header">
+                            <button className={classNames("btn","calendar__btn")} onClick={this.previousMonth}>&lt;</button>
+                                <span className="calendar__date"> {this.state.contextDate.format('MMMM')}-{this.state.contextDate.format('YYYY')} </span>
+                            <button className={classNames("btn","calendar__btn")}  onClick={this.nextMonth}>&gt;</button>
+                        </div>
+                        <div className="calendarTable__container">
+                            <div className="calendarTable" >
+                                <div className="calendar__weekDays"> 
+                                    {this.printWeekDays()}                          
+                                </div>
+                                <div className="calendar__days">
+                                    {this.printMonth()} 
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div className="calendar__addNewEvent">
+                        <div className="center-container">
+                             <button onClick={this.handleToggleCreateEvent} className={classNames("btn","calendarPage__collapsible__button")}>Create event</button>
+                        </div>
+                        <div className="createEvent__container" id="createEvent__toggle" >
+                                <AddEventForm/>
+                        </div>
+                    </div>
+                    <div className="calendar__todaysEvents">
+                        <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
+                        {this.getEventsOfDay()}
+                    </div>
                 </div>
-                <table >
-                    <thead>
-                        <tr>
-                            {this.printWeekDays()}                          
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.printMonth()} 
-                    </tbody>
-                </table>
-                <div>
-                    <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
-                    {this.getEventsOfDay()}
-                </div>
-                <h2>Create an event!</h2>
-                <AddEventForm/>
+                
+                
+                
                 {isEmpty(this.state.selectedEvent)? null : <EventModal
                     isOpen={this.state.isModalOpen}
                     onRequestClose = {this.turnModalOff}

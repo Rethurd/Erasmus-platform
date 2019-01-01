@@ -101,6 +101,13 @@
     grid-template-columns: 3fr 1fr;
     padding:0 1.5rem 1.5rem 1.5rem;
     margin-bottom:2rem;
+    transition:margin 0.2s ease-in;
+}
+@media (min-width:1000px){
+    .toDoPost{
+        margin-left:150px;
+        margin-right:150px;
+    }
 }
 
 .toDoPost:hover{
@@ -124,6 +131,7 @@
     }
 }
 .toDoPost__description{
+    font-size:1.9rem;
     padding: 0 10px;
     margin:15px 0;
     grid-column: 1/3;

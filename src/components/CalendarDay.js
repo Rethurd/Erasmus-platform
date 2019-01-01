@@ -9,28 +9,29 @@ class CalendarDay extends React.Component {
     }
     printEvents = ()=> {
         return(
-            this.props.events.map((singleEvent)=> <p className='singleEvent' onClick={(e)=>{
+            this.props.events.map((singleEvent)=> 
+            <div className='singleEvent' onClick={(e)=>{
                 e.stopPropagation(); // this is to prevent ' EVENT BUBBLING' - dont want to trigger the 'onClick' of the table cell
                 // e.preventDefault();
                 this.props.getEvent(singleEvent);
             }}
             key={singleEvent.name+singleEvent.description}>
-            {singleEvent.name}
-        </p>));
+            {singleEvent.name.length>15 ? `${singleEvent.name.substring(0,15)}...`: singleEvent.name}
+        </div>));
     };
     
 
     render() { 
         return ( 
-            <td onClick={()=>{
+            <div className="calendarDay" onClick={()=>{
                     this.props.getEventsOfDay(this.props.day);
                 }}>
-                 {this.props.day.format('D')}
+                 <span className="calendarDay__number">{this.props.day.format('D')}</span>
                  {
                      this.props.events.length==0 ? null : this.printEvents()
                  }
 
-            </td>
+            </div>
             
          );
     }

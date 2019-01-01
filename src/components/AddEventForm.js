@@ -7,8 +7,8 @@ import {DateTimePicker} from 'material-ui-pickers';
 import {startAddEvent, addParticipantToDatabase} from '../actions/events';
 import {firebase} from '../firebase/firebase';
 import uuid from 'uuid';
-
-
+import classNames from 'classnames';
+import TextField from '@material-ui/core/TextField';
 // put this on a separate page and redirect after adding?
 class AddEventForm extends React.Component {
     constructor(props){
@@ -47,14 +47,24 @@ class AddEventForm extends React.Component {
     }
     handleOnSubmit = (e) =>{
         e.preventDefault(); // so the page doesnt refresh
+        let error1 = document.getElementById("CE_error1");
+        let error2 = document.getElementById("CE_error2");
                 if(this.state.name==''){
+                    error1.style.setProperty("height","50px","important");
+                    error1.style.setProperty("margin-bottom","15px","important");
                     this.setState(()=>({nameEmptyError:'The event name cannot be empty!'}));
                 }else{
+                    error1.style.setProperty("height","0px","important");
+                    error1.style.setProperty("margin-bottom","0px","important");
                     this.setState(()=>({nameEmptyError:undefined}));
                 }
                 if(this.state.description==''){
+                    error2.style.setProperty("height","50px","important");
+                    error2.style.setProperty("margin-bottom","15px","important");
                     this.setState(()=>({descriptionEmptyError:'The event description cannot be empty!'}));
                 }else{
+                    error2.style.setProperty("height","0px","important");
+                    error2.style.setProperty("margin-bottom","0px","important");
                     this.setState(()=>({descriptionEmptyError:undefined}));
                 }
                 if (this.state.name!='' && this.state.description!=''){
@@ -85,22 +95,30 @@ class AddEventForm extends React.Component {
     render() { 
         
         return ( 
-            <form onSubmit={this.handleOnSubmit}>  
-            <MuiPickersUtilsProvider  utils={MomentUtils}>
-                <DateTimePicker  value={this.state.date} onChange ={this.handleDateChange} />
-            </MuiPickersUtilsProvider>
+            <form onSubmit={this.handleOnSubmit} className="createEvent__form"> 
             <div>
-                <div>{this.state.nameEmptyError}</div>
-                <input type="text" value={this.state.name} onChange={this.handleEventNameChange} placeholder="event name"></input>
+                <span>Date: </span>
+                <MuiPickersUtilsProvider  utils={MomentUtils}>
+                    <DateTimePicker  value={this.state.date} onChange ={this.handleDateChange} className="createEvent__date" />
+                </MuiPickersUtilsProvider>
+            </div> 
+            
+            <div  className="error__message" id="CE_error1">{this.state.nameEmptyError}</div>
+            <div>
+                <span>Name: </span><TextField value={this.state.name} onChange={this.handleEventNameChange} placeholder="Event name" className="textFieldInput"></TextField>
             </div>
             <div>
-                <input type="text" value={this.state.location}  onChange={this.handleEventLocationChange} placeholder="starting location"></input>
+                <span>Location: </span><TextField className="textFieldInput" value={this.state.location}  onChange={this.handleEventLocationChange} placeholder="Starting location"></TextField>
             </div>
-            <div>
-                <div>{this.state.descriptionEmptyError}</div>
-                <textarea placeholder="description..." value={this.state.description} onChange={this.handleEventDescriptionChange} ></textarea>
+            <div id="CE_error2" className="error__message">{this.state.descriptionEmptyError}</div>
+            <div className="createEvent__description__container">
+                <span>Description: </span><TextField multiline rowsMax={3} placeholder="Description..." value={this.state.description} onChange={this.handleEventDescriptionChange} className={classNames("textFieldInput","textFieldInput--multiline")} ></TextField>
             </div>
-            <button >Submit</button>
+            <div className="createEvent__btn__container">
+                <button className={classNames("btn","createEvent__btn")}>Submit</button>
+
+            </div>
+
 
         </form> );
     }
