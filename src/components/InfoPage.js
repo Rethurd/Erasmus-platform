@@ -12,7 +12,6 @@ import getInfoPosts from '../selectors/getInfoPosts';
 
 class InfoPage extends React.Component {
     constructor(props){
-        console.log('infoPage constructor ran');
         super(props);
         const user = firebase.auth().currentUser;
         let isUserAdmin=false;
@@ -69,7 +68,7 @@ class InfoPage extends React.Component {
     render() { 
         
         return ( 
-            <div>
+            <div style={{ marginBottom:'100px' }}>
                 <h1 className="page__title">Information / Announcements</h1>
                 <div className="infoPage__allPosts">
                     {this.props.infoPosts.map((singlePostData)=>{

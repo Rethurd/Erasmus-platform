@@ -69,7 +69,7 @@ class HelpPage extends React.Component {
 
     render() { 
         return ( 
-            <div>
+            <div style={{ marginBottom:'100px' }}>
                 <h1 className="page__title">Help section</h1>
                 <div className="helpPage__posts">
                     {this.props.helpPosts.map((singlePost)=>{

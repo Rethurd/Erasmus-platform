@@ -1,0 +1,26 @@
+.footer{
+    background:$headerColor;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    text-align: center;
+    align-items: center;
+    opacity:0.9;
+    color:white;
+    position:absolute;
+    bottom:0;
+    width:100%;
+    height:60px;
+    .footer__logo{
+        text-decoration: none;
+        color:white;
+        font-size:2.5rem;
+        cursor: pointer;
+    }
+    .footer__logo:hover{
+        color:$light-gray;
+    }
+    .footer__copyright{
+        font-size:1.5rem;
+    }
+}

@@ -103,8 +103,11 @@ class CalendarPage extends React.Component {
             day=moment();
         //when we get a date from clicking on a calendar day
         else this.setState(()=>({selectedDay:moment(day)}));
-        const userId = firebase.auth().currentUser.uid;
         const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay,this.state.userFriendsId,this.state.displayEvents);
+        console.log(todaysEvents);
+        if(todaysEvents.length==0){
+            return <div className="noEvents"> There's no events happening on that day, try creating your own!</div>
+        }
         return todaysEvents.map((singleEvent)=>{
             return(
                 <div className="eventsToday__singleEvent" onClick={()=>{this.getEvent(singleEvent)}} key={uuid()}>
@@ -206,9 +209,9 @@ class CalendarPage extends React.Component {
             
         }
         return ( 
-            <div>
+            <div style={{ marginBottom:'100px' }} >
                 {this.state.loading ? 
-                <div>
+                <div style={{ marginBottom:'800px' }} >
                      <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 </div>:
                 <div>

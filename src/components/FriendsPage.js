@@ -36,7 +36,6 @@ class FriendsPage extends React.Component {
                             }
                         }
                     }
-                    console.log(friendsArray);
             this.setState(()=>({
                 ...userSnapshot.val(),friends:friendsArray,
                 loading:false
@@ -79,9 +78,9 @@ class FriendsPage extends React.Component {
         
         return (
             
-            <div>
+            <div style={{ marginBottom:'150px' }} >
                 {this.state.loading ? 
-                <div>
+                <div style={{ marginBottom:'800px' }} >
                      <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 </div>: 
                 <div>

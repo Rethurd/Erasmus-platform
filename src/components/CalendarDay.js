@@ -29,6 +29,7 @@ class CalendarDay extends React.Component {
                     className="calendarDay__number">
                     {this.props.day.format('D')}
                 </span>
+                {this.props.events.length!=0 ? <span className="calendarDay__eventsCount">{`${this.props.events.length} event(s)`}</span> : null}
                  {
                      this.props.events.length==0 ? null : this.printEvents()
                  }

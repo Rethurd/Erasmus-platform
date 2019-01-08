@@ -44,7 +44,6 @@ export class LoginPage extends React.Component{
     }
     handlePasswordChange = (e)=>{
         const password = e.target.value;
-        console.log(password);
         this.setState(()=>({password}));
     }
 
@@ -103,7 +102,7 @@ export class LoginPage extends React.Component{
 
     render(){
         return(
-            <div>
+            <div style={{ 'margin-bottom':'200px' }} >
                 <div className="loginPage__loginBox">
                     <h3>Login:</h3>
                     <div className="loginPage__buttons">

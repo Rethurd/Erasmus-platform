@@ -121,6 +121,9 @@ td{
     .calendarDay__number{
         font-weight: bold;
     }
+    .calendarDay__eventsCount{
+        display:none;
+    }
 }
 
 .calendarDay:hover{
@@ -303,6 +306,13 @@ td{
     white-space: pre-wrap;
     word-break: break-word;
 }
+.noEvents{
+    margin-top: 40px;
+    width: 250px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+}
 @media (max-width:1300px){
     .calendarPage__container{
         grid-template-columns: 1fr;
@@ -358,6 +368,10 @@ td{
         }
         .singleEvent{
             display:none;
+        }
+        .calendarDay__eventsCount{
+            display:block;
+            font-size: 7px;
         }
     }
     .emptyDay{

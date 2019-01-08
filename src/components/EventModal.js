@@ -144,8 +144,9 @@ class EventModal extends React.Component{
                 </div>
 
                 <div className="eventModal__participationButton__container">
-                    <button className={classNames("btn","btn--participate")} onClick={()=>{
+                    <button  ref={participateBtn => { this.participateBtn = participateBtn; }}  className={classNames("btn","btn--participate")} onClick={()=>{
                         // e.stopPropagation();
+                        this.participateBtn.setAttribute("disabled","disabled");
                     const user = this.isUserParticipating();
                     // if already participating
                     if(!user){
@@ -164,7 +165,7 @@ class EventModal extends React.Component{
                             this.props.rerenderAfterChange(this.state.eventId);
                         });
                     }
-                        //call dispatch with state.eventId and user id and user name
+                        
                     }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
                 </div>
                 <div className="eventModal__buttons">

@@ -5,6 +5,7 @@ import NotFoundPage from '../components/NotFoundPage';
 import CalendarPage from '../components/CalendarPage';
 import Chat from '../components/Chat';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import HelpPage from '../components/HelpPage';
 import InfoPage from '../components/InfoPage';
 import ToDoPage from '../components/ToDoPage';
@@ -17,9 +18,9 @@ export const history = createHistory();
 
 const AppRouter = () =>(
     <Router history={history}>
-        <div>
+        <div className="appContainer">
             <Header />
-                 <Switch>
+                 <Switch >
                     <PublicRoute path="/" component={LoginPage} exact/>
                     <PrivateRoute path="/info" component={InfoPage}/>
                     <PrivateRoute path="/calendar" component={CalendarPage}/>
@@ -29,6 +30,7 @@ const AppRouter = () =>(
                     <PrivateRoute path="/friends" component={FriendsPage}/>
                     <Route component={NotFoundPage} />
                 </Switch>
+            <Footer />
         </div>
     </Router>    
 );
