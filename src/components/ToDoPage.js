@@ -13,18 +13,29 @@ import MenuItem from '@material-ui/core/MenuItem';
 import classNames from 'classnames';
 import Collapsible from 'react-collapsible';
 import {Pager} from 'react-bootstrap';
+import database, {firebase} from '../firebase/firebase';
 
 class ToDoPage extends React.Component {
     constructor(props){
         super(props);
+        const user = firebase.auth().currentUser;
+        let isUserAdmin=false;
         this.state={
             sortByValue:'rating',
             isAddNewModalOpen:false,
             isModalOpen:false,
             selectedToDoPost:{},
             filtersOpen:false,
-            currentPage:1
+            currentPage:1,
+            isUserAdmin
         };
+        database.ref('adminList').once('value').then((allAdmins)=>{
+            return allAdmins.forEach((singleAdmin)=>{
+                if(singleAdmin.val().adminID==user.uid){
+                    this.setState(()=>({isUserAdmin:true}));
+                }
+            });
+        });
     };
 
     handleSortByChange = (e) =>{
@@ -109,7 +120,7 @@ class ToDoPage extends React.Component {
                 </Pager>
                 {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
                 {isEmpty(this.state.selectedToDoPost) ? null :
-                 <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost}/>}
+                 <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost} isUserAdmin={this.state.isUserAdmin}/>}
             </div>
          );
     }

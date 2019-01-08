@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const getToDoPosts = (state) => {
+const getInfoPosts = (state) => {
     
     return state.sort((a,b)=>{
         
@@ -13,4 +13,4 @@ const getToDoPosts = (state) => {
         return 0;
     });
 }
-export default getToDoPosts;
+export default getInfoPosts;

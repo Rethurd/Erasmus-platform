@@ -168,8 +168,8 @@ class EventModal extends React.Component{
                     }}>{!!this.isUserParticipating() ? 'Join the event!' : 'Leave the event!'}</button>
                 </div>
                 <div className="eventModal__buttons">
-                    {this.isUserTheCreator() ? <button  className={classNames("btn","btn-danger")} onClick={this.handleDeleteEvent}>Delete the event</button> : null }
-                    {this.isUserTheCreator() ? 
+                    {(this.isUserTheCreator() || this.props.isUserAdmin) ? <button  className={classNames("btn","btn-danger")} onClick={this.handleDeleteEvent}>Delete the event</button> : null }
+                    {(this.isUserTheCreator() || this.props.isUserAdmin)  ? 
                         this.state.editMode ? 
                             <button  className={classNames("btn","btn-success")} onClick={this.handleEditEvent}>Save</button>
                             :

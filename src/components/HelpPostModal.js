@@ -129,7 +129,7 @@ class HelpPostModal extends React.Component {
                 {this.state.editMode ? 
                 <h3 className="helpPostModal__name">
                     {/* {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>} */}
-                    <TextField required value={this.state.name} onChange={this.handleNameChange} multiline maxRows={2} className="helpPostModal__name--edit"/>
+                    <TextField required value={this.state.name} onChange={this.handleNameChange} multiline rowsMax={2} className="helpPostModal__name--edit"/>
                 </h3> 
                 :
                  
@@ -146,8 +146,8 @@ class HelpPostModal extends React.Component {
                   :
                    <div className="helpPostModal__description--container" ><p className="helpPostModal__description" >{this.props.postData.description}</p></div> }
                 <div className="helpPostModal__buttons">
-                {this.checkIfPostBelongsToUser() ? <button onClick={this.handleDeletePost} className={classNames("btn btn-danger")}  >Delete</button> : null}
-                {this.checkIfPostBelongsToUser() ? 
+                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? <button onClick={this.handleDeletePost} className={classNames("btn btn-danger")}  >Delete</button> : null}
+                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? 
                     this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
                         : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
                     : 
@@ -179,7 +179,7 @@ class HelpPostModal extends React.Component {
                 <div className="helpPostModal__commentSection">
                 {this.props.postData.comments.map((singleComment)=>{
                     return(
-                        this.checkIfCommentBelongsToUser(singleComment.authorId) ? 
+                        (this.checkIfCommentBelongsToUser(singleComment.authorId) || this.props.isUserAdmin) ? 
                         <div key={singleComment.commentId} className="helpPostModal__singleComment">
                             <div className="comment__header">
                                 <div className="comment__date">

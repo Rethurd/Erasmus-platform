@@ -6,16 +6,28 @@ import AddHelpPostModal from './AddHelpPostModal';
 import getHelpPostById from '../selectors/getHelpPostById';
 import {Pager} from 'react-bootstrap';
 import classNames from 'classnames';
+import database, {firebase} from '../firebase/firebase';
+import getHelpPosts from '../selectors/getHelpPosts';
 class HelpPage extends React.Component {
     constructor(props){
         super(props);
+        const user = firebase.auth().currentUser;
+        let isUserAdmin=false;
         this.state={
             dummyRerenderValue:true,
             selectedPost:undefined,
             isPostModalOpen:false,
             isAddPostModalOpen:false,
-            currentPage:1
+            currentPage:1,
+            isUserAdmin
         }
+        database.ref('adminList').once('value').then((allAdmins)=>{
+            return allAdmins.forEach((singleAdmin)=>{
+                if(singleAdmin.val().adminID==user.uid){
+                    this.setState(()=>({isUserAdmin:true}));
+                }
+            });
+        });
     }
 
     handleSelectPost = (selectedPost) =>{
@@ -74,11 +86,13 @@ class HelpPage extends React.Component {
                     onRequestClose={this.handleClosePostModal}
                     postData = {this.state.selectedPost}
                     rerenderAfterComment={this.rerenderAfterChange}
+                    isUserAdmin= {this.state.isUserAdmin}
                 />}
                 
                 {this.state.isAddPostModalOpen ? <AddHelpPostModal 
                     isOpen = {this.state.isAddPostModalOpen}
                     onRequestClose = {this.handleCloseAddPostModal}
+                    
                 />: null}
                 <div className="btnNewHelpPost__container"><button className={classNames("btn", "btnNewHelpPost")} onClick={this.handleOpenAddPostModal}>Add new post!</button></div>
 
@@ -89,7 +103,7 @@ class HelpPage extends React.Component {
 }
 
 const mapStateToProps = (state) =>({
-        helpPosts:state.helpPosts
+        helpPosts:getHelpPosts(state.helpPosts)
 })
 
 export default connect(mapStateToProps)(HelpPage);

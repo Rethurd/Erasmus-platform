@@ -167,7 +167,7 @@ class ToDoPostModal extends React.Component {
                 className="toDoPostModal">
                 {this.state.editMode ? <h3 className="toDoPostModal__name">
                     {/* {this.state.nameEmptyError==undefined ? null: <p>{this.state.nameEmptyError}</p>} */}
-                    <TextField value={this.state.name} onChange={this.handleNameChange} multiline maxRows={3} required className="toDoPostModal__name--edit"/>
+                    <TextField value={this.state.name} onChange={this.handleNameChange} multiline rowsMax={3} required className="toDoPostModal__name--edit"/>
                     </h3> 
                 :
                 this.props.toDoPostData.name.length>40 ? 
@@ -239,8 +239,8 @@ class ToDoPostModal extends React.Component {
                 <p>Current user disliked: {this.state.currentUserDisliked.toString()}</p> */}
                 
                 <div className="toDoPostModal__buttons">
-                    {this.checkIfPostBelongsToUser() ? <button className={classNames("btn btn-danger")} onClick={this.handleDeletePost}>Delete</button> : null}
-                    {this.checkIfPostBelongsToUser() ? 
+                    {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? <button className={classNames("btn btn-danger")} onClick={this.handleDeletePost}>Delete</button> : null}
+                    {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? 
                         this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
                             : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
                         : 

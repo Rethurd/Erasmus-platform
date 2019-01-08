@@ -11,17 +11,28 @@ import EventModal from './EventModal';
 import {isEmpty} from '../resources/functions';
 import getEventById from '../selectors/getEventById';
 import classNames from 'classnames';
+import database, {firebase} from '../firebase/firebase';
 class CalendarPage extends React.Component {
     constructor(props){
         super(props);
+        const user = firebase.auth().currentUser;
+        let isUserAdmin=false;
         this.state = {
             contextDate:moment().startOf('month'),
             today:moment(),
             selectedDay:moment(),
             selectedEvent:{},
             isModalOpen:false,
-            formOpen:true
+            formOpen:true,
+            isUserAdmin
         }
+        database.ref('adminList').once('value').then((allAdmins)=>{
+            return allAdmins.forEach((singleAdmin)=>{
+                if(singleAdmin.val().adminID==user.uid){
+                    this.setState(()=>({isUserAdmin:true}));
+                }
+            });
+        });
     }
     turnModalOn = ()=>{
         this.setState(()=>{
@@ -206,6 +217,7 @@ class CalendarPage extends React.Component {
                     onRequestClose = {this.turnModalOff}
                     eventData={this.state.selectedEvent}
                     rerenderAfterChange={this.rerenderAfterChange}
+                    isUserAdmin = {this.state.isUserAdmin}
                 /> }
             </div>
          );
