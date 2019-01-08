@@ -12,6 +12,9 @@ import {isEmpty} from '../resources/functions';
 import getEventById from '../selectors/getEventById';
 import classNames from 'classnames';
 import database, {firebase} from '../firebase/firebase';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 class CalendarPage extends React.Component {
     constructor(props){
         super(props);
@@ -24,7 +27,10 @@ class CalendarPage extends React.Component {
             selectedEvent:{},
             isModalOpen:false,
             formOpen:true,
-            isUserAdmin
+            isUserAdmin,
+            displayEvents:'all',
+            userFriendsId:[],
+            loading:true
         }
         database.ref('adminList').once('value').then((allAdmins)=>{
             return allAdmins.forEach((singleAdmin)=>{
@@ -32,7 +38,29 @@ class CalendarPage extends React.Component {
                     this.setState(()=>({isUserAdmin:true}));
                 }
             });
+        }).then(()=>{
+            const userId = firebase.auth().currentUser.uid;
+            const friendsArray=[];
+    
+            database.ref(`users/${userId}`).once('value',(userSnapshot)=>{
+                if(!!userSnapshot.val().friends){
+                    const friends = userSnapshot.val().friends;
+                    for (var singleFriend in friends) {
+                        if (friends.hasOwnProperty(singleFriend)) {
+                            friends[singleFriend] = {
+                            ...friends[singleFriend],
+                            friendshipId:singleFriend
+                            }
+                            friendsArray.push(friends[singleFriend]);
+                        }
+                    }
+                }
+            }).then(()=>{
+                const userFriendsId = friendsArray.map(singleFriend=>singleFriend.friendId);
+                this.setState(()=>({userFriendsId,loading:false}));
+            });
         });
+        
     }
     turnModalOn = ()=>{
         this.setState(()=>{
@@ -75,7 +103,8 @@ class CalendarPage extends React.Component {
             day=moment();
         //when we get a date from clicking on a calendar day
         else this.setState(()=>({selectedDay:moment(day)}));
-        const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay);
+        const userId = firebase.auth().currentUser.uid;
+        const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay,this.state.userFriendsId,this.state.displayEvents);
         return todaysEvents.map((singleEvent)=>{
             return(
                 <div className="eventsToday__singleEvent" onClick={()=>{this.getEvent(singleEvent)}} key={uuid()}>
@@ -85,21 +114,21 @@ class CalendarPage extends React.Component {
                       <div><span>Name:</span> <div>{singleEvent.name}</div></div>}
                      <div><span>Location:</span> <div>{singleEvent.location}</div></div>
                      <div><span>Description:</span> <div className="eventsToday__description">{singleEvent.description}</div></div>
-                     {/* <p>Participants: {singleEvent.participants.map((singleParticipant)=>{return <p key={uuid()}>{singleParticipant.participantData.name}</p>})}</p>  */}
+                    
                 </div>
             )
         });
         
     }
-    //get rid of or check the parameters
-    goThroughDays = (datesArray,startDate,endDate) =>{
+    goThroughDays = (datesArray) =>{
         
         let firstMonthIndex = parseInt(this.getFirstMonthDay().format('D'));
         const lastMonthIndex = parseInt(this.getLastMonthDay().format('D'));
         let dayData;
+        const userId = firebase.auth().currentUser.uid;
         for (firstMonthIndex; firstMonthIndex <=lastMonthIndex; firstMonthIndex++) {
             dayData = moment(this.getFirstMonthDay().add(firstMonthIndex-1,'days'));
-            const eventsToAdd = eventsSelector(this.props.events,dayData);
+            const eventsToAdd = eventsSelector(this.props.events,dayData,this.state.userFriendsId,this.state.displayEvents);
             datesArray.push(<CalendarDay getEventsOfDay={this.getEventsOfDay} getEvent={this.getEvent} key={uuid()} day={dayData} events={eventsToAdd}/>);
         }
         return datesArray;
@@ -111,11 +140,6 @@ class CalendarPage extends React.Component {
         this.setState((state)=>({ contextDate:state.contextDate.add(1,'month') }));
     }
     printWeekDays=()=>{
-        // moment.updateLocale('en', {
-        //     week: {
-        //       dow: 1,
-        //     },
-        //   });
         const weekdays = moment.weekdays();
         const removed = weekdays.splice(0,1);
         weekdays.push(removed[0]);
@@ -173,52 +197,73 @@ class CalendarPage extends React.Component {
         }
         
     }
+    handleDisplayEvents = (e) =>{
+        this.setState(()=>({displayEvents:e.target.value}));
+    }
     render() { 
+        if(!this.state.loading){
+
+            
+        }
         return ( 
             <div>
-                <h1 className="page__title">Calendar</h1>
-                <div className="calendarPage__container">
-                    <div className="calendar">
-                        <div className="calendar__header">
-                            <button className={classNames("btn","calendar__btn")} onClick={this.previousMonth}>&lt;</button>
-                                <span className="calendar__date"> {this.state.contextDate.format('MMMM')}-{this.state.contextDate.format('YYYY')} </span>
-                            <button className={classNames("btn","calendar__btn")}  onClick={this.nextMonth}>&gt;</button>
-                        </div>
-                        <div className="calendarTable__container">
-                            <div className="calendarTable" >
-                                <div className="calendar__weekDays"> 
-                                    {this.printWeekDays()}                          
+                {this.state.loading ? 
+                <div>
+                     <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                </div>:
+                <div>
+                    <h1 className="page__title">Calendar</h1>
+                    <div className="calendarPage__container">
+                        <div className="calendar">
+                            <div className="calendar__header">
+                                <button className={classNames("btn","calendar__btn")} onClick={this.previousMonth}>&lt;</button>
+                                    <span className="calendar__date"> {this.state.contextDate.format('MMMM')}-{this.state.contextDate.format('YYYY')} </span>
+                                <button className={classNames("btn","calendar__btn")}  onClick={this.nextMonth}>&gt;</button>
+                            </div>
+                            <div className="calendar__filterContainer">
+                                <span>Display: </span>
+                                <Select value={this.state.displayEvents} onChange={this.handleDisplayEvents}>
+                                    <MenuItem value="all">All events</MenuItem>
+                                    <MenuItem value="friends">Friends participating</MenuItem>
+                                </Select>
+
+                            </div>
+                            <div className="calendarTable__container">
+                                <div className="calendarTable" >
+                                    <div className="calendar__weekDays"> 
+                                        {this.printWeekDays()}                          
+                                    </div>
+                                    <div className="calendar__days">
+                                        {this.printMonth()} 
+                                    </div>
+                                    
                                 </div>
-                                <div className="calendar__days">
-                                    {this.printMonth()} 
-                                </div>
-                                
                             </div>
                         </div>
-                    </div>
-                    <div className="calendar__addNewEvent">
-                        <div className="center-container">
-                             <button onClick={this.handleToggleCreateEvent} className={classNames("btn","calendarPage__collapsible__button")}>Create event</button>
+                        <div className="calendar__addNewEvent">
+                            <div className="center-container">
+                                <button onClick={this.handleToggleCreateEvent} className={classNames("btn","calendarPage__collapsible__button")}>Create event</button>
+                            </div>
+                            <div className="createEvent__container" id="createEvent__toggle" >
+                                    <AddEventForm/>
+                            </div>
                         </div>
-                        <div className="createEvent__container" id="createEvent__toggle" >
-                                <AddEventForm/>
+                        <div className="calendar__eventsToday__container">
+                            <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
+                            {this.getEventsOfDay()}
                         </div>
                     </div>
-                    <div className="calendar__eventsToday__container">
-                        <h2>Events happening on: {this.state.selectedDay.format('DD-MM-YYYY')}</h2>
-                        {this.getEventsOfDay()}
-                    </div>
-                </div>
-                
-                
-                
-                {isEmpty(this.state.selectedEvent)? null : <EventModal
-                    isOpen={this.state.isModalOpen}
-                    onRequestClose = {this.turnModalOff}
-                    eventData={this.state.selectedEvent}
-                    rerenderAfterChange={this.rerenderAfterChange}
-                    isUserAdmin = {this.state.isUserAdmin}
-                /> }
+                    
+                    
+                    
+                    {isEmpty(this.state.selectedEvent)? null : <EventModal
+                        isOpen={this.state.isModalOpen}
+                        onRequestClose = {this.turnModalOff}
+                        eventData={this.state.selectedEvent}
+                        rerenderAfterChange={this.rerenderAfterChange}
+                        isUserAdmin = {this.state.isUserAdmin}
+                    /> }
+                </div>}
             </div>
          );
     }

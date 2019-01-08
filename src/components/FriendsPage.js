@@ -36,12 +36,13 @@ class FriendsPage extends React.Component {
                             }
                         }
                     }
+                    console.log(friendsArray);
             this.setState(()=>({
                 ...userSnapshot.val(),friends:friendsArray,
                 loading:false
             }));
             
-        })  
+        });  
     }
 
     addFriendToList = (friend) =>{

@@ -49,6 +49,31 @@ td{
         outline: 0;
     }
 }
+.calendar__filterContainer{
+    max-width:870px;
+    display:flex;
+    justify-content: center;
+    height:45px;
+    padding:10px;
+    background:$navy-blue;
+    color:white;
+    span{
+        margin-right:1rem;
+    }
+    div{
+        color:white !important;
+        *:after, *:before{
+            border:none !important;
+        }
+        svg{
+            color:white !important;
+        }
+    }
+}
+.calendar__filterContainer *:before,.calendar__filterContainer *:after{
+    border:none !important;
+}
+
 .calendarTable{
     .calendar__weekDays{
         max-width: 870px;
