@@ -121,7 +121,7 @@ class EventModal extends React.Component{
                 </div>
 
                 {/* <div>{this.state.descriptionEmptyError}</div> */}
-                <div>
+                <div style={{padding:'0 5px'}}>
                     {this.state.editMode ? <TextField required multiline rows={20} value={this.state.description} 
                     onChange={this.handleEventDescriptionChange} className="eventModal__description--edit" /> : <div className="eventModal__description">{this.state.description}</div>}
                 </div>

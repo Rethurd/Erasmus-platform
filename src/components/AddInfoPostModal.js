@@ -62,7 +62,7 @@ class AddInfoPostModal extends React.Component {
                 onRequestClose={this.props.onRequestClose}
                 contentLabel="Add new Info Post Modal"
                 ariaHideApp={false}
-                className={classNames("modal modal--info")}
+                className={classNames("modal modal--info modal--addInfo")}
             >
 
                  <form className="addInfoPost__form" onSubmit={this.handleOnSubmit}>
@@ -97,7 +97,7 @@ class AddInfoPostModal extends React.Component {
                         {this.state.nameEmptyError==undefined ? null: <p className="infoModal__name__error">{this.state.nameEmptyError}</p>}
                         {this.state.descriptionEmptyError==undefined ? null: <p className="infoModal__description__error">{this.state.descriptionEmptyError}</p>}
                     </div> */}
-                    <div className={classNames("text-center")}><button className={classNames("btn", "btn-success","addInfoPost__btn")}>Add post!</button></div>
+                    <div style={{paddingBottom:'10px'}} className={classNames("text-center")}><button className={classNames("btn", "btn-success","addInfoPost__btn")}>Add post!</button></div>
                 </form>
 
             </Modal>
