@@ -5,7 +5,7 @@ import {startLogout} from '../actions/auth';
 import {firebase} from '../firebase/firebase';
 import {Nav, Navbar, NavItem,NavDropdown,MenuItem} from 'react-bootstrap';
 import {LinkContainer} from 'react-router-bootstrap';
-import classNames from 'classNames';
+import classNames from 'classnames';
 
 export const Header = () =>(
 
