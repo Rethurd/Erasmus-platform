@@ -227,12 +227,17 @@ button:disabled{
     margin-top: 150px;
     font-size: 4rem;
 }
+
+
 // css spinner (loading.io/css)
+
 .lds-spinner {
+    margin-right:auto;
+    margin-left:auto;
     position: absolute;
     top: 50%;
-    left: 50%;
     bottom: 50%;
+    left: 50%;
     right: 50%;
     color: official;
     display: inline-block;
@@ -311,4 +316,23 @@ button:disabled{
       opacity: 0;
     }
   }
+  @media(max-width:400px){
+    .lds-spinner{
+      position: absolute;
+      top: 42%;
+      bottom: 42%;
+      left: 42%;
+      right: 42%;
+    }
+    //42
+  }
+  @media(max-width:680px){
+    .lds-spinner{
+      position: absolute;
+      top: 45%;
+      bottom: 45%;
+      left: 45%;
+      right: 45%;
+    }
   
+  }

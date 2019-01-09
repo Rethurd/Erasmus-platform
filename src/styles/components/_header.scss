@@ -130,7 +130,7 @@
         text-align:left;
     }
     .header__link--dropdownList:hover{
-        background-color:lighten(rgb(34, 34, 34),5%);
+        background-color:$headerColor
     }
     .dropdown-toggle:hover{
         background-color:darken($esn-blue,20%) !important;

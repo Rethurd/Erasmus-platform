@@ -153,3 +153,32 @@
     height:100% !important;
     vertical-align: middle !important;
 }
+
+@media (max-width:768px){
+    .chatHeader, .chatList, .messageBox{
+        width:500px;
+    }
+    .chatInput{
+        margin-left: 10rem !important;
+    }
+}   
+@media (max-width:640px){
+    .chatHeader, .chatList, .messageBox{
+        width:420px;
+    }
+    .chatInput{
+        margin-left: 8rem !important
+    }
+}
+@media (max-width:450px){
+    .chatHeader, .chatList, .messageBox{
+        width:300px;
+    }
+    .chatMessage{
+        min-width:20rem;
+        max-width:20rem;
+    }
+    .chatInput{
+        margin-left: 5.5rem !important
+    }
+}
