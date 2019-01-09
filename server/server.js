@@ -1,16 +1,17 @@
-// const express = require('express');
-// const app = express();
-// const path = require('path');
-// const publicPath = path.join(__dirname,'..','public');
-// const port = process.env.PORT || 3000; // this is for heroku to know which port to use
+const express = require('express');
+const expressApp = express();
+const path = require('path');
+const runPath = path.join(__dirname,'..','public'); // go up from server and into public
+const port = process.env.PORT || 3000; // this is for heroku to know which port to use
 
-// app.use(express.static(publicPath));
+expressApp.use(express.static(runPath));
 
+// responding to GET requests
+expressApp.get('*',(request,response)=>{
+    //response
+    response.sendFile(path.join(runPath,'index.html'));
+});
 
-// app.get('*',(req,res)=>{
-//     res.sendFile(path.join(publicPath,'index.html'));
-// });
-
-// app.listen(port,()=>{
-//     console.log('Server is up!');
-// })
+expressApp.listen(port,()=>{
+    console.log('Server started!');
+})

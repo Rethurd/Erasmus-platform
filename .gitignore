@@ -1,6 +1,5 @@
 node_modules/
-package_old.json
-webpack.config_old.js
 public/dist/
+
 .env.test
 .env.development
