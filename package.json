@@ -11,7 +11,6 @@
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
     "dev-server": "webpack-dev-server",
-    "test": "cross-env NODE_ENV=test jest --config=jest.config.json",
     "start": "node server/server.js",
     "heroku-postbuild": "yarn run build:prod" 
 
@@ -42,7 +41,6 @@
     "normalize.css": "7.0.0",
     "numeral": "2.0.6",
     "react": "^16.6.3",
-    "react-addons-shallow-compare": "15.6.0",
     "react-bootstrap": "^0.32.4",
     "react-collapsible": "^2.3.2",
     "react-dates": "12.3.0",
@@ -52,7 +50,6 @@
     "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "4.1.2",
     "redux": "3.7.2",
-    "redux-mock-store": "1.2.3",
     "redux-thunk": "2.2.0",
     "sass-loader": "6.0.6",
     "style-loader": "0.18.2",
@@ -63,10 +60,6 @@
   "devDependencies": {
     "cross-env": "5.0.5",
     "dotenv": "4.0.0",
-    "enzyme": "2.9.1",
-    "enzyme-to-json": "1.5.1",
-    "jest": "20.0.4",
-    "react-test-renderer": "15.6.1",
     "webpack-dev-server": "2.5.1"
   }
 }

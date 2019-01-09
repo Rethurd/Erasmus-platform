@@ -104,7 +104,6 @@ class CalendarPage extends React.Component {
         //when we get a date from clicking on a calendar day
         else this.setState(()=>({selectedDay:moment(day)}));
         const todaysEvents = eventsSelector(this.props.events,this.state.selectedDay,this.state.userFriendsId,this.state.displayEvents);
-        console.log(todaysEvents);
         if(todaysEvents.length==0){
             return <div className="noEvents"> There's no events happening on that day, try creating your own!</div>
         }
