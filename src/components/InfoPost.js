@@ -8,16 +8,12 @@ class InfoPost extends React.Component {
     render() { 
         return ( 
             <div className="infoPost" onClick={()=>{this.props.handleOpenModal(this.props.postData)}} >
-                <h3 className="infoPost__title">{this.props.postData.name.length>=20 ? `${this.props.postData.name.substring(0,20)}...`: this.props.postData.name}</h3>
+                <h3 className="infoPost__title">{this.props.postData.name.length>=27 ? `${this.props.postData.name.substring(0,27)}...`: this.props.postData.name}</h3>
                 <div className="descriptionContainer" >
-                    <div className="descriptionContainer__inner" >
-                        {/* <div className="vertical-test-text"> */}
-
-                            {this.props.postData.description.length > 180 ?
-                             <div className={classNames("descriptionContainer__text","infoDescription__scrollBar")}>{this.props.postData.description}</div>
-                             :
-                              this.props.postData.description }
-                        {/* </div> */}
+                    <div className={classNames("descriptionContainer__text","infoDescription__scrollBar")} >
+                       
+                              {this.props.postData.description }
+                        
                     </div>
                 </div>
                 <div className="infoPost__footer">

@@ -34,6 +34,7 @@
     background:darken($esn-orange,10%);
     margin:0;    
     padding:0.5rem 0.2rem;
+    font-size:1.6rem;
 }
 
 .infoPost__description{
@@ -66,27 +67,31 @@
 .descriptionContainer{
     display: table;
     height: 230px;
-    // overflow: hidden;
+    padding:10px;
 }
 
 .descriptionContainer__inner{
     
-    // padding:0.5rem;
-    // white-space: pre-wrap ; BREAKS WITH  MANY EMPTY LINES
+
     max-width:280px;
     text-align:center;
     display: table-cell;
     vertical-align: middle; 
     word-wrap:break-word;
+
 }
 
 .descriptionContainer__text{
    
-    padding:1.3rem;
-    // vertical-align: middle;
+
     max-height:230px;
     height:230px;
-    overflow-y:scroll;
+    overflow-y:auto;
+    display: flex;
+    word-break: break-word;
+    white-space: pre-wrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 
