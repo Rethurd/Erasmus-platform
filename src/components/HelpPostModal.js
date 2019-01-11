@@ -145,14 +145,7 @@ class HelpPostModal extends React.Component {
                     </div>
                   :
                    <div className="helpPostModal__description--container" ><p className="helpPostModal__description" >{this.props.postData.description}</p></div> }
-                <div className="helpPostModal__buttons">
-                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? <button onClick={this.handleDeletePost} className={classNames("btn btn-danger")}  >Delete</button> : null}
-                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? 
-                    this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
-                        : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
-                    : 
-                    null}
-                </div>
+                
                 
                 
 
@@ -210,6 +203,15 @@ class HelpPostModal extends React.Component {
                         </div>
                     )
                 }).reverse()}
+                
+                </div>
+                <div className="helpPostModal__buttons">
+                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? <button onClick={this.handleDeletePost} className={classNames("btn btn-danger")}  >Delete</button> : null}
+                {(this.checkIfPostBelongsToUser() || this.props.isUserAdmin) ? 
+                    this.state.editMode ?  <button  className={classNames("btn","btn-success")} onClick={this.handleSaveChanges}>Save</button> 
+                        : <button className={classNames("btn btn-primary")} onClick={this.handleEditPost}>Edit</button> 
+                    : 
+                    null}
                 </div>
             </Modal>
          );

@@ -88,7 +88,6 @@ ReactDOM.render(loading,document.getElementById('app'));
 
 firebase.auth().onAuthStateChanged((user)=>{
     if(user){
-        console.log('uid',user.uid);
         const userObj = {
             userId:user.uid,
             userName:user.displayName,
