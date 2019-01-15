@@ -102,7 +102,7 @@ export class LoginPage extends React.Component{
 
     render(){
         return(
-            <div style={{ 'margin-bottom':'200px' }} >
+            <div style={{ 'marginBottom':'200px' }} >
                 <div className="loginPage__loginBox">
                     <h3>Login:</h3>
                     <div className="loginPage__buttons">

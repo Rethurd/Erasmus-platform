@@ -102,7 +102,7 @@ class FriendsPage extends React.Component {
                         </div>
                     </div>
                     <div className="friendsList"> 
-                            <div className="friendsList__header">Friends Header</div>
+                            <div className="friendsList__header">Friends</div>
                             <div className="friendsList__search">
                             <TextField 
                                 placeholder="Search..."

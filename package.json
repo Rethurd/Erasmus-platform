@@ -4,9 +4,6 @@
   "main": "index.js",
   "author": "Kamil Grzegorek",
   "license": "MIT",
-  "engines": {
-    "node": "8.11.1"
-  },
   "scripts": {
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",

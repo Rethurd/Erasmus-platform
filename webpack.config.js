@@ -11,7 +11,7 @@ if(process.env.NODE_ENV ==='development'){
 }
 
 module.exports = (env) => {
-  const isProduction = env === 'production';
+  const production = env === 'production';
   const CSSExtract = new ExtractTextPlugin('styles.css'); // where to put the extracted css files
 
   return {
@@ -63,7 +63,7 @@ module.exports = (env) => {
         'process.env.FIREBASE_MESSAGING_SENDER_ID':JSON.stringify(process.env.FIREBASE_MESSAGING_SENDER_ID),
       })
     ],
-    devtool: isProduction ? 'source-map' : 'inline-source-map',
+    devtool: production ? 'source-map' : 'inline-source-map',
     devServer: {
       contentBase: path.join(__dirname, 'public'),
       historyApiFallback: true,

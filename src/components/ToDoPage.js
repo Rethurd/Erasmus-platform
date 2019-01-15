@@ -27,14 +27,19 @@ class ToDoPage extends React.Component {
             selectedToDoPost:{},
             filtersOpen:false,
             currentPage:1,
-            isUserAdmin
+            isUserAdmin,
+            loading:true
         };
         database.ref('adminList').once('value').then((allAdmins)=>{
-            return allAdmins.forEach((singleAdmin)=>{
-                if(singleAdmin.val().adminID==user.uid){
+            
+            const admins = Object.values(allAdmins.val());
+            for (let index = 0; index < admins.length; index++) {
+                if(admins[index].adminID==user.uid){
                     this.setState(()=>({isUserAdmin:true}));
+                    break;
                 }
-            });
+            }
+            this.setState(()=>({loading:false}));
         });
     };
 
@@ -91,36 +96,44 @@ class ToDoPage extends React.Component {
     }
     render() { 
         return ( 
-            <div className="toDoPage">
-                <h1 className="page__title">What to do during your Erasmus ?</h1>
-                <div className="center-container">
-                    <button onClick={this.handleToggleCollapsible} className={classNames("btn","toDoPage__collapsible__button")}>Filter results</button>
+            <div style={{ marginBottom:'180px' }} >
+            {this.state.loading ? 
+                <div style={{ marginBottom:'800px' }} >
+                     <div className="lds-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 </div>
-                <div id="TDP_dataManagement" className="toDoPage__dataManagement">
-                    <div className="toDoPage__sorting">
-                        <p>Sort by:</p>
-                        <Select value={this.state.sortByValue} onChange={this.handleSortByChange}>
-                            <MenuItem value="rating">Ratings</MenuItem>
-                            <MenuItem value="date">Date posted</MenuItem>
-                        </Select>
-                    </div>
-                    <ToDoFilters/>
-                </div>
+                :
+                <div className="toDoPage">
                 
-                <div className="toDoPage__btnContainer">
-                    <button className={classNames("btn","btnNewToDoPost")} onClick={this.openAddPostModal}>Add a new recommendation!</button>
-                </div>
-                <div className="toDoPage__allPosts">
-                    {this.renderToDoPosts().splice(5*(this.state.currentPage-1),5)}
+                    <h1 className="page__title">What to do during your Erasmus ?</h1>
+                    <div className="center-container">
+                        <button onClick={this.handleToggleCollapsible} className={classNames("btn","toDoPage__collapsible__button")}>Filter results</button>
+                    </div>
+                    <div id="TDP_dataManagement" className="toDoPage__dataManagement">
+                        <div className="toDoPage__sorting">
+                            <p>Sort by:</p>
+                            <Select value={this.state.sortByValue} onChange={this.handleSortByChange}>
+                                <MenuItem value="rating">Ratings</MenuItem>
+                                <MenuItem value="date">Date posted</MenuItem>
+                            </Select>
+                        </div>
+                        <ToDoFilters/>
+                    </div>
+                    
+                    <div className="toDoPage__btnContainer">
+                        <button className={classNames("btn","btnNewToDoPost")} onClick={this.openAddPostModal}>Add a new recommendation!</button>
+                    </div>
+                    <div className="toDoPage__allPosts">
+                        {this.renderToDoPosts().splice(5*(this.state.currentPage-1),5)}
 
-                </div>
-                <Pager className="infoPage__pagination">
-                    {this.state.currentPage==1 ? <Pager.Item href="#" className="toDoPage__pagination__button" disabled onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item> : <Pager.Item href="#" className="toDoPage__pagination__button"  onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item>}
-                    {Math.ceil(getToDoPosts(this.props.toDoPosts,this.state.sortByValue).length/5)==this.state.currentPage ? <Pager.Item className="toDoPage__pagination__button" href="#" disabled onClick={this.handleNextPage}>Next &rarr; </Pager.Item> : <Pager.Item  className="toDoPage__pagination__button" href="#" onClick={this.handleNextPage}>Next &rarr;</Pager.Item>}
-                </Pager>
-                {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
-                {isEmpty(this.state.selectedToDoPost) ? null :
-                 <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost} isUserAdmin={this.state.isUserAdmin}/>}
+                    </div>
+                    <Pager className="infoPage__pagination">
+                        {this.state.currentPage==1 ? <Pager.Item href="#" className="toDoPage__pagination__button" disabled onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item> : <Pager.Item href="#" className="toDoPage__pagination__button"  onClick={this.handlePreviousPage}>&larr; Previous</Pager.Item>}
+                        {Math.ceil(getToDoPosts(this.props.toDoPosts,this.state.sortByValue).length/5)==this.state.currentPage ? <Pager.Item className="toDoPage__pagination__button" href="#" disabled onClick={this.handleNextPage}>Next &rarr; </Pager.Item> : <Pager.Item  className="toDoPage__pagination__button" href="#" onClick={this.handleNextPage}>Next &rarr;</Pager.Item>}
+                    </Pager>
+                    {this.state.isAddNewModalOpen ? <AddToDoPostModal isOpen={this.state.isAddNewModalOpen} onRequestClose={this.closeAddPostModal}/> : null}
+                    {isEmpty(this.state.selectedToDoPost) ? null :
+                    <ToDoPostModal isOpen={this.state.isModalOpen} onRequestClose={this.closePostModal} toDoPostData={this.state.selectedToDoPost} isUserAdmin={this.state.isUserAdmin}/>}
+                </div>}
             </div>
          );
     }

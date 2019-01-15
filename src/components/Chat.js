@@ -29,7 +29,7 @@ class Chat extends React.Component {
     }
 
     getMessagesFromDatabase = () =>{
-        database.ref('messages').on('value',(allMessages)=>{
+        database.ref('messages').limitToLast(500).on('value',(allMessages)=>{
             const messageList=[];
             allMessages.forEach((singleMessage)=>{
                 const message = {
